@@ -1,10 +1,16 @@
 import * as React from 'react';
-import { Text } from 'react-native';
+import { Text, View, Button } from 'react-native';
 
-const Login = () => {
+const Login = ({navigation}) => {
     return (
         <View>
             <Text>Login page.</Text>
+            <Button
+                title='Home'
+                onPress={() => navigation.navigate('Home')} />
+            <Button
+                title='Register'
+                onPress={() => navigation.navigate('Register')} />
         </View>
     )
 }
