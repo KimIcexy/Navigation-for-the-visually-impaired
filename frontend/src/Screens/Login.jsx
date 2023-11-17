@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, Button, Pressable, TextInput, StyleSheet } from 'react-native';
+import { Text, View, Pressable, TextInput, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
@@ -51,6 +51,8 @@ const Login = ({navigation}) => {
                                 onChangeText={handleChange('username')}
                                 onBlur={handleBlur('username')}
                                 value={values.username}
+                                placeholder='Tên đăng nhập'
+                                placeholderTextColor='#000000B2'
                             />
                             <TextInput
                                 style={styles.textInput}
@@ -58,6 +60,8 @@ const Login = ({navigation}) => {
                                 onBlur={handleBlur('password')}
                                 value={values.password}
                                 secureTextEntry={true}
+                                placeholder='Mật khẩu'
+                                placeholderTextColor='#000000B2'
                             />
                             <View style={styles.pressContainer}>
                                 <Pressable>
