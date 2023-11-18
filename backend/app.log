@@ -1,0 +1,341 @@
+[2023-11-18 13:20:47,117] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 13:20:47,118] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 13:20:47,120] INFO in _internal:  * Restarting with stat
+[2023-11-18 13:20:47,528] WARNING in _internal:  * Debugger is active!
+[2023-11-18 13:20:47,559] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 15:42:08,175] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 15:42:08,176] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 15:42:08,219] INFO in _internal:  * Restarting with stat
+[2023-11-18 15:42:09,139] WARNING in _internal:  * Debugger is active!
+[2023-11-18 15:42:09,152] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 15:57:56,720] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 15:57:56,722] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 15:57:56,724] INFO in _internal:  * Restarting with stat
+[2023-11-18 15:57:57,621] WARNING in _internal:  * Debugger is active!
+[2023-11-18 15:57:57,627] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:09:27,306] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 16:09:27,320] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 16:09:27,323] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:09:36,344] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:09:36,350] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:12:10,077] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:12:12,301] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:12:33,031] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:12:33,037] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:12:47,490] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:12:47] "[33mPOST /api/user/register HTTP/1.1[0m" 404 -
+[2023-11-18 16:12:57,179] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:12:57] "[33mPOST /api/user/register/ HTTP/1.1[0m" 404 -
+[2023-11-18 16:13:12,480] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:13:12] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:13:45,367] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:13:45] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:16:21,400] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 16:16:21,401] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 16:16:21,403] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:16:22,404] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:16:22,409] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:16:25,715] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:16:25] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:18:10,521] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\routes\\user_route.py', reloading
+[2023-11-18 16:18:10,653] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:18:11,560] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:18:11,565] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:18:14,608] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:18:14] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:20:00,606] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\models\\User.py', reloading
+[2023-11-18 16:20:00,742] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:20:01,799] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:20:01,804] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:20:04,169] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:20:04] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:28:05,217] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:28:05,361] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:28:06,668] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:28:06,679] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:28:11,950] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:28:11] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:30:01,813] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 16:30:01,947] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:30:03,528] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:30:03,535] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:30:08,684] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:30:08,810] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:30:09,732] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:30:09,740] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:30:15,168] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 16:30:15,168] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 16:30:15,170] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:30:16,136] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:30:16,142] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:30:20,563] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:30:20] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:30:59,031] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\models\\User.py', reloading
+[2023-11-18 16:30:59,147] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:31:00,044] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:31:00,052] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:31:12,580] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\models\\User.py', reloading
+[2023-11-18 16:31:12,692] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:32:13,356] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 16:32:13,357] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 16:32:13,360] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:32:14,228] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:32:14,234] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:32:18,791] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:32:18] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:33:42,032] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 16:33:42,146] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:33:43,287] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:33:43,293] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:33:51,397] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 16:33:51,502] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:34:22,983] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 16:34:22,984] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 16:34:22,986] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:34:24,218] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:34:24,225] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:34:54,022] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 16:34:54,171] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:34:55,285] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:34:55,291] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:37:56,390] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:37:56,493] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:37:57,627] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:37:57,633] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:38:01,391] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:38:01] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:38:19,183] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:38:19,316] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:38:20,403] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:38:20,408] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:39:11,236] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:39:11,369] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:39:12,715] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:39:12,720] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:42:19,854] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:42:20,022] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:42:21,211] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:42:21,216] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:42:24,937] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:42:24] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:42:36,259] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:42:36,368] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:42:37,360] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:42:37,368] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:44:19,496] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:44:19,603] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:44:20,614] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:44:20,620] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:44:24,577] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 16:44:24,577] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 16:44:24,579] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:44:25,448] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:44:25,453] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:44:29,770] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:44:29] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:44:31,377] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:44:31] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:46:05,038] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 16:46:05,167] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:46:06,119] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:46:06,125] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:46:49,346] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\models\\User.py', reloading
+[2023-11-18 16:46:49,459] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:47:27,281] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 16:47:27,282] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 16:47:27,284] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:47:28,152] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:47:28,158] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:47:54,301] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 16:47:54,302] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 16:47:54,305] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:47:55,517] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:47:55,522] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:48:01,827] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:48:01] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:50:02,134] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:50:02,248] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:50:03,331] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:50:03,339] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:50:21,238] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:50:21,351] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:50:22,444] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:50:22,451] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:50:32,782] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 16:50:32,942] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:50:34,587] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:50:34,594] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:50:36,211] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 16:50:36] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 16:51:23,095] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 16:51:23,234] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:51:28,756] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 16:51:28,757] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 16:51:28,759] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:51:29,613] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:51:29,617] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:53:41,409] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 16:53:41,537] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:53:42,501] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:53:42,507] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:53:49,158] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 16:53:49,302] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:53:50,364] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:53:50,369] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:57:11,115] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\models\\User.py', reloading
+[2023-11-18 16:57:11,238] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:57:12,190] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:57:12,196] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 16:57:33,740] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 16:57:33,869] INFO in _internal:  * Restarting with stat
+[2023-11-18 16:57:34,873] WARNING in _internal:  * Debugger is active!
+[2023-11-18 16:57:34,881] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 17:03:26,875] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 17:03:26,876] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 17:03:26,878] INFO in _internal:  * Restarting with stat
+[2023-11-18 17:03:27,920] WARNING in _internal:  * Debugger is active!
+[2023-11-18 17:03:27,926] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 17:03:30,878] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 17:03:30] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 17:10:43,356] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\models\\User.py', reloading
+[2023-11-18 17:10:43,544] INFO in _internal:  * Restarting with stat
+[2023-11-18 17:10:44,734] WARNING in _internal:  * Debugger is active!
+[2023-11-18 17:10:44,740] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 17:15:13,346] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 17:15:13,635] INFO in _internal:  * Restarting with stat
+[2023-11-18 17:15:15,367] WARNING in _internal:  * Debugger is active!
+[2023-11-18 17:15:15,375] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 17:15:25,288] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 17:15:25] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:22:58,733] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 19:22:59,132] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:38:59,931] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 19:38:59,932] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 19:38:59,934] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:39:00,811] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:39:00,820] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:39:48,348] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:39:48] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:40:36,531] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 19:40:36,532] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 19:40:36,534] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:40:37,659] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:40:37,665] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:40:39,629] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:40:39] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:41:04,183] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 19:41:04,300] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:41:06,955] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 19:41:06,956] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 19:41:06,958] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:41:07,891] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:41:07,900] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:41:10,542] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:41:10] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:41:45,453] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 19:41:45,454] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 19:41:45,457] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:41:46,729] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:41:46,735] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:41:50,762] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:41:50] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:43:37,471] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\routes\\user_route.py', reloading
+[2023-11-18 19:43:37,602] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:43:49,375] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 19:43:49,376] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 19:43:49,379] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:43:50,328] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:43:50,334] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:43:52,298] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:43:52] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:43:58,896] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\routes\\user_route.py', reloading
+[2023-11-18 19:43:59,020] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:43:59,995] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:44:00,000] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:44:02,598] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:44:02] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:44:19,803] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\routes\\user_route.py', reloading
+[2023-11-18 19:44:19,965] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:44:21,132] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:44:21,137] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:44:23,796] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:44:23] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:44:37,008] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\routes\\user_route.py', reloading
+[2023-11-18 19:44:37,130] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:44:38,084] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:44:38,091] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:44:40,360] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:44:40] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:49:53,407] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\db\\__init__.py', reloading
+[2023-11-18 19:49:53,537] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:49:54,541] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:49:54,547] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:50:19,913] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 19:50:20,064] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:50:21,001] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:50:21,009] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:50:27,011] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 19:50:27,012] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 19:50:27,014] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:50:27,891] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:50:27,896] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:50:31,766] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:50:31] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:54:16,931] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\routes\\user_route.py', reloading
+[2023-11-18 19:54:17,046] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:54:33,527] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 19:54:33,528] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 19:54:33,530] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:54:34,577] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:54:34,582] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 19:54:38,001] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 19:54:38] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 19:55:35,383] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\db\\__init__.py', reloading
+[2023-11-18 19:55:35,488] INFO in _internal:  * Restarting with stat
+[2023-11-18 19:55:36,344] WARNING in _internal:  * Debugger is active!
+[2023-11-18 19:55:36,349] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 20:16:04,939] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\utils\\db_orm.py', reloading
+[2023-11-18 20:16:05,074] INFO in _internal:  * Restarting with stat
+[2023-11-18 20:17:07,399] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 20:17:07,400] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 20:17:07,402] INFO in _internal:  * Restarting with stat
+[2023-11-18 20:17:08,308] WARNING in _internal:  * Debugger is active!
+[2023-11-18 20:17:08,313] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 20:17:30,571] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\routes\\user_route.py', reloading
+[2023-11-18 20:17:30,684] INFO in _internal:  * Restarting with stat
+[2023-11-18 20:17:31,612] WARNING in _internal:  * Debugger is active!
+[2023-11-18 20:17:31,617] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 20:17:33,683] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 20:17:33] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 20:18:46,594] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\routes\\user_route.py', reloading
+[2023-11-18 20:18:46,703] INFO in _internal:  * Restarting with stat
+[2023-11-18 20:18:47,645] WARNING in _internal:  * Debugger is active!
+[2023-11-18 20:18:47,650] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 20:18:49,946] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 20:18:49] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 20:48:32,246] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 20:48:32,248] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 20:48:32,251] INFO in _internal:  * Restarting with stat
+[2023-11-18 20:48:33,211] WARNING in _internal:  * Debugger is active!
+[2023-11-18 20:48:33,220] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 20:48:37,252] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 20:48:37] "[33mPOST /api/register/ HTTP/1.1[0m" 404 -
+[2023-11-18 20:49:03,996] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\app.py', reloading
+[2023-11-18 20:49:04,117] INFO in _internal:  * Restarting with stat
+[2023-11-18 20:55:11,213] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 20:55:11,214] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 20:55:11,216] INFO in _internal:  * Restarting with stat
+[2023-11-18 20:55:12,127] WARNING in _internal:  * Debugger is active!
+[2023-11-18 20:55:12,135] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 20:55:15,259] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 20:55:15] "POST /api/register/ HTTP/1.1" 200 -
+[2023-11-18 21:10:14,350] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 21:10:14,366] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 21:10:14,388] INFO in _internal:  * Restarting with stat
+[2023-11-18 21:10:15,327] WARNING in _internal:  * Debugger is active!
+[2023-11-18 21:10:15,370] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 21:10:24,055] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 21:10:24] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 21:10:54,947] INFO in _internal: [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+[2023-11-18 21:10:54,948] INFO in _internal: [33mPress CTRL+C to quit[0m
+[2023-11-18 21:10:54,951] INFO in _internal:  * Restarting with stat
+[2023-11-18 21:10:56,028] WARNING in _internal:  * Debugger is active!
+[2023-11-18 21:10:56,036] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 21:11:00,798] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 21:11:00] "[35m[1mPOST /api/register/ HTTP/1.1[0m" 500 -
+[2023-11-18 21:11:56,642] INFO in _internal:  * Detected change in 'E:\\Programming\\Navigation-for-the-visually-impaired\\backend\\modules\\users\\models\\user_model.py', reloading
+[2023-11-18 21:11:56,805] INFO in _internal:  * Restarting with stat
+[2023-11-18 21:11:57,799] WARNING in _internal:  * Debugger is active!
+[2023-11-18 21:11:57,806] INFO in _internal:  * Debugger PIN: 529-286-869
+[2023-11-18 21:12:28,199] INFO in _internal: 127.0.0.1 - - [18/Nov/2023 21:12:28] "POST /api/register/ HTTP/1.1" 200 -
