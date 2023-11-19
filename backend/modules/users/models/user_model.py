@@ -4,7 +4,7 @@ import bcrypt  # For hashing passwords
 import uuid
 from datetime import datetime
 
-import db
+from database.db import db
 
 class User(db.Base):
     __tablename__ = 'users'

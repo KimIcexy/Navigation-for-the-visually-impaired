@@ -4,8 +4,7 @@ from logging.config import dictConfig # For exporting logging file
 from flask_ngrok import run_with_ngrok
 
 from utils.config import *
-from db import init_db, close_db
-# from utils.database import Database
+from database.db import db
 from modules.users.bp import bp as user_bp
 
 def define_logging():
@@ -38,12 +37,8 @@ def create_app():
 
     # Create app
     app = Flask(__name__, instance_relative_config=True)
-    run_with_ngrok(app)
+    # run_with_ngrok(app)
     CORS(app)
-
-    # Database
-    init_db()
-    app.teardown_appcontext(close_db)
     
     # Route/Blueprint here
     app.register_blueprint(user_bp)

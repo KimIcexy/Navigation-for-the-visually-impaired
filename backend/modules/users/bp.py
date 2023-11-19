@@ -1,9 +1,9 @@
 import sys
-from flask import Blueprint, jsonify, request, g
+from flask import Blueprint, jsonify, request
 import jwt
-from db import get_db
 
-from modules.users.models import User
+from modules.users.models.user_model import User
+from database.db import db
 
 bp = Blueprint('user', __name__, url_prefix='/api/')
 
@@ -13,11 +13,12 @@ def register():
 
     if data['password'] != data['confirmPassword']:
         return jsonify({'message': 'Password does not match.'}), 400
-    
-    # Get database
-    db = get_db()
 
-    user = db.query(User).filter_by(username=data['username']).first()
+    # Check with filters
+    filters = {
+        'username': data['username'],
+    }
+    user = db.query(User, filters)
     if user is not None:
         return jsonify({'message': 'Username already exists.'}), 400
 
@@ -36,7 +37,7 @@ def register():
 @bp.route('/login/', methods=['POST'])
 def login():
     data = request.get_json()
-    db = get_db()
+    db = g.db
 
     try:
         user = db.query(User).filter_by(username=data['username']).first()
