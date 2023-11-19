@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from logging.config import dictConfig # For exporting logging file
+from flask_ngrok import run_with_ngrok
 
 from utils.config import *
 from db import init_db, close_db
@@ -37,7 +38,8 @@ def create_app():
 
     # Create app
     app = Flask(__name__, instance_relative_config=True)
-    CORS(app, supports_credentials=True)
+    run_with_ngrok(app)
+    CORS(app)
 
     # Database
     init_db()
@@ -49,4 +51,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True, port=PORT)
+    app.run()

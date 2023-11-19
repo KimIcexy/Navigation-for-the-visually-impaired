@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { Text, View, Pressable, TextInput, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
+import axios from 'axios';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
+import UserAPI from '../Services/User_API.js';
 
 const styles = StyleSheet.create({
     container: {
@@ -33,6 +35,10 @@ const styles = StyleSheet.create({
 });
 
 const Register = ({navigation}) => {
+    const handleRegister = async (values) => {
+        const res = await UserAPI.register(values);
+        console.log(res)
+    };
     return (
         <View style={styles.container}>
             <View style={TitleStyle.container}>
@@ -41,7 +47,7 @@ const Register = ({navigation}) => {
             <View style={styles.contentContainer}>
                 <Formik
                     initialValues={{username: '', email: '', phone: '', password: '', confirmPassword: ''}}
-                    onSubmit={values => console.log(values)}
+                    onSubmit={handleRegister}
                 >
                     {({handleChange, handleBlur, handleSubmit, values}) => (
                         <View>
