@@ -19,13 +19,12 @@ def register():
         'username': data['username'],
     }
     user = db.query(User, filters)
-    if user is not None:
+    if user is not None and user != []:
         return jsonify({'message': 'Username already exists.'}), 400
 
     try:
         user = User(data)
-        db.add(user)
-        db.commit()
+        db.save(user)
     except NameError:
         print(sys.exc_info()[0])
         db.rollback()

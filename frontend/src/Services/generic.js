@@ -1,5 +1,5 @@
 import axios from "axios";
-import {BACKEND_URL, BACKEND_PORT} from '@env';
+import {BACKEND_URL} from '@env'
 
 const baseURL = BACKEND_URL
 
@@ -28,6 +28,7 @@ export const get = function (url, token) {
 };
 
 export const post = function (url, data, token) {
+  console.log(baseURL + url)
   return new Promise((resolve, reject) =>
     axios
       .post(baseURL + url, data, configToken(token))

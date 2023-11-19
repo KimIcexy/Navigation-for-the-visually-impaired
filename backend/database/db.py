@@ -67,4 +67,10 @@ class Database:
         session.commit()
         self.close()
 
+    def rollback(self):
+        '''Rollback the database.'''
+        session = self.connect()
+        session.rollback()
+        self.close()
+
 db = Database()

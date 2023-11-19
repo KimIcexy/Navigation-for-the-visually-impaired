@@ -37,7 +37,7 @@ def create_app():
 
     # Create app
     app = Flask(__name__, instance_relative_config=True)
-    # run_with_ngrok(app)
+    run_with_ngrok(app)
     CORS(app)
     
     # Route/Blueprint here
@@ -47,3 +47,4 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     app.run()
+    # app.run(debug=True)
