@@ -3,6 +3,7 @@ export const TextStyle = {
         fontFamily: 'Tahoma',
         fontStyle: 'normal',
         textAlign: 'center',
+        color: '#000000',
     },
     hyperlink: [this.base, {
         color: '#0E64D2',

@@ -11,5 +11,5 @@ ngrok http ${PORT}
 ```
 cd backend
 activate
-conda activate e:\Programming\Navigation-for-the-visually-impaired\backend\.conda
+conda activate e:\Navigate\backend\.conda
 ```

@@ -1,8 +1,17 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { Text, View, Pressable, TextInput, StyleSheet, Alert } from 'react-native';
+import { Text, View, Pressable, TextInput, StyleSheet, Alert, Animated } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import { Formik } from 'formik';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import { 
+    Camera,
+    Frame,
+    FrameProcessor,
+    FrameProcessorPlugins,
+    useCameraDevice,
+    useFrameProcessor,    
+} from 'react-native-vision-camera';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
@@ -35,6 +44,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         color: '#000000',
     },
+    checkBox: {
+        borderWidth: 1,
+        borderColor: '#000000',
+        borderRadius: 5,
+        color: '#000000',
+    }
 });
 
 const Login = ({navigation}) => {
@@ -42,6 +57,37 @@ const Login = ({navigation}) => {
     if ((status === 'Done') && (user != null)) {
         navigation.replace('Home');
     }
+
+    const [loadCamera, setLoadCamera] = useState(false);
+    const [isFaceMethod, setIsFaceMethod] = useState(false);
+
+    const device = useCameraDevice('front');
+
+    const initFaceLogin = async () => {
+        const cameraPermission = await Camera.requestCameraPermission();
+        if (cameraPermission == 'not-determined') {
+            const newCameraPermission = await Camera.requestCameraPermission()
+            if (newCameraPermission == 'authorized') {
+                setLoginMethod('Face');
+            }
+        }
+        if (device == null) {
+            Alert.alert('Không tìm thấy camera', 'Vui lòng kiểm tra lại thiết bị của bạn.');
+            return ;
+        }
+        setLoadCamera(true);
+    }
+
+    const frameProcessor = useFrameProcessor(
+        (frame) => {
+            'worklet'
+            // const scannedFace = scanFaces(frame);
+            // if (scannedFace) {
+            //     console.log(scannedFace);
+            // }
+        }
+    );
+
     const handleLogin = async (values) => {
         let res = null;
         try {
@@ -83,20 +129,55 @@ const Login = ({navigation}) => {
                                 placeholder='Tên đăng nhập'
                                 placeholderTextColor='#000000B2'
                             />
-                            <TextInput
-                                style={styles.textInput}
-                                onChangeText={handleChange('password')}
-                                onBlur={handleBlur('password')}
-                                value={values.password}
-                                secureTextEntry={true}
-                                placeholder='Mật khẩu'
-                                placeholderTextColor='#000000B2'
-                            />
-                            <View style={styles.pressContainer}>
-                                <Pressable>
-                                    <Text style={TextStyle.hyperlink}>Quên mật khẩu?</Text>
-                                </Pressable>
+                            {/* Change login method */}
+                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                                <CheckBox 
+                                    value={isFaceMethod}
+                                    onValueChange={() => {
+                                        if (!isFaceMethod) {
+                                            initFaceLogin();
+                                        }
+                                        setIsFaceMethod(!isFaceMethod);
+                                    }}
+                                    tintColors={{true: '#0E64D2', false: '#000000'}}
+                                />
+                                <Text style={TextStyle.base}>Use face login</Text>
                             </View>
+                            {
+                                !isFaceMethod && (
+                                    <View>
+                                        <TextInput
+                                            style={styles.textInput}
+                                            onChangeText={handleChange('password')}
+                                            onBlur={handleBlur('password')}
+                                            value={values.password}
+                                            secureTextEntry={true}
+                                            placeholder='Mật khẩu'
+                                            placeholderTextColor='#000000B2'
+                                        />
+                                        <View style={styles.pressContainer}>
+                                            <Pressable>
+                                                <Text style={TextStyle.hyperlink}>Quên mật khẩu?</Text>
+                                            </Pressable>
+                                        </View>
+                                    </View>
+                                )
+                            }
+                            {
+                                isFaceMethod && (
+                                    <View>
+                                        {device && (
+                                            <Camera
+                                                style={{width: '100%', height: 300}}
+                                                device={device}
+                                                isActive
+                                                // frameProcessor={frameProcessor}
+                                            />
+                                        )}
+                                        {/* <Animated.View /> */}
+                                    </View>
+                                )
+                            }
                             <Pressable style={ButtonStyle.container} onPress={handleSubmit}>
                                 <Text style={ButtonStyle.text}>Đăng nhập</Text>
                             </Pressable>
