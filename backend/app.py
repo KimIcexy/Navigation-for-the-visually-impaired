@@ -1,11 +1,10 @@
 from flask import Flask
 from flask_cors import CORS
 from logging.config import dictConfig # For exporting logging file
-from flask_ngrok import run_with_ngrok
 
 from utils.config import *
 from database.db import db
-from modules.users.bp import bp as user_bp
+from modules.users import bp as user_bp
 
 def define_logging():
     dictConfig({
@@ -37,7 +36,6 @@ def create_app():
 
     # Create app
     app = Flask(__name__, instance_relative_config=True)
-    run_with_ngrok(app)
     CORS(app)
     
     # Route/Blueprint here
@@ -46,5 +44,4 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run()
-    # app.run(debug=True)
+    app.run(debug=True)

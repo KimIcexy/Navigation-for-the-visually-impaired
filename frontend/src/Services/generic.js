@@ -12,6 +12,7 @@ export const configToken = function (token) {
 }
 
 export const get = function (url, token) {
+    console.log(baseURL + url)
     return new Promise((resolve, reject) =>
     axios
       .get(baseURL + url, configToken(token))
@@ -45,6 +46,7 @@ export const post = function (url, data, token) {
 };
 
 export const put = function (url, data, token) {
+  console.log(baseURL + url)
   return new Promise((resolve, reject) =>
     axios
       .put(baseURL + url, data, configToken(token))
@@ -61,6 +63,7 @@ export const put = function (url, data, token) {
 };
 
 export const patch = function (url, data, token) {
+  console.log(baseURL + url)
   return new Promise((resolve, reject) =>
     axios
       .patch(baseURL + url, data, configToken(token))
@@ -77,6 +80,7 @@ export const patch = function (url, data, token) {
 };
 
 export const delele = function (url, token) {
+  console.log(baseURL + url)
   return new Promise((resolve, reject) =>
     axios
       .delete(baseURL + url, configToken(token))

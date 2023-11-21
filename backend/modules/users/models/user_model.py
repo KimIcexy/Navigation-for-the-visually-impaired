@@ -54,3 +54,10 @@ class User(db.Base):
 
     def verify_password(self, password):
         return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
+    
+    def simple_user(self):
+        return {
+            'username': self.username,
+            'email': self.email,
+            'phone': self.phone,
+        }

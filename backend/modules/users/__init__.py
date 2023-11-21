@@ -4,6 +4,7 @@ import jwt
 
 from modules.users.models.user_model import User
 from database.db import db
+from utils.config import SECRET_KEY
 
 bp = Blueprint('user', __name__, url_prefix='/api/')
 
@@ -24,6 +25,10 @@ def register():
 
     try:
         user = User(data)
+    except AssertionError:
+        return jsonify({'message': 'User is not valid.'}), 400
+    
+    try:
         db.save(user)
     except NameError:
         print(sys.exc_info()[0])
@@ -36,25 +41,27 @@ def register():
 @bp.route('/login/', methods=['POST'])
 def login():
     data = request.get_json()
-    db = g.db
 
+    filters = {
+        'username': data['username'],
+    }
     try:
-        user = db.query(User).filter_by(username=data['username']).first()
+        user = db.query(User, filters)
     except NameError:
         print(sys.exc_info()[0])
 
         return jsonify({'message': 'Login failed.'}), 400
 
-    print(user)
-    if user is None:
+    if user is None or user == []:
         return jsonify({'message': 'Account not found.'}), 400
-    print(user)
+
+    user = user[0]
 
     if not user.verify_password(data['password']):
         return jsonify({'message': 'Wrong password.'}), 400
 
     token = jwt.encode({
         'id': user.id,
-    }, getenv('SECRET_KEY'))
+    }, SECRET_KEY)
 
-    return jsonify({'message': 'Logged in.', 'token': token}), 201
+    return jsonify({'message': 'Logged in.', 'token': token, 'user': user.simple_user()}), 201

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Text, View, Pressable, TextInput, StyleSheet } from 'react-native';
+import { Text, View, Pressable, TextInput, StyleSheet, Alert } from 'react-native';
 import { Formik } from 'formik';
-import axios from 'axios';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
@@ -36,8 +35,16 @@ const styles = StyleSheet.create({
 
 const Register = ({navigation}) => {
     const handleRegister = async (values) => {
-        const res = await UserAPI.register(values);
-        console.log(res)
+        let res = null;
+        try {
+            res = await UserAPI.register(values);
+        }
+        catch (err) {
+            // Trying to catch all error
+            Alert.alert('Đăng ký thất bại', err);
+            return ;
+        }
+        Alert.alert('Đăng ký thành công', 'Vui lòng đăng nhập để tiếp tục', [{text: 'OK', onPress: () => navigation.navigate('Login')}]);
     };
     return (
         <View style={styles.container}>
