@@ -142,7 +142,7 @@ const Login = ({navigation}) => {
                                     }}
                                     tintColors={{true: '#0E64D2', false: '#000000'}}
                                 />
-                                <Text style={TextStyle.base}>Use face login</Text>
+                                <Text style={TextStyle.base}>Sử dụng đăng nhập bằng mặt người</Text>
                             </View>
                             {
                                 !isFaceMethod && (

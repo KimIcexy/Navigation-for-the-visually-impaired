@@ -13,7 +13,7 @@ def register():
     data = request.get_json()
 
     if data['password'] != data['confirmPassword']:
-        return jsonify({'message': 'Password does not match.'}), 400
+        return jsonify({'message': 'Mật khẩu không trùng khớp.'}), 400
 
     # Check with filters
     filters = {
@@ -21,21 +21,21 @@ def register():
     }
     user = db.query(User, filters)
     if user is not None and user != []:
-        return jsonify({'message': 'Username already exists.'}), 400
+        return jsonify({'message': 'Tài khoản đã tồn tại.'}), 400
 
     try:
         user = User(data)
     except AssertionError:
-        return jsonify({'message': 'User is not valid.'}), 400
+        return jsonify({'message': 'Thông tin người dùng không phù hợp.'}), 400
     
     try:
         db.save(user)
     except NameError:
         print(sys.exc_info()[0])
         db.rollback()
-        return jsonify({'message': 'Register failed.'}), 400
+        return jsonify({'message': 'Đăng ký thất bại.'}), 400
 
-    return jsonify({'message': 'Registered.'})
+    return jsonify({'message': 'Đăng ký thành công.'})
 
 
 @bp.route('/login/', methods=['POST'])
@@ -50,18 +50,18 @@ def login():
     except NameError:
         print(sys.exc_info()[0])
 
-        return jsonify({'message': 'Login failed.'}), 400
+        return jsonify({'message': 'Đăng nhập thất bại.'}), 400
 
     if user is None or user == []:
-        return jsonify({'message': 'Account not found.'}), 400
+        return jsonify({'message': 'Tài khoản không tồn tại.'}), 400
 
     user = user[0]
 
     if not user.verify_password(data['password']):
-        return jsonify({'message': 'Wrong password.'}), 400
+        return jsonify({'message': 'Sai mật khẩu.'}), 400
 
     token = jwt.encode({
         'id': user.id,
     }, SECRET_KEY)
 
-    return jsonify({'message': 'Logged in.', 'token': token, 'user': user.simple_user()}), 201
+    return jsonify({'message': 'Đăng nhập thành công.', 'token': token, 'user': user.simple_user()}), 201
