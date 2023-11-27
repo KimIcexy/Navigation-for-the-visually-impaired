@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Text, View, Pressable, TextInput, StyleSheet, Alert, Animated } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import { Formik } from 'formik';
@@ -10,9 +10,9 @@ import {
     FrameProcessor,
     FrameProcessorPlugins,
     useCameraDevice,
-    useFrameProcessor,    
+    useFrameProcessor,
 } from 'react-native-vision-camera';
-// import {} from 'react-native-worklets-core';
+// import { loadTensorflowModel } from 'react-native-fast-tflite';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
@@ -61,6 +61,7 @@ const Login = ({navigation}) => {
 
     const [loadCamera, setLoadCamera] = useState(false);
     const [isFaceMethod, setIsFaceMethod] = useState(false);
+    const [model, setModel] = useState(null);
 
     const device = useCameraDevice('front');
 
@@ -74,20 +75,11 @@ const Login = ({navigation}) => {
         }
         if (device == null) {
             Alert.alert('Không tìm thấy camera', 'Vui lòng kiểm tra lại thiết bị của bạn.');
+            setIsFaceMethod(false); // Change to default login method
             return ;
         }
         setLoadCamera(true);
     }
-
-    const frameProcessor = useFrameProcessor(
-        (frame) => {
-            'worklet'
-            // const scannedFace = scanFaces(frame);
-            // if (scannedFace) {
-            //     console.log(scannedFace);
-            // }
-        }
-    );
 
     const handleLogin = async (values) => {
         let res = null;
@@ -109,6 +101,27 @@ const Login = ({navigation}) => {
             onPress: () => navigation.replace('Home')
         }]);
     }
+
+    // const loadModels = async () => {
+    //     const model = await loadTensorflowModel(require('Assets/Models/yolov5.tflite'))
+    //     setModel(model);
+    // }
+
+    const frameProcessor = useFrameProcessor(
+        (frame) => {
+            'worklet'
+            // const result = model.predictSync(frame);
+            // console.log(result);
+        }
+    );
+
+    useEffect(() => {
+        if (isFaceMethod && !loadCamera) {
+            initFaceLogin();
+            // loadModels();
+        }
+    }, [isFaceMethod]);
+
     return (
         <View style={styles.container}>
             <View style={TitleStyle.container}>
@@ -135,9 +148,6 @@ const Login = ({navigation}) => {
                                 <CheckBox 
                                     value={isFaceMethod}
                                     onValueChange={() => {
-                                        if (!isFaceMethod) {
-                                            initFaceLogin();
-                                        }
                                         setIsFaceMethod(!isFaceMethod);
                                     }}
                                     tintColors={{true: '#0E64D2', false: '#000000'}}
@@ -172,10 +182,9 @@ const Login = ({navigation}) => {
                                                 style={{width: '100%', height: 300}}
                                                 device={device}
                                                 isActive
-                                                // frameProcessor={frameProcessor}
+                                                frameProcessor={frameProcessor}
                                             />
                                         )}
-                                        {/* <Animated.View /> */}
                                     </View>
                                 )
                             }
