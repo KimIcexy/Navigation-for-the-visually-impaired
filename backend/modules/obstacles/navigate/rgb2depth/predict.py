@@ -7,9 +7,7 @@ from PIL import Image
 
 import models
 
-def predict(model_data_path, image_path):
-
-    
+def predict(model_data_path, image_path, result_path):
     # Default input size
     height = 228
     width = 304
@@ -45,8 +43,10 @@ def predict(model_data_path, image_path):
         
         # Plot result
         fig = plt.figure()
-        ii = plt.imshow(pred[0,:,:,0], interpolation='nearest')
-        fig.colorbar(ii)
+        ii = plt.imshow(pred[0,:,:,0], cmap='gray', interpolation='nearest')
+        plt.axis('off')
+        # plt.axis('equal')  # Set equal aspect ratio
+        plt.savefig(result_path, bbox_inches='tight', pad_inches=0)
         plt.show()
         
         return pred
@@ -62,9 +62,10 @@ def main():
     # Predict the image
     model_path = './checkpoints/NYU_ResNet-UpProj.npy'
     image_path = './test.jpg'
+    result_path = './result.png'
     print('RGB >> depth...')
     tf.disable_eager_execution()
-    pred = predict(model_path, image_path)
+    pred = predict(model_path, image_path, result_path)
     
     # os._exit(0)
 
