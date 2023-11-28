@@ -60,6 +60,9 @@ const Home = ({ navigation }) => {
                             <Pressable style={ButtonStyle.container}>
                                 <Text style={ButtonStyle.text}>Điều hướng</Text>
                             </Pressable>
+                            <Pressable style={ButtonStyle.container} onPress={() => navigation.navigate('FaceRegister')}>
+                                <Text style={ButtonStyle.text}>Đăng ký mặt người</Text>
+                            </Pressable>
                             <Pressable style={ButtonStyle.container} onPress={handleLogout}>
                                 <Text style={ButtonStyle.text}>Đăng xuất</Text>
                             </Pressable>

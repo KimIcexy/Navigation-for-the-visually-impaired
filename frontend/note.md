@@ -1,1 +1,0 @@
-- For the error from the react-native-vision-camera and react-native-worklets-core, follow this [link](https://github.com/mrousavy/react-native-vision-camera/issues/1547).

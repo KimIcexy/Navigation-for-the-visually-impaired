@@ -1,22 +1,17 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { Text, View, Pressable, TextInput, StyleSheet, Alert, Animated } from 'react-native';
-import CheckBox from '@react-native-community/checkbox';
+import { Text, View, Pressable, TextInput, StyleSheet, Alert } from 'react-native';
+import Checkbox from 'expo-checkbox';
 import { Formik } from 'formik';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import { 
-    Camera,
-    Frame,
-    FrameProcessor,
-    FrameProcessorPlugins,
-    useCameraDevice,
-    useFrameProcessor,
-} from 'react-native-vision-camera';
-// import { loadTensorflowModel } from 'react-native-fast-tflite';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Camera, CameraType } from 'expo-camera';
+import * as FaceDetector from 'expo-face-detector';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
 import { getUser } from '../Utils/user.js';
+import { getImage } from '../Utils/camera.js';
+import { getBase64Image } from '../Utils/image.js';
 import { useUser } from '../Hooks/useAuth.js';
 
 const styles = StyleSheet.create({
@@ -59,23 +54,18 @@ const Login = ({navigation}) => {
         navigation.replace('Home');
     }
 
-    const [loadCamera, setLoadCamera] = useState(false);
     const [isFaceMethod, setIsFaceMethod] = useState(false);
-    const [model, setModel] = useState(null);
+    const [loadCamera, setLoadCamera] = useState(false);
+    const [isCaptured, setIsCaptured] = useState(false);
 
-    const device = useCameraDevice('front');
+    const cameraRef = useRef(null);
+    const username = useRef(null);
 
     const initFaceLogin = async () => {
-        const cameraPermission = await Camera.requestCameraPermission();
-        if (cameraPermission == 'not-determined') {
-            const newCameraPermission = await Camera.requestCameraPermission()
-            if (newCameraPermission == 'authorized') {
-                setLoginMethod('Face');
-            }
-        }
-        if (device == null) {
-            Alert.alert('Không tìm thấy camera', 'Vui lòng kiểm tra lại thiết bị của bạn.');
-            setIsFaceMethod(false); // Change to default login method
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        if (status !== 'granted') {
+            Alert.alert('Quyền truy cập camera bị từ chối', 'Vui lòng cấp quyền truy cập camera để sử dụng tính năng đăng nhập bằng mặt người.');
+            setIsFaceMethod(false); // Turn off face login
             return ;
         }
         setLoadCamera(true);
@@ -91,8 +81,8 @@ const Login = ({navigation}) => {
             return ;
         }
         console.log(res);
-        await EncryptedStorage.setItem('token', res['data']['token']);
-        await EncryptedStorage.setItem('user', JSON.stringify(res['data']['user']));
+        await AsyncStorage.setItem('token', res['data']['token']);
+        await AsyncStorage.setItem('user', JSON.stringify(res['data']['user']));
 
         const user = await getUser();
 
@@ -102,25 +92,55 @@ const Login = ({navigation}) => {
         }]);
     }
 
-    // const loadModels = async () => {
-    //     const model = await loadTensorflowModel(require('Assets/Models/yolov5.tflite'))
-    //     setModel(model);
-    // }
-
-    const frameProcessor = useFrameProcessor(
-        (frame) => {
-            'worklet'
-            // const result = model.predictSync(frame);
-            // console.log(result);
+    const handleLoginFace = async (values) => {
+        let res = null;
+        try {
+            res = await UserAPI.loginWithFace(values)
         }
-    );
+        catch (err) {
+            Alert.alert('Đăng nhập thất bại', err);
+            return ;
+        }
+        console.log(res);
+        await AsyncStorage.setItem('token', res['data']['token']);
+        await AsyncStorage.setItem('user', JSON.stringify(res['data']['user']));
+
+        const user = await getUser();
+
+        Alert.alert('Đăng nhập thành công', 'Xin chào ' + user.username + '.', [{
+            text: 'OK', 
+            onPress: () => navigation.replace('Home')
+        }]);
+    }
 
     useEffect(() => {
-        if (isFaceMethod && !loadCamera) {
+        if (isFaceMethod) {
+            // Start everything here
             initFaceLogin();
-            // loadModels();
         }
     }, [isFaceMethod]);
+
+    const handleFaceDetected = async ({faces}) => {
+        if (isCaptured) {
+            return ;
+        }
+        if (faces.length == 1) {
+            // Get the image from camera ref
+            setIsCaptured(true);
+            const blob = await getImage(cameraRef);
+            
+            // Convert the image data to base64
+            const base64Image = await getBase64Image(blob);
+
+            const data = {
+                username: username.current,
+                image: base64Image,
+            }
+            
+            await handleLoginFace(data);
+            setIsCaptured(false);
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -133,11 +153,16 @@ const Login = ({navigation}) => {
                     initialValues={{username: '', password: ''}}
                     onSubmit={handleLogin}
                 >
-                    {({handleChange, handleBlur, handleSubmit, values}) => (
+                    {({handleChange, handleBlur, handleSubmit, values, setFieldValue, setFieldTouched}) => (
                         <View>
                             <TextInput
                                 style={styles.textInput}
-                                onChangeText={handleChange('username')}
+                                onChangeText={(val) => {
+                                    setFieldValue('username', val)
+                                    setFieldTouched('username', true, false);
+                                    username.current = val;
+                                }
+                                    }
                                 onBlur={handleBlur('username')}
                                 value={values.username}
                                 placeholder='Tên đăng nhập'
@@ -145,7 +170,7 @@ const Login = ({navigation}) => {
                             />
                             {/* Change login method */}
                             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                                <CheckBox 
+                                <Checkbox 
                                     value={isFaceMethod}
                                     onValueChange={() => {
                                         setIsFaceMethod(!isFaceMethod);
@@ -176,13 +201,20 @@ const Login = ({navigation}) => {
                             }
                             {
                                 isFaceMethod && (
-                                    <View>
-                                        {device && (
-                                            <Camera
-                                                style={{width: '100%', height: 300}}
-                                                device={device}
-                                                isActive
-                                                frameProcessor={frameProcessor}
+                                    <View style={{paddingVertical: 15}}>
+                                        {loadCamera && (
+                                            <Camera 
+                                                style={{width: '100%', height: 300}} 
+                                                type={CameraType.front} 
+                                                ref={cameraRef} 
+                                                faceDetectorSettings={{
+                                                    mode: FaceDetector.FaceDetectorMode.fast,
+                                                    detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
+                                                    runClassifications: FaceDetector.FaceDetectorClassifications.none,
+                                                    minDetectionInterval: 100,
+                                                    tracking: true,
+                                                }}
+                                                onFacesDetected={handleFaceDetected}
                                             />
                                         )}
                                     </View>

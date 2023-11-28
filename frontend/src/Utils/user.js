@@ -1,7 +1,7 @@
-import EncryptedStorage from 'react-native-encrypted-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const getUser = async () => {
-    const user = await EncryptedStorage.getItem('user');
+    const user = await AsyncStorage.getItem('user');
     if (user) {
         return JSON.parse(user);
     }
@@ -9,21 +9,21 @@ export const getUser = async () => {
 }
 
 export const setUser = async (user) => {
-    await EncryptedStorage.setItem('user', JSON.stringify(user));
+    await AsyncStorage.setItem('user', JSON.stringify(user));
 }
 
 export const removeUser = async () => {
-    await EncryptedStorage.removeItem('user');
+    await AsyncStorage.removeItem('user');
 }
 
 // Can't seem to find a good place, so I put it here too.
 // After all, they're still in the 'User management' category.
 export const setToken = async (token) => {
-    await EncryptedStorage.setItem('token', token);
+    await AsyncStorage.setItem('token', token);
 }
 
 export const getToken = async () => {
-    const token = await EncryptedStorage.getItem('token');
+    const token = await AsyncStorage.getItem('token');
     if (token) {
         return token;
     }
@@ -31,5 +31,5 @@ export const getToken = async () => {
 }
 
 export const removeToken = async () => {
-    await EncryptedStorage.removeItem('token');
+    await AsyncStorage.removeItem('token');
 }

@@ -5,6 +5,10 @@ const UserAPI = {
         const url = '/api/login/';
         return post(url, data, "");
     },
+    loginWithFace: function(data) {
+        const url = `${Backend_URL}/login/face/`;
+        return post(url, data, "");
+    },
     register: function(data) {
         const url = '/api/register/';
         return post(url, data, "");

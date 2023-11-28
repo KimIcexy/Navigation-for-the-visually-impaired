@@ -1,6 +1,5 @@
 export const TextStyle = {
     base: {
-        fontFamily: 'Tahoma',
         fontStyle: 'normal',
         textAlign: 'center',
         color: '#000000',
