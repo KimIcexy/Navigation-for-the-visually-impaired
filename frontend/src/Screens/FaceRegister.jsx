@@ -55,7 +55,6 @@ const FaceRegister = ({ navigation }) => {
             return ;
         }
         if (faces.length == 1) {
-            console.log('Face detected');
             setIsCaptured(true);
 
             const imageBase64 = await getImage(cameraRef);
@@ -68,7 +67,6 @@ const FaceRegister = ({ navigation }) => {
                 res = await FaceAPI.valid(formData, token);
             }
             catch (err) {
-                console.log(err);
                 Alert.alert('Phát hiện khuôn mặt thất bại', err);
                 return ;
             }
@@ -130,9 +128,6 @@ const FaceRegister = ({ navigation }) => {
                             ref={cameraRef}
                             style={styles.mainContainer} 
                             type={Camera.Constants.Type.front}
-                            onCameraReady={() => {
-                                console.log('Camera ready');
-                            }}
                             faceDetectorSettings={{
                                 mode: FaceDetector.FaceDetectorMode.fast,
                                 detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,

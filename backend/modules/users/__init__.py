@@ -81,7 +81,7 @@ def login_with_face():
     # Since if this image is invalid then there's must be something wrong with the client.
     # Not because of the user, so there won't be many error messages.
     if number_of_face != 1:
-        return jsonify({'message': 'Invalid image!'}), 400
+        return jsonify({'message': 'Khuôn mặt không phù hợp!'}), 400
     
     filters = {
         'username': form['username']
@@ -102,7 +102,7 @@ def login_with_face():
         return jsonify({'message': 'Tài khoản không tồn tại khuôn mặt.'}), 400
 
     if not user.verify_face(data):
-        return jsonify({'message': 'Không trùng khớp.'}), 400
+        return jsonify({'message': 'Khuôn mặt không trùng khớp.'}), 400
     
     token = jwt.encode({
         'id': user.id,

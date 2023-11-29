@@ -1,7 +1,5 @@
 from flask import Blueprint, jsonify, request
-import cv2
 import numpy as np
-import base64
 from io import BytesIO
 from PIL import Image
 
@@ -28,9 +26,9 @@ def valid(current_user):
     if number_of_face == -1:
         return jsonify({'message': result}), 400
     elif number_of_face == 0:
-        return jsonify({'message': 'No face detected!'}), 400
+        return jsonify({'message': 'Không tìm thấy khuôn mặt.'}), 400
     elif number_of_face > 1:
-        return jsonify({'message': 'More than one face detected!'}), 400
+        return jsonify({'message': 'Quá nhiều khuôn mặt.'}), 400
     
     # Convert image to base64
     image_base64 = image_to_base64(result)
@@ -53,7 +51,7 @@ def accept_face(current_user):
     # Since if this image is invalid then there's must be something wrong with the client.
     # Not because of the user, so there won't be many error messages.
     if number_of_face != 1:
-        return jsonify({'message': 'Invalid image!'}), 400
+        return jsonify({'message': 'Khuôn mặt không phù hợp'}), 400
     
     # Get face's embedding vector
     # TODO
@@ -67,4 +65,4 @@ def accept_face(current_user):
     user.face_vector = data # Base64 image rather than, uhm, whatever cv2 uses.
     db.save(user)
 
-    return jsonify({'message': 'Face registered!'}), 200
+    return jsonify({'message': 'Đăng ký khuôn mặt thành công.'}), 200

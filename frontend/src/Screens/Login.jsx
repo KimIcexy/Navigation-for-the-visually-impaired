@@ -77,7 +77,6 @@ const Login = ({navigation}) => {
             Alert.alert('Đăng nhập thất bại', err);
             return ;
         }
-        console.log(res);
         await AsyncStorage.setItem('token', res['data']['token']);
         await AsyncStorage.setItem('user', JSON.stringify(res['data']['user']));
 
@@ -101,7 +100,6 @@ const Login = ({navigation}) => {
             return ;
         }
         if (faces.length == 1) {
-            console.log('Face detected');
             setIsCaptured(true);
             const imageBase64 = await getImage(cameraRef);
             const formData = createForm(imageBase64);
@@ -117,7 +115,6 @@ const Login = ({navigation}) => {
                 return ;
             }
             setIsCaptured(false);
-            console.log(res);
             await AsyncStorage.setItem('token', res['data']['token']);
             await AsyncStorage.setItem('user', JSON.stringify(res['data']['user']));
 

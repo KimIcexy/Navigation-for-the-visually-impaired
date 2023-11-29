@@ -25,7 +25,7 @@ def token_required(func):
             token = request.headers['Authorization'].split()[1]
 
         if not token:
-            return jsonify({'message': 'Token is missing!'}), 401
+            return jsonify({'message': 'Không tìm thấy token.'}), 401
 
         try:
             data = jwt.decode(token, SECRET_KEY, algorithms=['HS256'])
@@ -34,7 +34,7 @@ def token_required(func):
             }
             current_user = db.query(User, filter)
         except:
-            return jsonify({'message': 'Token is invalid!'}), 401
+            return jsonify({'message': 'Token không phù hợp'}), 401
         
         return func(current_user[0], *args, **kwargs)
     

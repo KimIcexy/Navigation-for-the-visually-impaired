@@ -44,19 +44,19 @@ class User(db.Base):
 
     @validates('password')
     def validate_password(self, key, password):
-        assert len(password) > 6, 'Password must be at least 6 characters long.'
+        assert len(password) > 6, 'Mật khẩu phải dài ít nhất 6 ký tự.'
 
         # Hash password
         return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
     
     @validates('email')
     def validate_email(self, key, email):
-        assert '@' in email, 'Email must be valid.'
+        assert '@' in email, 'Email không đúng cú pháp.'
         return email
     
     @validates('phone')
     def validate_phone(self, key, phone):
-        assert len(phone) == 10 or len(phone) == 11, 'Phone number must be 10 or 11 digits long.'
+        assert len(phone) == 10 or len(phone) == 11, 'Số điện thoại phải dài 10 hoặc 11 ký tự.'
         return phone
 
     def verify_password(self, password):

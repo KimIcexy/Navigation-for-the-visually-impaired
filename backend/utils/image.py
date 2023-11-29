@@ -8,7 +8,7 @@ def one_face_valid(image):
         image_array = np.asarray(image)
     except Exception as e:
             # If the conversion fails, log the error and return the original image.
-        return -1, 'Can\'t convert'
+        return -1, 'Không thể chuyển đổi ảnh.'
     print(image_array.shape)
     
     try:
@@ -16,7 +16,7 @@ def one_face_valid(image):
     except Exception as e:
         # If the extractionn fails, log the error and return the original image.
         print(e)
-        return -1, 'Can\'t extract'
+        return -1, 'Không thể trích xuất khuôn mặt.'
     
     number_of_face = len(faces)
     if number_of_face != 1:
