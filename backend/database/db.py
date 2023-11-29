@@ -19,6 +19,10 @@ class Database:
         self._session = None
         self.Base = declarative_base()
 
+    def init_db(self):
+        '''Initialize the database.'''
+        self.Base.metadata.create_all(self.engine)
+
     def connect(self):
         '''Return a connection to the database.'''
         if not self._session:

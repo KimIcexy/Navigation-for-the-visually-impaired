@@ -11,7 +11,7 @@ import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
 import { getUser } from '../Utils/user.js';
 import { getImage } from '../Utils/camera.js';
-import { getBase64Image } from '../Utils/image.js';
+import { createForm } from '../Utils/formData.js';
 import { useUser } from '../Hooks/useAuth.js';
 
 const styles = StyleSheet.create({
@@ -50,9 +50,6 @@ const styles = StyleSheet.create({
 
 const Login = ({navigation}) => {
     const { status, user } = useUser();
-    if ((status === 'Done') && (user != null)) {
-        navigation.replace('Home');
-    }
 
     const [isFaceMethod, setIsFaceMethod] = useState(false);
     const [loadCamera, setLoadCamera] = useState(false);
@@ -92,27 +89,6 @@ const Login = ({navigation}) => {
         }]);
     }
 
-    const handleLoginFace = async (values) => {
-        let res = null;
-        try {
-            res = await UserAPI.loginWithFace(values)
-        }
-        catch (err) {
-            Alert.alert('Đăng nhập thất bại', err);
-            return ;
-        }
-        console.log(res);
-        await AsyncStorage.setItem('token', res['data']['token']);
-        await AsyncStorage.setItem('user', JSON.stringify(res['data']['user']));
-
-        const user = await getUser();
-
-        Alert.alert('Đăng nhập thành công', 'Xin chào ' + user.username + '.', [{
-            text: 'OK', 
-            onPress: () => navigation.replace('Home')
-        }]);
-    }
-
     useEffect(() => {
         if (isFaceMethod) {
             // Start everything here
@@ -125,20 +101,32 @@ const Login = ({navigation}) => {
             return ;
         }
         if (faces.length == 1) {
-            // Get the image from camera ref
+            console.log('Face detected');
             setIsCaptured(true);
-            const blob = await getImage(cameraRef);
-            
-            // Convert the image data to base64
-            const base64Image = await getBase64Image(blob);
+            const imageBase64 = await getImage(cameraRef);
+            const formData = createForm(imageBase64);
+            formData.append('username', username.current);
 
-            const data = {
-                username: username.current,
-                image: base64Image,
+            let res = null;
+            try {
+                res = await UserAPI.loginWithFace(formData)
             }
-            
-            await handleLoginFace(data);
+            catch (err) {
+                Alert.alert('Đăng nhập thất bại');
+                console.log(err)
+                return ;
+            }
             setIsCaptured(false);
+            console.log(res);
+            await AsyncStorage.setItem('token', res['data']['token']);
+            await AsyncStorage.setItem('user', JSON.stringify(res['data']['user']));
+
+            const user = await getUser();
+
+            Alert.alert('Đăng nhập thành công', 'Xin chào ' + user.username + '.', [{
+                text: 'OK', 
+                onPress: () => navigation.replace('Home')
+            }]);
         }
     }
 

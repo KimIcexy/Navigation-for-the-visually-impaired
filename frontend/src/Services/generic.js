@@ -11,6 +11,15 @@ export const configToken = function (token) {
     }
 }
 
+export const configFormData = function (token) {
+    return {
+        headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+        }
+    }
+}
+
 export const get = function (url, token) {
     console.log(baseURL + url)
     return new Promise((resolve, reject) =>
@@ -33,6 +42,23 @@ export const post = function (url, data, token) {
   return new Promise((resolve, reject) =>
     axios
       .post(baseURL + url, data, configToken(token))
+      .then((res) => {
+        // return data
+        return resolve({ data: res.data });
+      })
+      .catch((err) => {
+        // return err message
+        if (!err.response) return reject(err.message);
+        return reject(err.response.data.message);
+      })
+  );
+};
+
+export const postForm = function (url, data, token) {
+  console.log(baseURL + url)
+  return new Promise((resolve, reject) =>
+    axios
+      .post(baseURL + url, data, configFormData(token))
       .then((res) => {
         // return data
         return resolve({ data: res.data });

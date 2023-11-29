@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, Pressable, Alert } from 'react-native';
+import { StyleSheet, Text, View, Pressable, Alert, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 import * as FaceDetector from 'expo-face-detector';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
 import { getImage } from '../Utils/camera.js';
-import { getBase64Image } from '../Utils/image.js';
+import { createForm } from '../Utils/formData.js';
 import { useUser } from '../Hooks/useAuth.js';
-import { FaceAPI } from '../Services/Face_API.js';
+import FaceAPI from '../Services/Face_API.js';
 
 const styles = StyleSheet.create({
     container: {
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
 });
 
 const FaceRegister = ({ navigation }) => {
-    const { status, user } = useUser();
+    const { status, user, token } = useUser();
 
     const [image, setImage] = useState(null); // Valid image, add for confirmation
     const [base64, setBase64] = useState(null); // Base64 image, current image to validate
@@ -55,32 +55,27 @@ const FaceRegister = ({ navigation }) => {
             return ;
         }
         if (faces.length == 1) {
+            console.log('Face detected');
             setIsCaptured(true);
 
-            const blob = await getImage(cameraRef);
-            const ext = blob.type.split('/')[1];
-
-            const base64 = await getBase64Image(blob);
-
-            setBase64(base64);
-            const data = {
-                image: base64,
-                ext: ext
-            }
+            const imageBase64 = await getImage(cameraRef);
+            setBase64(imageBase64.base64);
+            const formData = createForm(imageBase64);
 
             // Register face
+            let res = null;
             try {
-                const res = await FaceAPI.valid(data, user.token);
+                res = await FaceAPI.valid(formData, token);
             }
             catch (err) {
+                console.log(err);
                 Alert.alert('Phát hiện khuôn mặt thất bại', err);
                 return ;
             }
-            console.log(res);
 
             const resData = await res.data;
 
-            const imageUri = 'data:image/' + ext + ';base64,' + base64;
+            const imageUri = `data:${imageBase64.type};base64,${resData['image']}`;
 
             setImage(imageUri);
         }
@@ -88,11 +83,13 @@ const FaceRegister = ({ navigation }) => {
 
     const handleRegister = async () => {
         const data = {
-            image: base64,
+            base64: base64,
         }
+        const formData = createForm(data);
 
+        let res = null;
         try {
-            const res = await FaceAPI.register(data, user.token);
+            res = await FaceAPI.register(formData, token);
         }
         catch (err) {
             Alert.alert('Đăng ký thất bại', err);

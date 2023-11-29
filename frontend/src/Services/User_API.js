@@ -1,4 +1,4 @@
-import { get, post } from './generic'
+import { get, post, postForm } from './generic'
 
 const UserAPI = {
     login: function(data) {
@@ -6,8 +6,8 @@ const UserAPI = {
         return post(url, data, "");
     },
     loginWithFace: function(data) {
-        const url = `${Backend_URL}/login/face/`;
-        return post(url, data, "");
+        const url = `/api/login/face/`;
+        return postForm(url, data, "");
     },
     register: function(data) {
         const url = '/api/register/';
