@@ -11,7 +11,8 @@ class Database:
     Attributes:
         url: the database uri.
         engine: the database engine.
-        _connection: a connection to the database.
+        _session: a connection to the database.
+        Base: the declarative base for the database. For creating models.
     '''
     def __init__(self):
         self.url = config.LOCAL_POSTGRES_URL
