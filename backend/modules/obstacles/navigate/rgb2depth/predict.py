@@ -8,14 +8,17 @@ from PIL import Image
 import models
 
 def predict(model_data_path, image_path, result_path):
+    # Read image, convert to grayscale
+    img = Image.open(image_path)
+
     # Default input size
-    height = 228
-    width = 304
+    # width = 228
+    # height = 304
+    width = img.size[0]
+    height = img.size[1]
     channels = 3
     batch_size = 1
    
-    # Read image
-    img = Image.open(image_path)
     img = img.resize([width,height], Image.Resampling.LANCZOS)
     img = np.array(img).astype('float32')
     img = np.expand_dims(np.asarray(img), axis = 0)
@@ -61,13 +64,13 @@ def main():
 
     # Predict the image
     model_path = './checkpoints/NYU_ResNet-UpProj.npy'
-    image_path = './test.jpg'
-    result_path = './result.png'
+    image_paths = ['./test/test1.jpg', './test/test2.jpg', './test/test3.jpg', './test/test4.jpg', './test/test5.jpeg']
+    result_paths = ['./results/result1.jpg', './results/result2.jpg', './results/result3.jpg', './results/result4.jpg', './results/result5.jpg']
     print('RGB >> depth...')
     tf.disable_eager_execution()
-    pred = predict(model_path, image_path, result_path)
-    
-    # os._exit(0)
+    i = 0
+    pred = predict(model_path, image_paths[i], result_paths[i])    
+    os._exit(0)
 
 if __name__ == '__main__':
     main()

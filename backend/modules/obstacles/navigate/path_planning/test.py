@@ -3,8 +3,10 @@ import cv2
 from __init__ import PathPlanning
 
 # Read the image
-test_image_path = './result.png'
+test_image_path = './result1.jpg'
+origin_shape = (1024, 683)
 depth_image = cv2.imread(test_image_path)
+depth_image = cv2.resize(depth_image, origin_shape)
 
 # Read the bounding boxes
 result_string = """
@@ -32,6 +34,6 @@ print(bbox for bbox in bounding_boxes)
 path_planning = PathPlanning(depth_image, bounding_boxes)
 path_planning.show_bounding_boxes()
 # path_planning.assign_costs()
-# path_planning.find_start_point()
-# path_planning.find_temp_goal()
+# path_planning.find_start_point()_temp hard code
+# path_planning.find_temp_goal()_temp hard code
 # path_planning.search_path()
