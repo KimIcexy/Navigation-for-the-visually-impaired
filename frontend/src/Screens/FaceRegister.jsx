@@ -2,13 +2,13 @@ import * as React from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable, Alert, Image } from 'react-native';
 import { Camera } from 'expo-camera';
-import * as FaceDetector from 'expo-face-detector';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
 import { getImage } from '../Utils/camera.js';
 import { createForm } from '../Utils/formData.js';
 import { useUser } from '../Hooks/useAuth.js';
 import FaceAPI from '../Services/Face_API.js';
+import { CameraFaceSettings } from '../Constant/Camera.jsx';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
 const FaceRegister = ({ navigation }) => {
     const { status, user, token } = useUser();
 
+    const [loadCamera, setLoadCamera] = useState(false); // Check if camera is loaded
     const [image, setImage] = useState(null); // Valid image, add for confirmation
     const [base64, setBase64] = useState(null); // Base64 image, current image to validate
     const [isCaptured, setIsCaptured] = useState(false); // Check if image is captured to stop capturing
@@ -42,7 +43,7 @@ const FaceRegister = ({ navigation }) => {
         const initCamera = async () => {
             const { status } = await Camera.requestCameraPermissionsAsync();
             if (status !== 'granted') {
-                Alert.alert('Quyền truy cập camera bị từ chối', 'Vui lòng cấp quyền truy cập camera để sử dụng tính năng đăng nhập bằng mặt người.');
+                Alert.alert('Quyền truy cập camera bị từ chối', 'Vui lòng cấp quyền truy cập camera để sử dụng tính năng đăng nhập bằng mặt người.');                
                 navigation.navigate('Home');
                 return ;
             }
@@ -51,31 +52,45 @@ const FaceRegister = ({ navigation }) => {
     }, [])
 
     const handleFaceDetected = async ({faces}) => {
-        if (isCaptured) {
-            return ;
-        }
-        if (faces.length == 1) {
+        if ((faces.length == 1) && (!isCaptured)) {
             setIsCaptured(true);
+            Alert.alert('Đăng ký bằng khuôn mặt', 'Đang xử lý...', []);
 
-            const imageBase64 = await getImage(cameraRef);
-            setBase64(imageBase64.base64);
-            const formData = createForm(imageBase64);
+            const sendAPI = async () => {
+                const imageBase64 = await getImage(cameraRef);
+                setBase64(imageBase64.base64);
+                const formData = createForm(imageBase64);
 
-            // Register face
-            let res = null;
-            try {
-                res = await FaceAPI.valid(formData, token);
+                let res = null;
+                try {
+                    res = await FaceAPI.valid(formData, token);
+                    return res;
+                }
+                catch (err) {
+                    // Check if err is a string
+                    if (typeof err == 'string') {
+                        Alert.alert('Phát hiện khuôn mặt thất bại', err);
+                    }
+                    else {
+                        Alert.alert('Phát hiện khuôn mặt thất bại');
+                    }
+                    console.log(err);
+                    return false;
+                }
             }
-            catch (err) {
-                Alert.alert('Phát hiện khuôn mặt thất bại', err);
-                return ;
+
+            const res = await sendAPI();
+            setIsCaptured(false);
+            if (res == false) {
+                return;
             }
 
             const resData = await res.data;
 
-            const imageUri = `data:${imageBase64.type};base64,${resData['image']}`;
+            const imageUri = `data:${resData.type};base64,${resData['image']}`;
 
             setImage(imageUri);
+            Alert.alert('Đăng ký bằng khuôn mặt', 'Xác nhận mặt người thành công.');
         }
     }
 
@@ -90,7 +105,13 @@ const FaceRegister = ({ navigation }) => {
             res = await FaceAPI.register(formData, token);
         }
         catch (err) {
-            Alert.alert('Đăng ký thất bại', err);
+            if (typeof err == 'string') {
+                Alert.alert('Phát hiện khuôn mặt thất bại', err);
+            }
+            else {
+                Alert.alert('Phát hiện khuôn mặt thất bại');
+            }
+            console.log(err);
             return ;
         }
 
@@ -128,13 +149,7 @@ const FaceRegister = ({ navigation }) => {
                             ref={cameraRef}
                             style={styles.mainContainer} 
                             type={Camera.Constants.Type.front}
-                            faceDetectorSettings={{
-                                mode: FaceDetector.FaceDetectorMode.fast,
-                                detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
-                                runClassifications: FaceDetector.FaceDetectorClassifications.none,
-                                minDetectionInterval: 100,
-                                tracking: true,
-                            }}
+                            faceDetectorSettings={CameraFaceSettings}
                             onFacesDetected={handleFaceDetected}
                         />
                     </View>

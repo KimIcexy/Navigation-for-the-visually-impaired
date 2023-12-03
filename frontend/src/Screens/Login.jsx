@@ -4,8 +4,7 @@ import { Text, View, Pressable, TextInput, StyleSheet, Alert } from 'react-nativ
 import Checkbox from 'expo-checkbox';
 import { Formik } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Camera, CameraType } from 'expo-camera';
-import * as FaceDetector from 'expo-face-detector';
+import { Camera } from 'expo-camera';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
@@ -13,6 +12,7 @@ import { getUser } from '../Utils/user.js';
 import { getImage } from '../Utils/camera.js';
 import { createForm } from '../Utils/formData.js';
 import { useUser } from '../Hooks/useAuth.js';
+import { CameraFaceSettings } from '../Constant/Camera.jsx';
 
 const styles = StyleSheet.create({
     container: {
@@ -74,7 +74,13 @@ const Login = ({navigation}) => {
             res = await UserAPI.login(values);
         }
         catch (err) {
-            Alert.alert('Đăng nhập thất bại', err);
+            if (typeof err == 'string') {
+                Alert.alert('Đăng nhập thất bại', err);
+            }
+            else {
+                Alert.alert('Đăng nhập thất bại');
+            }
+            console.log(err);
             return ;
         }
         await AsyncStorage.setItem('token', res['data']['token']);
@@ -90,31 +96,41 @@ const Login = ({navigation}) => {
 
     useEffect(() => {
         if (isFaceMethod) {
-            // Start everything here
             initFaceLogin();
         }
     }, [isFaceMethod]);
 
     const handleFaceDetected = async ({faces}) => {
-        if (isCaptured) {
-            return ;
-        }
-        if (faces.length == 1) {
+        if ((faces.length == 1) && (!isCaptured)) {
             setIsCaptured(true);
-            const imageBase64 = await getImage(cameraRef);
-            const formData = createForm(imageBase64);
-            formData.append('username', username.current);
+            Alert.alert('Đăng nhập bằng khuôn mặt', 'Đang xử lý...', []);
 
-            let res = null;
-            try {
-                res = await UserAPI.loginWithFace(formData)
+            const sendAPI = async () => {
+                const imageBase64 = await getImage(cameraRef);
+                const formData = createForm(imageBase64);
+                formData.append('username', username.current);
+                
+                let res = null;
+                try {
+                    res = await UserAPI.loginWithFace(formData)
+                    return res
+                }
+                catch (err) {
+                    if (typeof err == 'string') {
+                        Alert.alert('Đăng nhập bằng khuôn mặt thất bại', err);
+                    }
+                    else {
+                        Alert.alert('Đăng nhập bằng khuôn mặt thất bại');
+                    }
+                    console.log(err)
+                    return false;
+                }
             }
-            catch (err) {
-                Alert.alert('Đăng nhập thất bại');
-                console.log(err)
+            const res = await sendAPI();
+            setIsCaptured(false);
+            if (res == false) {
                 return ;
             }
-            setIsCaptured(false);
             await AsyncStorage.setItem('token', res['data']['token']);
             await AsyncStorage.setItem('user', JSON.stringify(res['data']['user']));
 
@@ -190,15 +206,9 @@ const Login = ({navigation}) => {
                                         {loadCamera && (
                                             <Camera 
                                                 style={{width: '100%', height: 300}} 
-                                                type={CameraType.front} 
+                                                type={Camera.Constants.Type.front} 
                                                 ref={cameraRef} 
-                                                faceDetectorSettings={{
-                                                    mode: FaceDetector.FaceDetectorMode.fast,
-                                                    detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
-                                                    runClassifications: FaceDetector.FaceDetectorClassifications.none,
-                                                    minDetectionInterval: 100,
-                                                    tracking: true,
-                                                }}
+                                                faceDetectorSettings={CameraFaceSettings}
                                                 onFacesDetected={handleFaceDetected}
                                             />
                                         )}

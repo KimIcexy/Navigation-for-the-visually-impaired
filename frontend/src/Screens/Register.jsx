@@ -41,8 +41,14 @@ const Register = ({navigation}) => {
         }
         catch (err) {
             // Trying to catch all error
-            Alert.alert('Đăng ký thất bại', err);
-            return ;
+            if (typeof err == 'string') {
+                Alert.alert('Đăng ký thất bại', err);
+                return ;
+            }
+            else {
+                Alert.alert('Đăng ký thất bại');
+                return ;
+            }
         }
         Alert.alert('Đăng ký thành công', 'Vui lòng đăng nhập để tiếp tục', [{text: 'OK', onPress: () => navigation.navigate('Login')}]);
     };

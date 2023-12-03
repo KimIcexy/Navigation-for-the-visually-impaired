@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, LargeBinary
+import sys
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ARRAY, Float
 from sqlalchemy.orm import validates
 import bcrypt  # For hashing passwords
 import uuid
@@ -6,7 +7,7 @@ from datetime import datetime
 from deepface import DeepFace # For face verification. Will make an util for this later, rather than... well, importing it here.
 
 from database.db import db
-from utils.image import base64_to_image, image_to_base64
+from utils.image import euclide_l2
 
 class User(db.Base):
     __tablename__ = 'users'
@@ -25,7 +26,7 @@ class User(db.Base):
     date_joined = Column(DateTime)
 
     # Face thingy
-    face_vector = Column(String)
+    face_vector = Column(ARRAY(Float))
 
     def __init__(self, data):
         self.id = str(uuid.uuid4())
@@ -63,18 +64,21 @@ class User(db.Base):
         return bcrypt.checkpw(password.encode('utf-8'), self.password.encode('utf-8'))
     
     def verify_face(self, face):
-        face_1 = base64_to_image(self.face_vector)
-        face_2 = base64_to_image(face)
+        face_1 = self.face_vector
+        face_2 = DeepFace.represent(face, detector_backend='retinaface')
+        face_2 = face_2[0]['embedding']
 
         if face_1 is None or face_2 is None:
             return False
         
         try:
-            result = DeepFace.verify(face_1, face_2, distance_metric='cosine')
-        except:
+            # Compare face embeddings vectors, probably using Euclidean L2
+            result = euclide_l2(face_1, face_2)
+        except ValueError:
+            print(sys.exc_info()[0])
             return False
         
-        return result['verified']
+        return result
     
     def simple_user(self):
         return {

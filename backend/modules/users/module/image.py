@@ -2,6 +2,7 @@ from flask import Blueprint, jsonify, request
 import numpy as np
 from io import BytesIO
 from PIL import Image
+from deepface import DeepFace
 
 from database.db import db
 from modules.users.models.user_model import User
@@ -33,7 +34,7 @@ def valid(current_user):
     # Convert image to base64
     image_base64 = image_to_base64(result)
 
-    return jsonify({'image': image_base64}), 200
+    return jsonify({'image': image_base64, 'type': form['type']}), 200
 
 @bp.route('/register/', methods=['POST'])
 @token_required
@@ -54,15 +55,15 @@ def accept_face(current_user):
         return jsonify({'message': 'Khuôn mặt không phù hợp'}), 400
     
     # Get face's embedding vector
-    # TODO
+    face = DeepFace.represent(image, detector_backend='retinaface')
+    data = face[0]['embedding']
     
     # Update face
-    print(current_user)
     filters = {
         'id': current_user.id,
     }
     user = db.query(User, filters)[0]
-    user.face_vector = data # Base64 image rather than, uhm, whatever cv2 uses.
+    user.face_vector = data
     db.save(user)
 
     return jsonify({'message': 'Đăng ký khuôn mặt thành công.'}), 200
