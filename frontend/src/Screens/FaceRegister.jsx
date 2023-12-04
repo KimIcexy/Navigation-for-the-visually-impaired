@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
 const FaceRegister = ({ navigation }) => {
     const { status, user, token } = useUser();
 
-    const [loadCamera, setLoadCamera] = useState(false); // Check if camera is loaded
     const [image, setImage] = useState(null); // Valid image, add for confirmation
     const [base64, setBase64] = useState(null); // Base64 image, current image to validate
     const [isCaptured, setIsCaptured] = useState(false); // Check if image is captured to stop capturing
+    const [isSent, setIsSent] = useState(false); // Check if image is sent to stop sending
 
     const cameraRef = useRef(null);
 
@@ -95,26 +95,42 @@ const FaceRegister = ({ navigation }) => {
     }
 
     const handleRegister = async () => {
-        const data = {
-            base64: base64,
-        }
-        const formData = createForm(data);
-
-        let res = null;
-        try {
-            res = await FaceAPI.register(formData, token);
-        }
-        catch (err) {
-            if (typeof err == 'string') {
-                Alert.alert('Phát hiện khuôn mặt thất bại', err);
-            }
-            else {
-                Alert.alert('Phát hiện khuôn mặt thất bại');
-            }
-            console.log(err);
+        if (isSent) {
             return ;
         }
+        setIsSent(true);
+        Alert.alert('Đăng ký bằng khuôn mặt', 'Đang xử lý...', []);
 
+        const sendAPI = async () => {
+
+            const data = {
+                base64: base64,
+            }
+            const formData = createForm(data);
+
+            let res = null;
+            try {
+                res = await FaceAPI.register(formData, token);
+                return res;
+            }
+            catch (err) {
+                if (typeof err == 'string') {
+                    Alert.alert('Phát hiện khuôn mặt thất bại', err);
+                }
+                else {
+                    Alert.alert('Phát hiện khuôn mặt thất bại');
+                }
+                console.log(err);
+                return ;
+            }
+        }
+
+        const res = await sendAPI();
+        setIsSent(false);
+        if (res == false) {
+            return;
+        }
+        
         const resData = await res.data;
 
         Alert.alert('Đăng ký thành công', 'Khuôn mặt của bạn đã được đăng ký thành công.', [{
