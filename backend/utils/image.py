@@ -22,8 +22,7 @@ def one_face_valid(image):
             # If the conversion fails, log the error and return the original image.
         return -1, 'Không thể chuyển đổi ảnh.'
     
-    # Export the image
-    # cv2.imwrite('temp.jpg', image_array)
+    print(image_array.shape)
     
     try:
         faces = DeepFace.extract_faces(image_array, detector_backend='retinaface')

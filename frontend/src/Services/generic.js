@@ -65,6 +65,7 @@ export const postForm = function (url, data, token) {
       })
       .catch((err) => {
         // return err message
+        console.log(err)
         if (!err.response) return reject(err.message);
         return reject(err.response.data.message);
       })

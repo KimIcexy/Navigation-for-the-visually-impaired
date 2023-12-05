@@ -6,6 +6,10 @@
 ```
 ngrok http ${PORT}
 ```
+Note: Can add --region area for lower latency. Ex:
+```
+ngrok http --region jp ${PORT}
+```
 
 ## For me who use conda:
 ```

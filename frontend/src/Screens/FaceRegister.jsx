@@ -67,12 +67,16 @@ const FaceRegister = ({ navigation }) => {
                     return res;
                 }
                 catch (err) {
+                    const button = {
+                        text: 'OK',
+                        onPress: () => setIsCaptured(false)
+                    }
                     // Check if err is a string
                     if (typeof err == 'string') {
-                        Alert.alert('Phát hiện khuôn mặt thất bại', err);
+                        Alert.alert('Phát hiện khuôn mặt thất bại', err, [button]);
                     }
                     else {
-                        Alert.alert('Phát hiện khuôn mặt thất bại');
+                        Alert.alert('Phát hiện khuôn mặt thất bại', '', [button]);
                     }
                     console.log(err);
                     return false;
@@ -91,6 +95,7 @@ const FaceRegister = ({ navigation }) => {
 
             setImage(imageUri);
             Alert.alert('Đăng ký bằng khuôn mặt', 'Xác nhận mặt người thành công.');
+            setIsCaptured(false);
         }
     }
 

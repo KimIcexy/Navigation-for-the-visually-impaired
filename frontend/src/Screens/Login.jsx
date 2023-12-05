@@ -116,18 +116,17 @@ const Login = ({navigation}) => {
                     return res
                 }
                 catch (err) {
+                    const button = {text: 'OK', onPress: () => setIsCaptured(false)};
                     if (typeof err == 'string') {
-                        Alert.alert('Đăng nhập bằng khuôn mặt thất bại', err);
+                        Alert.alert('Đăng nhập bằng khuôn mặt thất bại', err, [button]);
                     }
                     else {
-                        Alert.alert('Đăng nhập bằng khuôn mặt thất bại');
+                        Alert.alert('Đăng nhập bằng khuôn mặt thất bại', 'Vui lòng thử lại.', [button]);
                     }
-                    console.log(err)
                     return false;
                 }
             }
             const res = await sendAPI();
-            setIsCaptured(false);
             if (res == false) {
                 return ;
             }
