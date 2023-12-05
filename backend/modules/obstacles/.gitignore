@@ -1,0 +1,7 @@
+/coco128/images/train2017/*.*
+/coco128/labels/train2017/*.*
+/coco128/*.
+/coco128/*
+/runs/*
+*.pt
+*.onnx
