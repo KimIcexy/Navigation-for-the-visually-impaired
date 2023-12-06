@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from logging.config import dictConfig # For exporting logging file
+from deepface import DeepFace
 
 from utils.config import *
 from database.db import db
@@ -45,4 +46,5 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     db.init_db()
+    DeepFace.build_model('retinaface')
     app.run(debug=True)

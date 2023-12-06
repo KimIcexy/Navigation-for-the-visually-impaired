@@ -17,3 +17,6 @@ cd backend
 activate
 conda activate e:\Navigate\backend\.conda
 ```
+
+## Faster Deepface:
+[Faster model](https://github.com/serengil/deepface/issues/856)

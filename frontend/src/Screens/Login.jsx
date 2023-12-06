@@ -170,7 +170,8 @@ const Login = ({navigation}) => {
                             />
                             {/* Change login method */}
                             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
-                                <Checkbox 
+                                <Checkbox
+                                    style={{marginRight: 5}}
                                     value={isFaceMethod}
                                     onValueChange={() => {
                                         setIsFaceMethod(!isFaceMethod);
