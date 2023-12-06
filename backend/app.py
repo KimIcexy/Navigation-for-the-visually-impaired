@@ -46,5 +46,5 @@ def create_app():
 if __name__ == '__main__':
     app = create_app()
     db.init_db()
-    DeepFace.build_model('retinaface')
+    DeepFace.build_model('ArcFace')
     app.run(debug=True)
