@@ -25,22 +25,31 @@ def nigger (videoPath, model, outputVideoPath, showVid = 0):
             return
         # Start tracking
         count = 0
+        isTracked = 0
         while True:
                 ret, frame = video.read()
                 if not ret:
                         print('Stopping')
                         break
-                frame = cv2.resize(frame, [frame_width//2, frame_height//2])
-                result = model (frame)
+                #print (frame.shape)
+                frame = cv2.resize(frame, [frame_width, frame_height])
                 if (count == 0):
+                        result = model (frame)
                         #Temp, only tracking the first car occurence
                         #See https://docs.opencv.org/3.4/d8/d77/classcv_1_1MultiTracker.html
                         #    for multi-tracking
-                        outputClassList = np.nonzero(result[0].boxes.data.numpy().astype (np.int32)[:][:,5]==5)[0]
-                        if (len (outputClassList != 0)):
+                        outputClassList = np.nonzero(result[0].boxes.data.numpy().astype (np.int32)[:][:,5]==2)[0]
+                        if (len (outputClassList) != 0):
                                 bbox = result[0].boxes.data.numpy().astype (np.int32)[outputClassList[0]][0:4]
                                 ret = tracker.init(frame, bbox)
+                                isTracked = 1
+                        else:
+                                bbox = result[0].boxes.data.numpy().astype (np.int32)[0][0:4]
+                                ret = tracker.init(frame, bbox)
+                                count = count - 1
                 timer = cv2.getTickCount()
+                #print (frame.shape,"___")
+                #print (frame)
                 ret, bbox = tracker.update(frame)
                 count = (count + 1) % 60
                         
@@ -48,7 +57,11 @@ def nigger (videoPath, model, outputVideoPath, showVid = 0):
                 if ret:
                         p1 = (int(bbox[0]), int(bbox[1]))
                         p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
-                        cv2.rectangle(frame, p1, p2, (255,0,0), 2, 1)
+                        if (isTracked == 0):
+                                cv2.rectangle(frame, p1, p2, (255,0,0), 2, 1)
+                        else:
+                                cv2.rectangle(frame, p1, p2, (0,255,0), 3, 1)
+                        isTracked = 0
                 else:
                         cv2.putText(frame, "Tracking failure detected", (100,80), 
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.75,(0,0,255),2)
@@ -70,7 +83,8 @@ def nigger (videoPath, model, outputVideoPath, showVid = 0):
 if __name__ == '__main__':
         model = OD.get_model()
         results = model('testing_folder/bus.jpg')
+        while True:
+                nigger ('VideoData/1.mp4', model, 'VideoData/Result/1.avi',1)
         nigger ('VideoData/0.mp4', model, 'VideoData/Result/0.avi')
         nigger ('VideoData/0.5.mp4', model, 'VideoData/Result/0.5.avi')
-        nigger ('VideoData/1.mp4', model, 'VideoData/Result/1.avi')
         nigger ('VideoData/1.5.mp4', model, 'VideoData/Result/1.5.avi')
