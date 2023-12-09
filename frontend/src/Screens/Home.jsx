@@ -1,15 +1,10 @@
 import * as React from 'react';
-import { useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
-import Voice, {
-    SpeechRecognizedEvent,
-    SpeechResultsEvent,
-    SpeechErrorEvent,
-  } from '@react-native-voice/voice';
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
 import { removeToken, removeUser } from '../Utils/user.js';
 import { useUser } from '../Hooks/useAuth.js';
+import SpeechModal from '../Components/speechModal.jsx';
 
 const styles = StyleSheet.create({
     container: {
@@ -33,34 +28,6 @@ const Home = ({ navigation }) => {
         removeUser();
         removeToken();
         navigation.replace('Home');
-    }
-
-    useEffect(() => {
-        Voice.onSpeechResults = onSpeechResults;
-    }, [])
-
-    const onSpeechResults = (e) => {
-        console.log(e);
-    }
-
-    const onSpeechStart = async (e) => {
-        try {
-            await Voice.start('vi-VN');
-            console.log('started');
-        }
-        catch (e) {
-            console.error(e);
-        }
-    }
-
-    const onSpeechEnd = async (e) => {
-        try {
-            await Voice.stop();
-            console.log('stopped');
-        }
-        catch (e) {
-            console.error(e);
-        }
     }
 
     return (
@@ -104,12 +71,7 @@ const Home = ({ navigation }) => {
                     )
                 }
                 <View>
-                    <Pressable style={ButtonStyle.container} onPress={(e) => {onSpeechStart()}}>
-                        <Text style={ButtonStyle.text}>Start speech</Text>
-                    </Pressable>
-                    <Pressable style={ButtonStyle.container} onPress={(e) => {onSpeechEnd()}}>
-                        <Text style={ButtonStyle.text}>Stop speech</Text>
-                    </Pressable>
+                    <SpeechModal />
                 </View>
             </View>
         </View>
