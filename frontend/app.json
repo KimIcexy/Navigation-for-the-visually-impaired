@@ -39,12 +39,8 @@
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
         }
-      ]
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "50d504d1-564d-4193-ab54-5d4ef0ac0144"
-      }
-    }
+      ],
+      "@react-native-voice/voice"
+    ]
   }
 }

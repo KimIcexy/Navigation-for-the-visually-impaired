@@ -5,6 +5,7 @@
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",
+    "android-rn": "react-native run-android --active-arch-only",
     "ios": "expo run:ios",
     "web": "expo start --web",
     "start-l": "expo start --localhost",
@@ -13,6 +14,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.18.2",
+    "@react-native-voice/voice": "^3.2.4",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/stack": "^6.3.20",
     "axios": "^1.6.2",
