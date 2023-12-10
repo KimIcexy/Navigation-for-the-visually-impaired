@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 
-import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
+import { TextStyle, TitleStyle } from '../Constant/Style.jsx';
 import { removeToken, removeUser } from '../Utils/user.js';
 import { useUser } from '../Hooks/useAuth.js';
-import SpeechModal from '../Components/speechModal.jsx';
+import Button from '../Components/button.jsx';
 
 const styles = StyleSheet.create({
     container: {
@@ -45,12 +45,8 @@ const Home = ({ navigation }) => {
                 {
                     user == null && (
                         <View>
-                            <Pressable style={ButtonStyle.container} onPress={() => navigation.navigate('Login')}>
-                                <Text style={ButtonStyle.text}>Đăng nhập</Text>
-                            </Pressable>
-                            <Pressable style={ButtonStyle.container} onPress={() => navigation.navigate('Register')}>
-                                <Text style={ButtonStyle.text}>Đăng ký</Text>
-                            </Pressable>
+                            <Button text="Đăng nhập" onPress={() => navigation.navigate('Login')} />
+                            <Button text="Đăng ký" onPress={() => navigation.navigate('Register')} />
                         </View>
                     )
                 }
@@ -58,21 +54,12 @@ const Home = ({ navigation }) => {
                     user != null && (
                         <View>
                             <Text style={styles.welcomeText}>Chào mừng {user.username}.</Text>
-                            <Pressable style={ButtonStyle.container}>
-                                <Text style={ButtonStyle.text}>Điều hướng</Text>
-                            </Pressable>
-                            <Pressable style={ButtonStyle.container} onPress={() => navigation.navigate('FaceRegister')}>
-                                <Text style={ButtonStyle.text}>Đăng ký mặt người</Text>
-                            </Pressable>
-                            <Pressable style={ButtonStyle.container} onPress={handleLogout}>
-                                <Text style={ButtonStyle.text}>Đăng xuất</Text>
-                            </Pressable>
+                            <Button text="Điều hướng" />
+                            <Button text="Đăng ký mặt người" onPress={() => navigation.navigate('FaceRegister')} />
+                            <Button text="Đăng xuất" onPress={handleLogout} />
                         </View>
                     )
                 }
-                <View>
-                    <SpeechModal />
-                </View>
             </View>
         </View>
     )

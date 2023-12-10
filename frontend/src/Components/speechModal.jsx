@@ -8,6 +8,7 @@ import Voice, {
 } from "@react-native-voice/voice";
 
 import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
+import Button from './button.jsx';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,7 +40,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const SpeechModal = () => {
+const SpeechModal = ({onCancel, navigation}) => {
   const [isRecording, setIsRecording] = useState(false);
   const [results, setResults] = useState([]);
   useEffect(() => {
@@ -88,9 +89,7 @@ const SpeechModal = () => {
             )}
           </View>
           <Text style={TextStyle.base}>{results[0]}</Text>
-          <Pressable style={ButtonStyle.container}>
-            <Text style={ButtonStyle.text}>Hủy</Text>
-          </Pressable>
+          <Button text='Hủy' onPress={onCancel}/>
         </View>
       </View>
     </Modal>

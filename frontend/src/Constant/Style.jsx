@@ -12,7 +12,7 @@ export const TextStyle = {
 
 export const TitleStyle = {
     container: {
-        marginTop: '12.5%',
+        marginTop: '15%',
     },
     text: [TextStyle.base, {
         fontSize: 24,

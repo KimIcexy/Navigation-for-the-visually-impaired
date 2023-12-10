@@ -2,8 +2,9 @@ import * as React from 'react';
 import { Text, View, Pressable, TextInput, StyleSheet, Alert } from 'react-native';
 import { Formik } from 'formik';
 
-import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
+import { TextStyle, TitleStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
+import Button from '../Components/button.jsx';
 
 const styles = StyleSheet.create({
     container: {
@@ -106,9 +107,7 @@ const Register = ({navigation}) => {
                                 placeholder='Xác nhận mật khẩu'
                                 placeholderTextColor='#000000B2'
                             />
-                            <Pressable style={ButtonStyle.container} onPress={handleSubmit}>
-                                <Text style={ButtonStyle.text}>Đăng ký</Text>
-                            </Pressable>
+                            <Button text='Đăng ký' onPress={handleSubmit}/>
                             <View style={styles.pressContainer}>
                                 <Text style={[TextStyle.base, {color: '#000'}]}>Đã có tài khoản? </Text>
                                 <Pressable onPress={() => navigation.navigate('Login')}>

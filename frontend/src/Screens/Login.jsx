@@ -6,13 +6,14 @@ import { Formik } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Camera } from 'expo-camera';
 
-import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
+import { TextStyle, TitleStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
 import { getUser } from '../Utils/user.js';
 import { getImage } from '../Utils/camera.js';
 import { createForm } from '../Utils/formData.js';
 import { useUser } from '../Hooks/useAuth.js';
 import { CameraFaceSettings } from '../Constant/Camera.jsx';
+import Button from '../Components/button.jsx';
 
 const styles = StyleSheet.create({
     container: {
@@ -215,9 +216,7 @@ const Login = ({navigation}) => {
                                     </View>
                                 )
                             }
-                            <Pressable style={ButtonStyle.container} onPress={handleSubmit}>
-                                <Text style={ButtonStyle.text}>Đăng nhập</Text>
-                            </Pressable>
+                            <Button text='Đăng nhập' onPress={handleSubmit}/>
                             <View style={styles.pressContainer}>
                                 <Text style={[TextStyle.base, {color: '#000'}]}>Chưa có tài khoản? </Text>
                                 <Pressable onPress={() => navigation.navigate('Register')}>

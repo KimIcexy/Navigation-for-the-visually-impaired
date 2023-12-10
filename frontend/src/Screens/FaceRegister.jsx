@@ -3,12 +3,13 @@ import { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable, Alert, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 
-import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
+import { TextStyle, TitleStyle } from '../Constant/Style.jsx';
 import { getImage } from '../Utils/camera.js';
 import { createForm } from '../Utils/formData.js';
 import { useUser } from '../Hooks/useAuth.js';
 import FaceAPI from '../Services/Face_API.js';
 import { CameraFaceSettings } from '../Constant/Camera.jsx';
+import Button from '../Components/button.jsx';
 
 const styles = StyleSheet.create({
     container: {
@@ -155,12 +156,8 @@ const FaceRegister = ({ navigation }) => {
                     <View>
                         <Image source={{uri: image}} style={styles.mainContainer} />
                         <View style={{display: 'flex'}}>
-                            <Pressable style={ButtonStyle.container} onPress={handleRegister}>
-                                <Text style={ButtonStyle.text}>Xác nhận</Text>
-                            </Pressable>
-                            <Pressable style={ButtonStyle.container} onPress={() => setImage(null)}>
-                                <Text style={ButtonStyle.text}>Chụp lại</Text>
-                            </Pressable>
+                            <Button text='Xác nhận' onPress={handleRegister}/>
+                            <Button text='Chụp lại' onPress={() => setImage(null)}/>
                         </View>
                     </View>
                 )}
@@ -176,9 +173,7 @@ const FaceRegister = ({ navigation }) => {
                     </View>
                 )}
                 <View>
-                    <Pressable style={ButtonStyle.container} onPress={() => navigation.navigate('Home')}>
-                        <Text style={ButtonStyle.text}>Quay lại trang chủ</Text>
-                    </Pressable>
+                    <Button text='Quay lại trang chủ' onPress={() => navigation.navigate('Home')}/>
                 </View>
             </View>
         </View>
