@@ -1,14 +1,12 @@
 import { Modal } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
-import Voice, {
-  SpeechRecognizedEvent,
-  SpeechResultsEvent,
-  SpeechErrorEvent,
-} from "@react-native-voice/voice";
+import Voice from "@react-native-voice/voice";
+import * as Speech from 'expo-speech';
 
-import { TextStyle, TitleStyle, ButtonStyle } from '../Constant/Style.jsx';
+import { TextStyle, ButtonStyle } from '../Constant/Style.jsx';
 import Button from './button.jsx';
+import { Keyword } from '../Constant/Command.jsx';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,14 +45,56 @@ const SpeechModal = ({onCancel, navigation}) => {
     Voice.onSpeechResults = onSpeechResults;
   }, []);
 
+  const speechOptions = {
+    language: 'vi-VN',
+    showPartial: false,
+    partialResults: false,
+  }
+
+  useEffect(() => {
+    console.log(results);
+    if (results === undefined || results.length === 0) return;
+    // Find first location of each keyword
+    const tResult = results[0];
+    // Lowercase
+    const result = tResult.toLowerCase();
+    const location = Keyword.map((keyword) => {
+      return result.indexOf(keyword.keyword);
+    })
+    // 'Remove' the keyword that doesn't appear, set it to a very large number
+    location.forEach((value, index) => {
+      if (value === -1) location[index] = result.length + 1;
+    })
+    // Find the keyword that appears first
+    const minLocation = Math.min(...location);
+    if (minLocation === result.length + 1) {
+      Speech.speak('Không tìm thấy lệnh nào', speechOptions);
+      return;
+    }
+    // Find the keyword that appears first
+    const index = location.indexOf(minLocation);
+    // Get the command
+    const command = Keyword[index];
+    // Execute the command
+    switch (command.type) {
+      case 'navigate':
+        onCancel();
+        navigation.navigate(command.path);
+        break;
+      default:
+        Speech.speak('Không tìm thấy lệnh nào', speechOptions);
+        break;
+    }
+  }, [results])
+
   const onSpeechResults = (e) => {
-    console.log(e);
     setResults(e.value);
   }
 
   const onSpeechStart = async (e) => {
     try {
       setIsRecording(true);
+      await Voice.destroy();
       await Voice.start('vi-VN');
       console.log('started');
     }
