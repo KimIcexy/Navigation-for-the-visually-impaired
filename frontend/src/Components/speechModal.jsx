@@ -7,6 +7,7 @@ import * as Speech from 'expo-speech';
 import { TextStyle, ButtonStyle } from '../Constant/Style.jsx';
 import Button from './button.jsx';
 import { Keyword } from '../Constant/Command.jsx';
+import { useUser } from '../Hooks/useAuth.js';
 
 const styles = StyleSheet.create({
   container: {
@@ -39,6 +40,7 @@ const styles = StyleSheet.create({
 })
 
 const SpeechModal = ({onCancel, navigation}) => {
+  const { status, user } = useUser();
   const [isRecording, setIsRecording] = useState(false);
   const [results, setResults] = useState([]);
   useEffect(() => {
@@ -79,6 +81,15 @@ const SpeechModal = ({onCancel, navigation}) => {
     switch (command.type) {
       case 'navigate':
         onCancel();
+        if (command.authRank === 1 && user === null) {
+          Speech.speak('Bạn cần đăng nhập để thực hiện lệnh này', speechOptions);
+          return;
+        }
+        if (command.authRank === -1 && user !== null) {
+          Speech.speak('Bạn cần đăng xuất để thực hiện lệnh này', speechOptions);
+          return;
+        }
+        Speech.speak('Đang chuyển hướng', speechOptions);
         navigation.navigate(command.path);
         break;
       default:

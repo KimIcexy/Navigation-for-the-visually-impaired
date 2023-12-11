@@ -33,19 +33,15 @@ const Home = ({ navigation }) => {
     return (
         <View style={styles.container}>
             {/* Title app */}
-            <View style={TitleStyle.container}>
+            <View style={TitleStyle.container} accessible>
                 <Text style={TitleStyle.text}>Ứng dụng điều hướng</Text>
                 <Text style={TitleStyle.text}>cho người khiếm thị</Text>
             </View>
             <View style={styles.contentContainer}>
                 {
-                    status === 'Loading' && (<Text>Loading...</Text>)
-                    
-                }
-                {
                     user == null && (
                         <View>
-                            <Button text="Đăng nhập" onPress={() => navigation.navigate('Login')} />
+                            <Button text="Đăng nhập" onPress={() => navigation.navigate('Login')} accessible={true} accessibilityLabel={'nút Nhấn hai lần để chuyển hướng'} />
                             <Button text="Đăng ký" onPress={() => navigation.navigate('Register')} />
                         </View>
                     )
