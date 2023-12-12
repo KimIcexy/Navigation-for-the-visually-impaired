@@ -3,26 +3,42 @@ import cv2
 import math
 
 class PixelNode:
-    """
+    """Node save information of each pixel in the image
+    
+    Attributes:
+        coords: coordinate of this pixel (x, y)
+        depth: depth value of this pixel
+        walkable: True (not in obstacle area) or False (in obstacle area)
+        cost: cost to go to this pixel
+        neighbors: walkable node in 8 adjacent pixels
+        pre_node: previous pixel node (for backtracking path)
+        total_cost: total cost from the start pixel to this pixel
     """
     def __init__(self, coords, depth, walkable, cost):
-        self.coords = coords # coordinate of this pixel (x, y)
-        self.depth = depth # depth value of this pixel
-        self.walkable = walkable # True: not in obstacle area and versus
-        self.cost = cost # cost to go to this pixel
-        self.neighbors = None # walkable adjacent pixels
-        self.pre_node = None # previous pixel node
-        self.total_cost = math.inf # total cost from the start pixel to this pixel
+        self.coords = coords
+        self.depth = depth
+        self.walkable = walkable
+        self.cost = cost
+        self.neighbors = None 
+        self.pre_node = None
+        self.total_cost = math.inf
         
 class PathPlanning:
-    """
+    """Planning path using depth image and obstacle detection results
+ 
+    Atributes:
+        depth_image: depth image
+        bounding_boxes: obstacle bounding boxes
+        walkable_map: map showing walkable or non-walkable pixel
+        planning_map: map of PixelNode which used to path planning
+        start: PixelNode that begin to path planning
+        goal: PixelNode that the path planning want to reach        
     """  
     def __init__(self, depth_image, bounding_boxes):
         self.depth_image = depth_image
         self.bounding_boxes = self.read_bounding_boxes(bounding_boxes)
         self.walkable_map = self.create_walkable_map()
         self.planning_map = self.create_planning_map()
-        # print('planning map shape: ', self.planning_map.shape)
         point = self.find_start_point()
         self.start = self.planning_map[point[1], point[0]]
         self.start.total_cost = 0
@@ -46,7 +62,6 @@ class PathPlanning:
         # start point: mid bottom point in the image
         x = int(self.depth_image.shape[1] / 2)
         y = int(self.depth_image.shape[0] - 1)
-        # print('start: ', (x, y))
         return (x, y)
     
     def hard_code_temp_goal(self):
@@ -66,10 +81,6 @@ class PathPlanning:
                                     cost=255 - self.depth_image[y, x], # cost is opposite with depth value
                                     )
         return planning_map
-    
-    def create_cost_map(self):        
-        # near obstacle's bounding box area, bigger cost
-        pass
     
     def create_walkable_map(self):
         walkable_map = np.ones((self.depth_image.shape[0], self.depth_image.shape[1]), dtype=bool)
@@ -132,6 +143,7 @@ class PathPlanning:
                         
                 # add current_node to the closed set:
                 closed_set.add(current_node)        
+    
     def show_result(self, path):
         temp_image = self.depth_image
         # show bounding box
