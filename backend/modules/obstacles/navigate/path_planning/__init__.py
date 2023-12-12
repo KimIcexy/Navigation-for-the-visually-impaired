@@ -14,6 +14,7 @@ class PixelNode:
         pre_node: previous pixel node (for backtracking path)
         total_cost: total cost from the start pixel to this pixel
     """
+    
     def __init__(self, coords, depth, walkable, cost):
         self.coords = coords
         self.depth = depth
@@ -34,6 +35,7 @@ class PathPlanning:
         start: PixelNode that begin to path planning
         goal: PixelNode that the path planning want to reach        
     """  
+    
     def __init__(self, depth_image, bounding_boxes):
         self.depth_image = depth_image
         self.bounding_boxes = self.read_bounding_boxes(bounding_boxes)
@@ -66,6 +68,7 @@ class PathPlanning:
     
     def hard_code_temp_goal(self):
         x = int(0.43 * self.depth_image.shape[1])
+        # x = int(self.depth_image.shape[1] / 2)
         y = int(0.85 * self.depth_image.shape[0])
         return (x, y)
     
@@ -95,6 +98,28 @@ class PathPlanning:
         pixel_coords = pixel.coords
         return np.sqrt((goal_coords[0] - pixel_coords[0]) ** 2 + (goal_coords[1] - pixel_coords[1]) ** 2)
 
+    def get_neighbors(self, current_node, neighbor_type='4'):
+        x, y = current_node.coords
+        if (neighbor_type=='8'):
+            neighbors = self.planning_map[max(y-1, 0):min(y+2, self.depth_image.shape[0]), \
+                                        max(x-1, 0):min(x+2, self.depth_image.shape[1])]
+            neighbors = neighbors.flatten()
+            for i in range(neighbors.shape[0]):
+                if neighbors[i].coords == current_node.coords:
+                    current_node.neighbors = np.delete(neighbors, i)
+                    return
+                
+        # neighbor_type='4':
+        neighbors_row = self.planning_map[y, max(x-1, 0):min(x+2, self.depth_image.shape[1])].flatten()
+        neighbors_col = self.planning_map[max(y-1, 0):min(y+2, self.depth_image.shape[0]), x].flatten()
+
+        new_neighbors = np.concatenate((neighbors_col, neighbors_row))
+        new_neighbors_list = []
+        for neighbor in new_neighbors:
+            if neighbor.coords != current_node.coords:
+                new_neighbors_list.append(neighbor)
+        current_node.neighbors = np.array(new_neighbors_list)
+        
     def search_path(self):
         # use A* search algorithm from start to goal
         open_set = [self.start]
@@ -120,15 +145,10 @@ class PathPlanning:
                 
                 # pop the current_node out of the open_set:
                 open_set.remove(current_node)
+                
                 # assign neighbors for current_node:
-                x, y = current_node.coords
-                neighbors = self.planning_map[max(y-1, 0):min(y+2, self.depth_image.shape[0]), \
-                                            max(x-1, 0):min(x+2, self.depth_image.shape[1])]
-                neighbors = neighbors.flatten()
-                for i in range(neighbors.shape[0]):
-                    if neighbors[i].coords == current_node.coords:
-                        current_node.neighbors = np.delete(neighbors, i)
-                        break
+                self.get_neighbors(current_node)
+                
                 # traverse all neighbors of current_node:
                 # print('current_node: ', current_node.coords)
                 for neighbor in current_node.neighbors:

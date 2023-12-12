@@ -23,6 +23,14 @@ tvmonitor,1.00,0.34,0.52,0.06,0.10
 microwave,1.00,0.07,0.49,0.13,0.11
 refrigerator,1.00,0.11,0.76,0.22,0.44
 """
+# result_string = """
+# class,confidence,bx,by,bw,bh
+# chair,1.00,0.42,0.43,0.11,0.15
+# chair,1.00,0.32,0.44,0.07,0.11
+# chair,0.97,0.29,0.43,0.05,0.11
+# diningtable,0.98,0.27,0.37,0.07,0.03
+# """
+
 lines = result_string.strip().split('\n')
 bounding_boxes = [line.split(',') for line in lines[1:]]
 bounding_boxes = [bbox[2:] for bbox in bounding_boxes] # remove class,confidence
