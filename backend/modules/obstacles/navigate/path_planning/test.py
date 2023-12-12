@@ -5,7 +5,7 @@ from __init__ import PathPlanning
 # Read the image
 test_image_path = './result1.jpg'
 origin_shape = (1024, 683)
-depth_image = cv2.imread(test_image_path)
+depth_image = cv2.imread(test_image_path, cv2.IMREAD_GRAYSCALE)
 depth_image = cv2.resize(depth_image, origin_shape)
 
 # Read the bounding boxes
@@ -25,15 +25,10 @@ refrigerator,1.00,0.11,0.76,0.22,0.44
 """
 lines = result_string.strip().split('\n')
 bounding_boxes = [line.split(',') for line in lines[1:]]
-print('bb string: ', bounding_boxes)
 bounding_boxes = [bbox[2:] for bbox in bounding_boxes] # remove class,confidence
 print(bbox for bbox in bounding_boxes)
 
-
 # Init path planning
 path_planning = PathPlanning(depth_image, bounding_boxes)
-path_planning.show_bounding_boxes()
-# path_planning.assign_costs()
-# path_planning.find_start_point()_temp hard code
-# path_planning.find_temp_goal()_temp hard code
-# path_planning.search_path()
+path = path_planning.search_path()
+path_planning.show_result(path)
