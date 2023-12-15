@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { useState, useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, Pressable, Alert, Image } from 'react-native';
+import { StyleSheet, Text, View, Modal, Alert, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 
 import { TextStyle, TitleStyle } from '../Constant/Style.jsx';
 import { getImage } from '../Utils/camera.js';
 import { createForm } from '../Utils/formData.js';
-import { useUser } from '../Hooks/useAuth.js';
+import { getToken } from '../Utils/user.js';
 import FaceAPI from '../Services/Face_API.js';
 import { CameraFaceSettings } from '../Constant/Camera.jsx';
 import Button from '../Components/button.jsx';
@@ -31,12 +31,20 @@ const styles = StyleSheet.create({
 });
 
 const FaceRegister = ({ navigation }) => {
-    const { status, user, token } = useUser();
+    const [token, setToken] = useState(null);
+    useEffect(() => {
+        const getTokenAPI = async () => {
+            const token = await getToken();
+            setToken(token);
+        }
+        getTokenAPI();
+    }, []);
 
     const [image, setImage] = useState(null); // Valid image, add for confirmation
     const [base64, setBase64] = useState(null); // Base64 image, current image to validate
     const [isCaptured, setIsCaptured] = useState(false); // Check if image is captured to stop capturing
     const [isSent, setIsSent] = useState(false); // Check if image is sent to stop sending
+    const [detectedFaces, setDetectedFaces] = useState([]); // Detected faces, use for face detection
 
     const cameraRef = useRef(null);
 
@@ -53,9 +61,9 @@ const FaceRegister = ({ navigation }) => {
     }, [])
 
     const handleFaceDetected = async ({faces}) => {
+        setDetectedFaces(faces);
         if ((faces.length == 1) && (!isCaptured)) {
             setIsCaptured(true);
-            Alert.alert('Đăng ký bằng khuôn mặt', 'Đang xử lý...', []);
 
             const sendAPI = async () => {
                 const imageBase64 = await getImage(cameraRef);
@@ -145,9 +153,34 @@ const FaceRegister = ({ navigation }) => {
         }]);
     }
 
+    const faceBoundingBox = () => {
+        if (detectedFaces.length === 0) return ;
+        return detectedFaces.map((face, index) => {
+            if (face.bounds === undefined) return ;
+            const {origin, size} = face.bounds;
+            const {x, y} = origin;
+            const {width, height} = size;
+            return (
+                <View
+                    key={index}
+                    style={{
+                        position: 'absolute',
+                        left: x,
+                        top: y,
+                        width: width,
+                        height: height,
+                        borderWidth: 2,
+                        borderColor: '#000000',
+                        borderRadius: 5,
+                    }}
+                />
+            )
+        })
+    }
+
     return (
         <View style={styles.container}>
-            {/* Title app */}
+            {isCaptured && <Modal transparent />}
             <View style={TitleStyle.container}>
                 <Text style={TitleStyle.text}>Đăng ký khuôn mặt</Text>
             </View>
@@ -170,6 +203,7 @@ const FaceRegister = ({ navigation }) => {
                             faceDetectorSettings={CameraFaceSettings}
                             onFacesDetected={handleFaceDetected}
                         />
+                        {faceBoundingBox()}
                     </View>
                 )}
                 <View>

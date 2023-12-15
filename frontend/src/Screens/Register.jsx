@@ -18,7 +18,6 @@ const styles = StyleSheet.create({
     pressContainer: {
         display: 'flex',
         alignItems: 'center',
-        flexDirection: 'row',
         justifyContent: 'center',
     },
     textInput: {
@@ -109,9 +108,8 @@ const Register = ({navigation}) => {
                             />
                             <Button text='Đăng ký' onPress={handleSubmit}/>
                             <View style={styles.pressContainer}>
-                                <Text style={[TextStyle.base, {color: '#000'}]}>Đã có tài khoản? </Text>
                                 <Pressable onPress={() => navigation.navigate('Login')}>
-                                    <Text style={TextStyle.hyperlink}>Đăng nhập</Text>
+                                    <Text style={TextStyle.hyperlink}>Đã có tài khoản? Đăng nhập</Text>
                                 </Pressable>
                             </View>
                         </View>

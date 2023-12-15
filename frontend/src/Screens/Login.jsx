@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
-import { Text, View, Pressable, TextInput, StyleSheet, Alert } from 'react-native';
+import { Text, View, Pressable, TextInput, StyleSheet, Alert, Modal } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Formik } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -11,50 +11,14 @@ import UserAPI from '../Services/User_API.js';
 import { getUser } from '../Utils/user.js';
 import { getImage } from '../Utils/camera.js';
 import { createForm } from '../Utils/formData.js';
-import { useUser } from '../Hooks/useAuth.js';
 import { CameraFaceSettings } from '../Constant/Camera.jsx';
 import Button from '../Components/button.jsx';
 
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flex: 1,
-    },
-    contentContainer: {
-        flex: 1,
-        marginTop: 75,
-    },
-    pressContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-    textInput: {
-        marginHorizontal: 30,
-        marginVertical: 15,
-        paddingVertical: 15,
-        paddingHorizontal: 8,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#000000',
-        borderRadius: 5,
-        color: '#000000',
-    },
-    checkBox: {
-        borderWidth: 1,
-        borderColor: '#000000',
-        borderRadius: 5,
-        color: '#000000',
-    }
-});
-
 const Login = ({navigation}) => {
-    const { status, user } = useUser();
-
     const [isFaceMethod, setIsFaceMethod] = useState(false);
     const [loadCamera, setLoadCamera] = useState(false);
     const [isCaptured, setIsCaptured] = useState(false);
+    const [detectedFaces, setDetectedFaces] = useState([]);
 
     const cameraRef = useRef(null);
     const username = useRef(null);
@@ -102,9 +66,10 @@ const Login = ({navigation}) => {
     }, [isFaceMethod]);
 
     const handleFaceDetected = async ({faces}) => {
+        setDetectedFaces(faces);
         if ((faces.length == 1) && (!isCaptured)) {
             setIsCaptured(true);
-            Alert.alert('Đăng nhập bằng khuôn mặt', 'Đang xử lý...', []);
+            // Alert.alert('Đăng nhập bằng khuôn mặt', 'Đang xử lý...', []);
 
             const sendAPI = async () => {
                 const imageBase64 = await getImage(cameraRef);
@@ -143,9 +108,35 @@ const Login = ({navigation}) => {
         }
     }
 
+    const faceBoundingBox = () => {
+        if (detectedFaces.length === 0) return ;
+        return detectedFaces.map((face, index) => {
+            if (face.bounds === undefined) return ;
+            const {origin, size} = face.bounds;
+            const {x, y} = origin;
+            const {width, height} = size;
+            return (
+                <View
+                    key={index}
+                    style={{
+                        position: 'absolute',
+                        left: x,
+                        top: y,
+                        width: width,
+                        height: height,
+                        borderWidth: 2,
+                        borderColor: '#000000',
+                        borderRadius: 5,
+                    }}
+                />
+            )
+        })
+    }
+
     return (
         <View style={styles.container}>
-            <View style={TitleStyle.container}>
+            {isCaptured && <Modal transparent />}
+            <View style={TitleStyle.container} accessible>
                 <Text style={TitleStyle.text}>Đăng nhập</Text>
                 <Text style={TitleStyle.text}>Chào mừng trở lại!</Text>
             </View>
@@ -170,7 +161,7 @@ const Login = ({navigation}) => {
                                 placeholderTextColor='#000000B2'
                             />
                             {/* Change login method */}
-                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
+                            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} accessible>
                                 <Checkbox
                                     style={{marginRight: 5}}
                                     value={isFaceMethod}
@@ -205,22 +196,24 @@ const Login = ({navigation}) => {
                                 isFaceMethod && (
                                     <View style={{paddingVertical: 15}}>
                                         {loadCamera && (
-                                            <Camera 
-                                                style={{width: '100%', height: 300}} 
-                                                type={Camera.Constants.Type.front} 
-                                                ref={cameraRef} 
-                                                faceDetectorSettings={CameraFaceSettings}
-                                                onFacesDetected={handleFaceDetected}
-                                            />
+                                            <View>
+                                                <Camera 
+                                                    style={{width: '100%', height: 300}} 
+                                                    type={Camera.Constants.Type.front} 
+                                                    ref={cameraRef} 
+                                                    faceDetectorSettings={CameraFaceSettings}
+                                                    onFacesDetected={handleFaceDetected}
+                                                />
+                                                {faceBoundingBox()}
+                                            </View>
                                         )}
                                     </View>
                                 )
                             }
                             <Button text='Đăng nhập' onPress={handleSubmit}/>
-                            <View style={styles.pressContainer}>
-                                <Text style={[TextStyle.base, {color: '#000'}]}>Chưa có tài khoản? </Text>
-                                <Pressable onPress={() => navigation.navigate('Register')}>
-                                    <Text style={TextStyle.hyperlink}>Đăng ký</Text>
+                            <View style={styles.pressContainer} accessible>
+                                <Pressable onPress={() => navigation.navigate('Register')} accessible>
+                                    <Text style={TextStyle.hyperlink}>Chưa có tài khoản? Đăng ký</Text>
                                 </Pressable>
                             </View>
                         </View>
@@ -230,5 +223,38 @@ const Login = ({navigation}) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        display: 'flex',
+        flex: 1,
+    },
+    contentContainer: {
+        flex: 1,
+        marginTop: 75,
+    },
+    pressContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    textInput: {
+        marginHorizontal: 30,
+        marginVertical: 15,
+        paddingVertical: 15,
+        paddingHorizontal: 8,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#000000',
+        borderRadius: 5,
+        color: '#000000',
+    },
+    checkBox: {
+        borderWidth: 1,
+        borderColor: '#000000',
+        borderRadius: 5,
+        color: '#000000',
+    }
+});
 
 export default Login;

@@ -4,5 +4,5 @@ export const CameraFaceSettings = {
     mode: FaceDetector.FaceDetectorMode.fast,
     detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
     runClassifications: FaceDetector.FaceDetectorClassifications.none,
-    minDetectionInterval: 1000,
+    minDetectionInterval: 300,
 }
