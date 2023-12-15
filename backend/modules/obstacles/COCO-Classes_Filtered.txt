@@ -1,28 +1,28 @@
- 0: u'__background__',
- 1: u'person',
- 2: u'bicycle',
- 3: u'car',
- 4: u'motorcycle',
- 5: u'airplane',
- 6: u'bus',
- 7: u'train',
- 8: u'truck',
- 10: u'traffic light',
- 11: u'fire hydrant',
- 12: u'stop sign',
- 13: u'parking meter',
- 14: u'bench',
- 29: u'suitcase',
- 57: u'chair',
- 58: u'couch',
- 59: u'potted plant',
- 60: u'bed',
- 61: u'dining table',
- 62: u'toilet',
- 63: u'tv',
- 69: u'microwave',
- 70: u'oven',
- 71: u'toaster',
- 72: u'sink',
- 73: u'refrigerator',
- 76: u'vase'
+ 0: background
+ 1: person
+ 2: bicycle
+ 3: car
+ 4: motorcycle
+ 5: airplane
+ 6: bus
+ 7: train
+ 8: truck
+ 10: traffic light
+ 11: fire hydrant
+ 12: stop sign
+ 13: parking meter
+ 14: bench
+ 29: suitcase
+ 57: chair
+ 58: couch
+ 59: potted plant
+ 60: bed
+ 61: dining table
+ 62: toilet
+ 63: tv
+ 69: microwave
+ 70: oven
+ 71: toaster
+ 72: sink
+ 73: refrigerator
+ 76: vase

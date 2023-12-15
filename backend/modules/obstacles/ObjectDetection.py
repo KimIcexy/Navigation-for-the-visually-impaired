@@ -4,6 +4,7 @@ from threading import Thread
 from ultralytics.utils.plotting import Annotator  # ultralytics.yolo.utils.plotting is deprecated
 import cv2
 import os
+import utils as UT
 #os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:32"
 
 # CHECK THIS LINK IN FUTURE
@@ -13,9 +14,9 @@ import os
 n_epochs = 20
 batch_size = 32
 workers = 3
-selected_class_list = [0, 5]
+selected_class_list,_ = UT.readClass('COCO-Classes_Filtered.txt')
 def get_model():
-        return YOLO('yolov8l.pt')
+        return YOLO('yolov8x.pt')
 def model_train ():
         # Load a pretrained YOLO model (recommended for training)
         model = get_model()
