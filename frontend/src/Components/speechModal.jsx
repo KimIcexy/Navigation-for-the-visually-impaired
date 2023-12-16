@@ -49,8 +49,6 @@ const SpeechModal = ({onCancel, navigation}) => {
 
   const speechOptions = {
     language: 'vi-VN',
-    showPartial: false,
-    partialResults: false,
   }
 
   useEffect(() => {
