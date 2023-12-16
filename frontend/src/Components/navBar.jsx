@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 0,
         left: 0,
+        zIndex: 1,
         width: '100%',
         height: '50',
         backgroundColor: '#0E64D2',

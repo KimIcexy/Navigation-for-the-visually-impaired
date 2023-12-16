@@ -32,13 +32,11 @@ const FaceDetection = () => {
 
     const faceBoundingBox = () => {
         if (detectedFaces.length === 0) return ;
-        console.log(detectedFaces.length)
         return detectedFaces.map((face, index) => {
             if (face.bounds === undefined) return ;
             const {origin, size} = face.bounds;
             const {x, y} = origin;
             const {width, height} = size;
-            console.log(detectedFaces.length, x, y, width, height)
             return (
                 <View
                     key={index}
@@ -49,7 +47,7 @@ const FaceDetection = () => {
                         width: width,
                         height: height,
                         borderWidth: 2,
-                        borderColor: '#000000',
+                        borderColor: '#00FF00',
                         borderRadius: 5,
                     }}
                 />

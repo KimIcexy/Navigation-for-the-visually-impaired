@@ -41,7 +41,7 @@ const Home = ({ navigation }) => {
                 {
                     user == null && (
                         <View>
-                            <Button text="Đăng nhập" onPress={() => navigation.navigate('Login')} accessible={true} accessibilityLabel={'nút Nhấn hai lần để chuyển hướng'} />
+                            <Button text="Đăng nhập" onPress={() => navigation.navigate('Login')} />
                             <Button text="Đăng ký" onPress={() => navigation.navigate('Register')} />
                         </View>
                     )
@@ -50,7 +50,7 @@ const Home = ({ navigation }) => {
                     user != null && (
                         <View>
                             <Text style={styles.welcomeText}>Chào mừng {user.username}.</Text>
-                            <Button text="Điều hướng" />
+                            <Button text="Điều hướng" onPress={() => navigation.navigate('Navigation')} />
                             <Button text="Đăng ký mặt người" onPress={() => navigation.navigate('FaceRegister')} />
                             <Button text="Đăng xuất" onPress={handleLogout} />
                         </View>

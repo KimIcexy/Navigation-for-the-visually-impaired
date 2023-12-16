@@ -14,11 +14,10 @@ const Screen = ({ navigation, children }) => {
     }
 
     return (
-        <View style={{flex: 1}}>
+        <View style={{display: 'flex', flex: 1}}>
             <NavBar navigation={navigation} handleRecord={handleRecord}/>
             {React.Children.map(children, child => React.cloneElement(child, {navigation}))}
             {isRecording && <SpeechModal onCancel={handleRecord} navigation={navigation}/>}
-
         </View>
     )
 }
@@ -30,6 +29,7 @@ import RegisterPage from './Register.jsx';
 import FaceRegisterPage from './FaceRegister.jsx';
 import LoadingPage from './Loading.jsx';
 import FaceDetectionPage from './FaceDetection.jsx';
+import NavigationPage from './Navigate.jsx';
 
 export const Home = (props) => (<Screen {...props}><HomePage /></Screen>)
 export const Login = (props) => (<Screen {...props}><LoginPage /></Screen>)
@@ -37,3 +37,5 @@ export const Register = (props) => (<Screen {...props}><RegisterPage /></Screen>
 export const FaceRegister = (props) => (<Screen {...props}><FaceRegisterPage /></Screen>)
 export const Loading = (props) => (<Screen {...props}><LoadingPage /></Screen>)
 export const FaceDetection = (props) => (<Screen {...props}><FaceDetectionPage /></Screen>)
+export const Navigation = (props) => (<Screen {...props}><NavigationPage /></Screen>)
+

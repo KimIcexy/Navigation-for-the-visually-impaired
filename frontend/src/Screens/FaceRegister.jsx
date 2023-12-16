@@ -10,25 +10,8 @@ import { getToken } from '../Utils/user.js';
 import FaceAPI from '../Services/Face_API.js';
 import { CameraFaceSettings } from '../Constant/Camera.jsx';
 import Button from '../Components/button.jsx';
-
-const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flex: 1,
-    },
-    contentContainer: {
-        flex: 1,
-        justifyContent: 'center',
-    },
-    welcomeText: [TextStyle.base, {
-        fontSize: 20,
-        color: '#000000'
-    }],
-    mainContainer: {
-        width: '100%', 
-        height: 300
-    }
-});
+import { resizeImage } from '../Utils/image.js';
+import { PHONE_WIDTH } from '../Constant/Phone.jsx';
 
 const FaceRegister = ({ navigation }) => {
     const [token, setToken] = useState(null);
@@ -99,8 +82,9 @@ const FaceRegister = ({ navigation }) => {
             }
 
             const resData = await res.data;
+            const imageResize = await resizeImage(resData, PHONE_WIDTH, 300);
 
-            const imageUri = `data:${resData.type};base64,${resData['image']}`;
+            const imageUri = `data:${resData.type};base64,${imageResize}`;
 
             setImage(imageUri);
             Alert.alert('Đăng ký bằng khuôn mặt', 'Xác nhận mặt người thành công.');
@@ -116,7 +100,6 @@ const FaceRegister = ({ navigation }) => {
         Alert.alert('Đăng ký bằng khuôn mặt', 'Đang xử lý...', []);
 
         const sendAPI = async () => {
-
             const data = {
                 base64: base64,
             }
@@ -170,7 +153,7 @@ const FaceRegister = ({ navigation }) => {
                         width: width,
                         height: height,
                         borderWidth: 2,
-                        borderColor: '#000000',
+                        borderColor: '#00FF00',
                         borderRadius: 5,
                     }}
                 />
@@ -213,5 +196,24 @@ const FaceRegister = ({ navigation }) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        display: 'flex',
+        flex: 1,
+    },
+    contentContainer: {
+        flex: 1,
+        justifyContent: 'center',
+    },
+    welcomeText: [TextStyle.base, {
+        fontSize: 20,
+        color: '#000000'
+    }],
+    mainContainer: {
+        width: '100%', 
+        height: 300
+    }
+});
 
 export default FaceRegister;
