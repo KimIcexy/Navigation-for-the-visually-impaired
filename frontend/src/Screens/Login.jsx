@@ -13,6 +13,7 @@ import { getImage } from '../Utils/camera.js';
 import { createForm } from '../Utils/formData.js';
 import { CameraFaceSettings } from '../Constant/Camera.jsx';
 import Button from '../Components/button.jsx';
+import { getCameraPermission } from '../Utils/camera.js';
 
 const Login = ({navigation}) => {
     const [isFaceMethod, setIsFaceMethod] = useState(false);
@@ -22,16 +23,6 @@ const Login = ({navigation}) => {
 
     const cameraRef = useRef(null);
     const username = useRef(null);
-
-    const initFaceLogin = async () => {
-        const { status } = await Camera.requestCameraPermissionsAsync();
-        if (status !== 'granted') {
-            Alert.alert('Quyền truy cập camera bị từ chối', 'Vui lòng cấp quyền truy cập camera để sử dụng tính năng đăng nhập bằng mặt người.');
-            setIsFaceMethod(false); // Turn off face login
-            return ;
-        }
-        setLoadCamera(true);
-    }
 
     const handleLogin = async (values) => {
         let res = null;
@@ -59,11 +50,7 @@ const Login = ({navigation}) => {
         }]);
     }
 
-    useEffect(() => {
-        if (isFaceMethod) {
-            initFaceLogin();
-        }
-    }, [isFaceMethod]);
+    getCameraPermission(navigation, isFaceMethod);
 
     const handleFaceDetected = async ({faces}) => {
         setDetectedFaces(faces);
@@ -165,7 +152,7 @@ const Login = ({navigation}) => {
                                 <Checkbox
                                     style={{marginRight: 5}}
                                     value={isFaceMethod}
-                                    onValueChange={() => {
+                                    onValueChange={async () => {
                                         setIsFaceMethod(!isFaceMethod);
                                     }}
                                     tintColors={{true: '#0E64D2', false: '#000000'}}
@@ -195,18 +182,16 @@ const Login = ({navigation}) => {
                             {
                                 isFaceMethod && (
                                     <View style={{paddingVertical: 15}}>
-                                        {loadCamera && (
-                                            <View>
-                                                <Camera 
-                                                    style={{width: '100%', height: 300}} 
-                                                    type={Camera.Constants.Type.front} 
-                                                    ref={cameraRef} 
-                                                    faceDetectorSettings={CameraFaceSettings}
-                                                    onFacesDetected={handleFaceDetected}
-                                                />
-                                                {faceBoundingBox()}
-                                            </View>
-                                        )}
+                                        <View>
+                                            <Camera 
+                                                style={{width: '100%', height: 300}} 
+                                                type={Camera.Constants.Type.front} 
+                                                ref={cameraRef} 
+                                                faceDetectorSettings={CameraFaceSettings}
+                                                onFacesDetected={handleFaceDetected}
+                                            />
+                                            {faceBoundingBox()}
+                                        </View>
                                     </View>
                                 )
                             }

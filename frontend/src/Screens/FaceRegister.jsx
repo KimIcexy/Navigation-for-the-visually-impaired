@@ -12,6 +12,7 @@ import { CameraFaceSettings } from '../Constant/Camera.jsx';
 import Button from '../Components/button.jsx';
 import { resizeImage } from '../Utils/image.js';
 import { PHONE_WIDTH } from '../Constant/Phone.jsx';
+import { getCameraPermission } from '../Utils/camera.js';
 
 const FaceRegister = ({ navigation }) => {
     const [token, setToken] = useState(null);
@@ -32,15 +33,7 @@ const FaceRegister = ({ navigation }) => {
     const cameraRef = useRef(null);
 
     useEffect(() => {
-        const initCamera = async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync();
-            if (status !== 'granted') {
-                Alert.alert('Quyền truy cập camera bị từ chối', 'Vui lòng cấp quyền truy cập camera để sử dụng tính năng đăng nhập bằng mặt người.');                
-                navigation.navigate('Home');
-                return ;
-            }
-        }
-        initCamera();
+        getCameraPermission(navigation);
     }, [])
 
     const handleFaceDetected = async ({faces}) => {
