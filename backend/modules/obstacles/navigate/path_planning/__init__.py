@@ -10,7 +10,7 @@ class PixelNode:
         depth: depth value of this pixel
         walkable: True (not in obstacle area) or False (in obstacle area)
         cost: cost to go to this pixel
-        neighbors: walkable node in 8 adjacent pixels
+        neighbors: walkable node in adjacent pixels
         pre_node: previous pixel node (for backtracking path)
         total_cost: total cost from the start pixel to this pixel
     """
@@ -74,7 +74,6 @@ class PathPlanning:
     
     def create_planning_map(self):
         height, width = self.depth_image.shape[:2]
-        # add padding to planning map
         planning_map = np.array([[None for _ in range(width)] for _ in range(height)])
         for y in range(height):
             for x in range(width):
