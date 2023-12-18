@@ -1,0 +1,28 @@
+ 0: background
+ 1: person
+ 2: bicycle
+ 3: car
+ 4: motorcycle
+ 5: airplane
+ 6: bus
+ 7: train
+ 8: truck
+ 10: traffic light
+ 11: fire hydrant
+ 12: stop sign
+ 13: parking meter
+ 14: bench
+ 29: suitcase
+ 57: chair
+ 58: couch
+ 59: potted plant
+ 60: bed
+ 61: dining table
+ 62: toilet
+ 63: tv
+ 69: microwave
+ 70: oven
+ 71: toaster
+ 72: sink
+ 73: refrigerator
+ 76: vase
