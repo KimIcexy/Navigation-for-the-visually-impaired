@@ -1,0 +1,4 @@
+- DONE: cài đặt rgb2depth: chuyển ảnh đầu vào rgb thành ảnh độ sâu
+- DOING: cài đặt path_planning: chuyển ảnh độ sâu + bounding box thành kết quả điều hướng
+- merge code với Quang: pull code server: blueprint, database
+- cài đặt routes, controller, model: để máy chủ gọi navigate đúng cách
