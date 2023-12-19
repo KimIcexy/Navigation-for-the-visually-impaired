@@ -52,9 +52,9 @@ class ObjectDetection:
         results_list = self.make_results_list(results)
         print('Results list: ', results_list)
         
-        # file_name = os.path.basename(image_path)
-        # if not os.path.exists(output_folder):
-        #     os.makedirs(output_folder)
-        # result_path = os.path.join(output_folder, file_name)
-        # self.make_annotation(image_path, results, result_path)
-        # print('Complete saving result images at ' + output_folder)
+        file_name = os.path.basename(image_path)
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+        result_path = os.path.join(output_folder, file_name)
+        self.make_annotation(image_path, results, result_path)
+        print('Complete saving result images at ' + output_folder)
