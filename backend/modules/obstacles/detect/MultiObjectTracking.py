@@ -2,7 +2,7 @@
 #sys.path.append('../')
 #from obstacles import ObjectDetection as OD
 import ObjectDetection as OD
-import utils as UT
+import backend.modules.obstacles.detect.utils as UT
 import cv2
 import numpy as np
 import time

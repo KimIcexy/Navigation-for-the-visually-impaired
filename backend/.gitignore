@@ -1,4 +1,5 @@
 venv/
 __pycache__/
 NYU_ResNet-UpProj.npy
-test/
+test_resources/
+yolov8x.pt
