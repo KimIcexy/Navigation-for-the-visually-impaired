@@ -16,8 +16,8 @@ class User(db.Base):
     # Basic user information
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
-    email = Column(String, unique=True, nullable=False)
-    phone = Column(String, unique=True, nullable=False)
+    email = Column(String, nullable=False)
+    phone = Column(String, nullable=False)
 
     # Other user information
     last_login = Column(DateTime)
