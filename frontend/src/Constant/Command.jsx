@@ -13,4 +13,5 @@ export const Keyword = [
     {keyword: 'đăng ký', type: type.navigate, path: 'Register', authRank: -1},
     {keyword: 'mặt người', type: type.navigate, path: 'FaceRegister', authRank: 1},
     {keyword: 'trang chủ', type: type.navigate, path: 'Home', authRank: 0},
+    {keyword: 'điều hướng', type: type.navigate, path: 'Navigation', authRank: 1},
 ]

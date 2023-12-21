@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text, View, Pressable, TextInput, StyleSheet, Alert } from 'react-native';
 import { Formik } from 'formik';
 
-import { TextStyle, TitleStyle } from '../Constant/Style.jsx';
+import { TextStyle, TitleStyle, InputStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
 import Button from '../Components/button.jsx';
 
@@ -19,17 +19,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    textInput: {
-        marginHorizontal: 30,
-        marginVertical: 15,
-        paddingVertical: 15,
-        paddingHorizontal: 8,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#000000',
-        borderRadius: 5,
-        color: '#000000',
     },
 });
 
@@ -65,7 +54,7 @@ const Register = ({navigation}) => {
                     {({handleChange, handleBlur, handleSubmit, values}) => (
                         <View>
                             <TextInput
-                                style={styles.textInput}
+                                style={InputStyle}
                                 onChangeText={handleChange('username')}
                                 onBlur={handleBlur('username')}
                                 value={values.username}
@@ -73,7 +62,7 @@ const Register = ({navigation}) => {
                                 placeholderTextColor='#000000B2'
                             />
                             <TextInput
-                                style={styles.textInput}
+                                style={InputStyle}
                                 onChangeText={handleChange('email')}
                                 onBlur={handleBlur('email')}
                                 value={values.email}
@@ -81,7 +70,7 @@ const Register = ({navigation}) => {
                                 placeholderTextColor='#000000B2'
                             />
                             <TextInput
-                                style={styles.textInput}
+                                style={InputStyle}
                                 onChangeText={handleChange('phone')}
                                 onBlur={handleBlur('phone')}
                                 value={values.phone}
@@ -89,7 +78,7 @@ const Register = ({navigation}) => {
                                 placeholderTextColor='#000000B2'
                             />
                             <TextInput
-                                style={styles.textInput}
+                                style={InputStyle}
                                 onChangeText={handleChange('password')}
                                 onBlur={handleBlur('password')}
                                 value={values.password}
@@ -98,7 +87,7 @@ const Register = ({navigation}) => {
                                 placeholderTextColor='#000000B2'
                             />
                             <TextInput
-                                style={styles.textInput}
+                                style={InputStyle}
                                 onChangeText={handleChange('confirmPassword')}
                                 onBlur={handleBlur('confirmPassword')}
                                 value={values.confirmPassword}

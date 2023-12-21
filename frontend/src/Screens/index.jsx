@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 
 import SpeechModal from '../Components/speechModal.jsx';
 import NavBar from '../Components/navBar.jsx';

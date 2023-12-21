@@ -31,7 +31,19 @@ export const ButtonStyle = {
     },
     text: [TextStyle.base, {
         color: '#FFFFFF',
-        fontSize: 14,
+        fontSize: 16,
         fontWeight: 700,
     }]
+}
+
+export const InputStyle = {
+    marginHorizontal: 30,
+    marginVertical: 15,
+    paddingVertical: 15,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#000000',
+    borderRadius: 5,
+    color: '#000000',
 }

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { Text, View, Pressable, TextInput, StyleSheet, Alert, Modal } from 'react-native';
 import Checkbox from 'expo-checkbox';
 import { Formik } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Camera } from 'expo-camera';
 
-import { TextStyle, TitleStyle } from '../Constant/Style.jsx';
+import { TextStyle, TitleStyle, InputStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
 import { getUser } from '../Utils/user.js';
 import { getImage } from '../Utils/camera.js';
@@ -17,7 +17,6 @@ import { getCameraPermission } from '../Utils/camera.js';
 
 const Login = ({navigation}) => {
     const [isFaceMethod, setIsFaceMethod] = useState(false);
-    const [loadCamera, setLoadCamera] = useState(false);
     const [isCaptured, setIsCaptured] = useState(false);
     const [detectedFaces, setDetectedFaces] = useState([]);
 
@@ -56,7 +55,6 @@ const Login = ({navigation}) => {
         setDetectedFaces(faces);
         if ((faces.length == 1) && (!isCaptured)) {
             setIsCaptured(true);
-            // Alert.alert('Đăng nhập bằng khuôn mặt', 'Đang xử lý...', []);
 
             const sendAPI = async () => {
                 const imageBase64 = await getImage(cameraRef);
@@ -135,7 +133,7 @@ const Login = ({navigation}) => {
                     {({handleChange, handleBlur, handleSubmit, values, setFieldValue, setFieldTouched}) => (
                         <View>
                             <TextInput
-                                style={styles.textInput}
+                                style={InputStyle}
                                 onChangeText={(val) => {
                                     setFieldValue('username', val)
                                     setFieldTouched('username', true, false);
@@ -163,7 +161,7 @@ const Login = ({navigation}) => {
                                 !isFaceMethod && (
                                     <View>
                                         <TextInput
-                                            style={styles.textInput}
+                                            style={InputStyle}
                                             onChangeText={handleChange('password')}
                                             onBlur={handleBlur('password')}
                                             value={values.password}
@@ -222,17 +220,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-    },
-    textInput: {
-        marginHorizontal: 30,
-        marginVertical: 15,
-        paddingVertical: 15,
-        paddingHorizontal: 8,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: '#000000',
-        borderRadius: 5,
-        color: '#000000',
     },
     checkBox: {
         borderWidth: 1,
