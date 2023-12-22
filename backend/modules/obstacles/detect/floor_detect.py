@@ -12,7 +12,12 @@ class FloorDetection:
     def make_results_list (self, results):
         results_list = []
         for result in results:
-            results_list.append([result['x'], result['y'], result['width'], result['height']])
+            top = result['y'] - 0.5 * result['height']
+            left = result['x'] - 0.5 * result['width']
+            bottom = result['y'] + 0.5 * result['height']
+            right = result['x'] + 0.5 * result['width']
+            results_list.append([int(top), int(left), int(bottom), int(right)])
+        # print('Result list: ', results_list)
         return results_list
 
     def make_annotations(self, results):
@@ -20,5 +25,7 @@ class FloorDetection:
         
     def run(self, image_path):
         results = self.predict(image_path)
-        print('result list: ', self.make_results_list(results))
+        # print('floor region: ', results)
         # self.make_annotations(results)
+        return self.make_results_list(results)
+        

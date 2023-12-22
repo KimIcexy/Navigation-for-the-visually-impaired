@@ -40,7 +40,7 @@ class ObjectDetection:
             annotator = Annotator(img)
             boxes = r.boxes
             for box in boxes:
-                b = box.xyxy[0]  # get box coordinates in (top, left, bottom, right) format
+                b = box.xyxy[0]  # (left, top, right, bottom) format
                 c = box.cls
                 annotator.box_label(b, self.model.names[int(c)])
         img = annotator.result()
@@ -50,11 +50,12 @@ class ObjectDetection:
         results = []
         results = self.model(image_path)
         results_list = self.make_results_list(results)
-        print('Results list: ', results_list)
+        return results_list
+        # print('Results list: ', results_list)
         
-        file_name = os.path.basename(image_path)
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
-        result_path = os.path.join(output_folder, file_name)
-        self.make_annotation(image_path, results, result_path)
-        print('Complete saving result images at ' + output_folder)
+        # file_name = os.path.basename(image_path)
+        # if not os.path.exists(output_folder):
+        #     os.makedirs(output_folder)
+        # result_path = os.path.join(output_folder, file_name)
+        # self.make_annotation(image_path, results, result_path)
+        # print('Complete saving result images at ' + output_folder)

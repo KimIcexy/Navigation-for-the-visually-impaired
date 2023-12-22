@@ -1,7 +1,11 @@
 import cv2
 import os
+import matplotlib.pyplot as plt
+
 from detect import ObjectDetection
-from navigate.path_planning.floor_detect import FloorDetection
+from detect.floor_detect import FloorDetection
+from navigate.path_planning import PathPlanning
+from navigate.rgb2depth import MakeDepthImage
 
 """Preprocess: extract frames"""
 # N_FRAMES = 1159
@@ -27,14 +31,36 @@ from navigate.path_planning.floor_detect import FloorDetection
 # extract_frames(video_path, output_folder)
 
 """Test object detection"""
-# obj_detection = ObjectDetection()
+obj_detection = ObjectDetection()
 output_folder = 'test_resources/frames'
 
 frame_path = os.path.join(output_folder, str(1) + '.jpg')
-# print('frame path: ', frame_path)
-# obj_detection.run(frame_path, 'test_resources/results')
-    
+print('frame path: ', frame_path)
+print('Obstacle detection...')
+obstacle_region = obj_detection.run(frame_path, 'test_resources/results')
+# print('Obstacles: ', obstacle_region[0])
+
 """Test navigation"""
-"""Test floor detect, merge later..."""
+print('Floor detection...')
 floor_detection = FloorDetection()
-floor_detection.run(frame_path)
+floor_region = floor_detection.run(frame_path)
+
+"""Test depth converter"""
+# # depth_converter = MakeDepthImage()
+# # depth_image = depth_converter.run(frame_path)
+print('rgb >> depth')
+result_path = './navigate/rgb2depth/depth_image.png'
+origin_size = (1080, 1920)
+depth_image = cv2.imread(result_path, cv2.IMREAD_GRAYSCALE)
+depth_image = cv2.resize(depth_image, origin_size)
+# # print(depth_image.shape)
+# # plt.imshow(depth_image, cmap='gray')
+# # plt.axis('off')  # Turn off axis labels
+# # plt.show()
+
+"""Test path planning"""
+print('Path planning...')
+path_planning = PathPlanning(depth_image, obstacle_region[0], floor_region)
+path = path_planning.search_path()
+# print('Path: ', path)
+path_planning.show_result(obstacle_region, path, 7)
