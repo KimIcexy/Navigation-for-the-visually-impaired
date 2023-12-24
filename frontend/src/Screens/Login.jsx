@@ -6,7 +6,7 @@ import { Formik } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Camera } from 'expo-camera';
 
-import { TextStyle, TitleStyle, InputStyle } from '../Constant/Style.jsx';
+import { TextStyle, TitleStyle, InputStyle, BoundingBoxStyle } from '../Constant/Style.jsx';
 import UserAPI from '../Services/User_API.js';
 import { getUser } from '../Utils/user.js';
 import { getImage } from '../Utils/camera.js';
@@ -103,16 +103,7 @@ const Login = ({navigation}) => {
             return (
                 <View
                     key={index}
-                    style={{
-                        position: 'absolute',
-                        left: x,
-                        top: y,
-                        width: width,
-                        height: height,
-                        borderWidth: 2,
-                        borderColor: '#00FF00',
-                        borderRadius: 5,
-                    }}
+                    style={BoundingBoxStyle(x, y, width, height)}
                 />
             )
         })

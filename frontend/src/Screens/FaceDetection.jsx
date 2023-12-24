@@ -6,6 +6,7 @@ import { Camera } from 'expo-camera';
 
 import { CameraFaceSettings } from '../Constant/Camera.jsx';
 import { getCameraPermission } from '../Utils/camera.js';
+import { BoundingBoxStyle } from '../Constant/Style.jsx';
 
 const FaceDetection = ({ navigation }) => {
     const [detectedFaces, setDetectedFaces] = useState([]);
@@ -31,16 +32,7 @@ const FaceDetection = ({ navigation }) => {
             return (
                 <View
                     key={index}
-                    style={{
-                        position: 'absolute',
-                        left: x,
-                        top: y,
-                        width: width,
-                        height: height,
-                        borderWidth: 2,
-                        borderColor: '#00FF00',
-                        borderRadius: 5,
-                    }}
+                    style={BoundingBoxStyle(x, y, width, height)}
                 />
             )
         })

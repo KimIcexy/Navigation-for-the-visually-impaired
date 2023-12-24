@@ -1,3 +1,4 @@
+// Randomly style
 export const TextStyle = {
     base: {
         fontStyle: 'normal',
@@ -46,4 +47,17 @@ export const InputStyle = {
     borderColor: '#000000',
     borderRadius: 5,
     color: '#000000',
+}
+
+export const BoundingBoxStyle = (x, y, width, height) => {
+    return {
+        position: 'absolute',
+        left: x,
+        top: y,
+        width: width,
+        height: height,
+        borderWidth: 2,
+        borderColor: '#00FF00',
+        borderRadius: 5,
+    }
 }

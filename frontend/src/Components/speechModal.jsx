@@ -1,3 +1,4 @@
+// For the speech modal
 import { Modal } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";

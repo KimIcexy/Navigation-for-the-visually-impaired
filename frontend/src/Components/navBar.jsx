@@ -1,3 +1,4 @@
+// Navigation bar component
 import * as React from 'react';
 import { View, StyleSheet, Pressable, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';

@@ -1,18 +1,15 @@
+// Just a gather of page, apparently
 import * as React from "react";
-import { useState, useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 // Import all screens here
 import { Home, Register, Login, FaceRegister, Loading, FaceDetection, Navigation } from "../Screens/";
-import { useUser } from '../Hooks/useAuth.js';
 
 const Stack = createStackNavigator();
 
 const options = { headerShown: false};
 
 export default () => {
-    const { status, user } = useUser();
-
     return (
         <Stack.Navigator>
             <Stack.Screen name="Home" component={Home} options={options} />

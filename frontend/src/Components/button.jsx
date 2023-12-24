@@ -1,3 +1,4 @@
+// Simple button component
 import { Pressable, Text } from "react-native";
 
 import { ButtonStyle } from "../Constant/Style.jsx";

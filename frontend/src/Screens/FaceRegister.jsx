@@ -3,7 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Modal, Alert, Image } from 'react-native';
 import { Camera } from 'expo-camera';
 
-import { TextStyle, TitleStyle } from '../Constant/Style.jsx';
+import { TextStyle, TitleStyle, BoundingBoxStyle } from '../Constant/Style.jsx';
 import { getImage } from '../Utils/camera.js';
 import { createForm } from '../Utils/formData.js';
 import { getToken } from '../Utils/user.js';
@@ -139,16 +139,7 @@ const FaceRegister = ({ navigation }) => {
             return (
                 <View
                     key={index}
-                    style={{
-                        position: 'absolute',
-                        left: x,
-                        top: y,
-                        width: width,
-                        height: height,
-                        borderWidth: 2,
-                        borderColor: '#00FF00',
-                        borderRadius: 5,
-                    }}
+                    style={BoundingBoxStyle(x, y, width, height)}
                 />
             )
         })
