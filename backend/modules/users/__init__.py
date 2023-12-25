@@ -6,12 +6,12 @@ from modules.users.models.user_model import User
 from database.db import db
 from utils.config import SECRET_KEY
 from modules.users.module.image import bp as image_bp
-from utils.image import base64_to_image, image_to_base64, one_face_valid
+from utils.image import base64_to_image, one_face_valid
 
-bp = Blueprint('user', __name__, url_prefix='/api/')
+bp = Blueprint('user', __name__)
 bp.register_blueprint(image_bp)
 
-@bp.route('/register/', methods=['POST'])
+@bp.route('/user/register/', methods=['POST'])
 def register():
     data = request.get_json()
     print(data)
@@ -42,7 +42,7 @@ def register():
     return jsonify({'message': 'Đăng ký thành công.'})
 
 
-@bp.route('/login/', methods=['POST'])
+@bp.route('/user/login/', methods=['POST'])
 def login():
     data = request.get_json()
 
@@ -70,7 +70,7 @@ def login():
 
     return jsonify({'message': 'Đăng nhập thành công.', 'token': token, 'user': user.simple_user()}), 201
 
-@bp.route('/login/face/', methods=['POST'])
+@bp.route('/user/login/face/', methods=['POST'])
 def login_with_face():
     form = request.form
     data = form['base64']

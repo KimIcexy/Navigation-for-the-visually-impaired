@@ -20,3 +20,7 @@ conda activate e:\Navigate\backend\.conda
 
 ## Faster Deepface:
 [Faster model](https://github.com/serengil/deepface/issues/856)
+
+## How to setup:
+- Install requirements.txt is the only requirements.
+- Still, for GPU user, please check out this [link](https://www.tensorflow.org/install/pip#windows-native).

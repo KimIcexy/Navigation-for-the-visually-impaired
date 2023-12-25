@@ -5,7 +5,7 @@ from deepface import DeepFace
 
 from utils.config import *
 from database.db import db
-from modules.users import bp as user_bp
+from modules import bp
 
 def define_logging():
     dictConfig({
@@ -40,7 +40,7 @@ def create_app():
     CORS(app)
     
     # Route/Blueprint here
-    app.register_blueprint(user_bp)
+    app.register_blueprint(bp)
     return app
 
 if __name__ == '__main__':

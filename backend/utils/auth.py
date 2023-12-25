@@ -20,11 +20,10 @@ def token_required(func):
     @wraps(func)
     def wrapped_function(*args, **kwargs):
         token = None
-
         if 'Authorization' in request.headers:
             token = request.headers['Authorization'].split()[1]
 
-        if not token:
+        if not token or token == 'null':
             return jsonify({'message': 'Không tìm thấy token.'}), 401
 
         try:
