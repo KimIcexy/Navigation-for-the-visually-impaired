@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import math
 from matplotlib import pyplot as plt
+import os
 
 class PixelNode:
     """Node save information of each pixel in the image
@@ -42,34 +43,28 @@ class PathPlanning:
     
     def __init__(self, depth_image, obstacle_region, floor_region):
         self.depth_image = depth_image
-        # self.obstacle_region = self.read_obstacle_region(obstacle_region)
+        self.height = depth_image.shape[0]
+        self.width = depth_image.shape[1]
         self.walkable_map = self.create_walkable_map(obstacle_region, floor_region)
         self.planning_map = self.create_planning_map()
         point = self.find_start_point()
         self.start = self.planning_map[point[1], point[0]]
         self.start.total_cost = 0
         self.start.cost = 0
+        # self.start.walkable = True
         print('Start coords: ', self.start.coords)
+        print('walkable: ', self.start.walkable)
         point = self.make_temp_goal()
         print('Temp goal: ', point)
+        if point == self.start.coords:
+            self.goal = None
+            return
         self.goal = self.planning_map[point[1], point[0]]
-        
-    def read_obstacle_region(self, obstacle_region):
-        # format: center coord: (bx, by), size (bw, bh) (normalized),
-        # may need to change later based on the output format from the module 3 !!!
-        bboxes = []
-        for bbox in obstacle_region:
-            x = int((float(bbox[0])-float(bbox[2])/2) *self.depth_image.shape[1]) # bx * width (n_columns)
-            y = int((float(bbox[1])-float(bbox[3])/2) *self.depth_image.shape[0]) # by * height (n_rows)
-            w = int(float(bbox[2])*self.depth_image.shape[1]) # bw * width
-            h = int(float(bbox[3])*self.depth_image.shape[0]) # bh * height
-            bboxes.append([x, y, w, h])
-        return np.array(bboxes)
     
     def find_start_point(self):
         # start point: mid bottom point in the image
-        x = int(self.depth_image.shape[1] / 2)
-        y = int(self.depth_image.shape[0] - 1)
+        x = int(self.width / 2)
+        y = int(self.height - 1)
         return (x, y)
         # return (702, 971)
     
@@ -120,17 +115,31 @@ class PathPlanning:
         return planning_map
     
     def create_walkable_map(self, obstacle_region, floor_region):
-        walkable_map = np.zeros((self.depth_image.shape[0], self.depth_image.shape[1]), dtype=bool)
+        bbox_margin = 10
+        walkable_map = np.zeros((self.height, self.width), dtype=bool)
         for bbox in floor_region:
             # print(bbox)
-            top, left, bottom, right = bbox[0], bbox[1], bbox[2], bbox[3]
+            top = max(0, bbox[0] - bbox_margin)
+            left = max(0, bbox[1] - bbox_margin)
+            bottom = min(bbox[2] + bbox_margin, self.height-1)
+            right = min(bbox[3] + bbox_margin, self.width-1)
             walkable_map[top:bottom+1, left:right+1] = True
+        # print('start walkable before: ', walkable_map[1919, 540])
         
-        # bbox_margin = 10
         for obstacle in obstacle_region:
             bbox = obstacle[0]
-            left, top, right, bottom = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
+            left = int(max(0, bbox[0] - bbox_margin))
+            top = int(max(0, bbox[1] - bbox_margin))
+            right = int(min(bbox[2] + bbox_margin, self.width-1))
+            bottom = int(min(bbox[3] + bbox_margin, self.height-1))
             walkable_map[top:bottom+1, left:right+1] = False
+        
+        # count = 0
+        # for i in range(walkable_map.shape[0]):
+        #     for j in range(walkable_map.shape[1]):
+        #         if (walkable_map[i, j]==True):
+        #             count += 1
+        # print('n walkable: ', count)
         return walkable_map        
     
     def heuristic(self, pixel):
@@ -143,8 +152,8 @@ class PathPlanning:
         if (current_node.neighbors is None):
             x, y = current_node.coords
             if (neighbor_type=='8'):
-                neighbors = self.planning_map[max(y-1, 0):min(y+2, self.depth_image.shape[0]), \
-                                            max(x-1, 0):min(x+2, self.depth_image.shape[1])]
+                neighbors = self.planning_map[max(y-1, 0):min(y+2, self.height-1), \
+                                            max(x-1, 0):min(x+2, self.width-1)]
                 neighbors = neighbors.flatten()
                 for i in range(neighbors.shape[0]):
                     if neighbors[i].coords == current_node.coords or \
@@ -152,8 +161,8 @@ class PathPlanning:
                         current_node.neighbors = np.delete(neighbors, i)
                     
             # neighbor_type='4':
-            neighbors_row = self.planning_map[y, max(x-1, 0):min(x+2, self.depth_image.shape[1])].flatten()
-            neighbors_col = self.planning_map[max(y-1, 0):min(y+1, self.depth_image.shape[0]), x].flatten()
+            neighbors_row = self.planning_map[y, max(x-1, 0):min(x+2, self.width-1)].flatten()
+            neighbors_col = self.planning_map[max(y-1, 0):min(y+1, self.height-1), x].flatten()
 
             new_neighbors = np.concatenate((neighbors_col, neighbors_row))
             new_neighbors_list = []
@@ -206,14 +215,15 @@ class PathPlanning:
                 # add current_node to the closed set:
                 closed_set.add(current_node)        
     
-    def show_result(self, obstacle_region, path, i=1):
+    def show_result(self, obstacle_region, path, no_frame):
         temp_image = self.depth_image
-        # show bounding box
-        for obstacle in obstacle_region:
-            bbox = obstacle[0]
-            # print(bbox)
-            # top, left, bottom, right = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
-            # cv2.rectangle(temp_image, (left, top), (right, bottom), (0, 255, 0), 2)
+        # # show bounding box
+        # for obstacle in obstacle_region:
+        #     bbox = obstacle[0]
+        #     # print(bbox)
+        #     # top, left, bottom, right = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
+        #     # cv2.rectangle(temp_image, (left, top), (right, bottom), (0, 255, 0), 2)
+        
         # show path
         if path:
             for pixel in path:
@@ -222,4 +232,7 @@ class PathPlanning:
                 cv2.circle(temp_image, coords, 10, (255,255,255), -1)
             plt.imshow(temp_image, cmap='gray')
             plt.axis('off')  # Turn off axis labels
-            plt.savefig('./results/' + str(i) + '.jpg')
+            result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}.jpg')
+            print('result path: ', result_path)
+            plt.savefig(result_path)

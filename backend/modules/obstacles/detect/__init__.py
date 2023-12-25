@@ -46,16 +46,13 @@ class ObjectDetection:
         img = annotator.result()
         cv2.imwrite (result_path, img)
 
-    def run(self, image_path, output_folder):
+    def run(self, image_path, no_frame):
         results = []
         results = self.model(image_path)
         results_list = self.make_results_list(results)
-        return results_list
         # print('Results list: ', results_list)
-        
-        # file_name = os.path.basename(image_path)
-        # if not os.path.exists(output_folder):
-        #     os.makedirs(output_folder)
-        # result_path = os.path.join(output_folder, file_name)
-        # self.make_annotation(image_path, results, result_path)
-        # print('Complete saving result images at ' + output_folder)
+        result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        result_path = os.path.join(result_path, 'results', 'obstacle', f'{no_frame}.jpg')
+        print('obstacle path: ', result_path)
+        self.make_annotation(image_path, results, result_path)
+        return results_list

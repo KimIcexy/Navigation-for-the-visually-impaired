@@ -9,53 +9,72 @@ from PIL import Image
 from .models.fcrn import ResNet50UpProj
 
 class MakeDepthImage:
-    def __init__(self):
-        pass
-    
-    def predict(self, image_path):
-        # Read image, convert to grayscale
-        img = Image.open(image_path)
-        width = img.size[0]
-        height = img.size[1]
+    def __init__(self, height=1920, width=1080):
+        tf.disable_eager_execution()
+        self.sess = tf.Session()
+        
+        # Create a placeholder for the input image
         channels = 3
         batch_size = 1
-    
-        img = img.resize([width,height], Image.Resampling.LANCZOS)
-        img = np.array(img).astype('float32')
-        img = np.expand_dims(np.asarray(img), axis = 0)
-    
-        # Create a placeholder for the input image
-        input_node = tf.placeholder(tf.float32, shape=(None, height, width, channels))
+        self.width = width
+        self.height = height
+        self.input_node = tf.placeholder(tf.float32, shape=(None, height, width, channels))
 
         # Construct the network
-        net = ResNet50UpProj({'data': input_node}, batch_size, 1, False)
-            
-        with tf.Session() as sess:
-            # Load the converted parameters
-            print('Loading the model')
-            # Use to load from npy file
-            current_path = os.path.dirname(__file__)
-            model_path = os.path.join(current_path, 'checkpoints', 'NYU_ResNet-UpProj.npy')
+        self.net = ResNet50UpProj({'data': self.input_node}, batch_size, 1, False)
 
-            net.load(model_path, sess) 
+        # Load the converted parameters
+        print('Loading the model')
+        current_path = os.path.dirname(__file__)
+        model_path = os.path.join(current_path, 'checkpoints', 'NYU_ResNet-UpProj.npy')
+        self.net.load(model_path, self.sess)
+    
+    def preprocess_image(self, image_path):
+        # Read image
+        image = Image.open(image_path)
+        image = np.array(image).astype('float32')
+        image = np.expand_dims(np.asarray(image), axis = 0)
+        return image
+        
+        # Read image
+        # image = Image.open(image_path)
+        # # width = image.size[0]
+        # # height = image.size[1]
+        # image = np.array(image).astype('uint8')  # Convert to uint8 data type
 
+        # # Split the RGB channels
+        # b, g, r = cv2.split(image)
+
+        # # Apply histogram equalization to each channel separately
+        # b_eq = cv2.equalizeHist(b)
+        # g_eq = cv2.equalizeHist(g)
+        # r_eq = cv2.equalizeHist(r)
+
+        # # Merge the equalized channels back into an RGB image
+        # equalized_image = cv2.merge((b_eq, g_eq, r_eq))
+        # # equalized_image = equalized_image.resize((width,height), Image.Resampling.LANCZOS)
+        # equalized_image = np.array(equalized_image).astype('float32')
+        # equalized_image = np.expand_dims(np.asarray(equalized_image), axis = 0)
+        # print('shape: ', equalized_image.shape)
+        # return equalized_image
+    
+    def predict(self, image, no_frame):
+        with self.sess.as_default():
             # Evalute the network for the given image
-            pred = sess.run(net.get_output(), feed_dict={input_node: img})
+            pred = self.sess.run(self.net.get_output(), feed_dict={self.input_node: image})
             
             # Plot result
             fig = plt.figure()
             ii = plt.imshow(pred[0,:,:,0], cmap='gray', interpolation='nearest')
             plt.axis('off')
-            result_path = os.path.join(current_path, 'depth_image.png')
+            result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            result_path = os.path.join(os.path.dirname(result_path), 'results', 'depth', f'{no_frame}.jpg')
+            print('depth path: ', result_path)
             plt.savefig(result_path, bbox_inches='tight', pad_inches=0)
-            # plt.show()
             plt.close()
             depth_image = cv2.imread(result_path, cv2.IMREAD_GRAYSCALE)
-            depth_image = cv2.resize(depth_image, (width,height))
+            depth_image = cv2.resize(depth_image, (self.width, self.height))
             return depth_image
     
-    def run(self, image_path):
-        print('RGB >> depth...')
-        tf.disable_eager_execution()
-        return self.predict(image_path)    
-        # os._exit(0)
+    def run(self, image_path, no_frame):
+        return self.predict(self.preprocess_image(image_path), no_frame)    
