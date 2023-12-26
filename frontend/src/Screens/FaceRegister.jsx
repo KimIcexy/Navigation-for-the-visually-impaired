@@ -32,9 +32,7 @@ const FaceRegister = ({ navigation }) => {
 
     const cameraRef = useRef(null);
 
-    useEffect(() => {
-        getCameraPermission(navigation);
-    }, [])
+    getCameraPermission(navigation);
 
     const handleFaceDetected = async ({faces}) => {
         setDetectedFaces(faces);

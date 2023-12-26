@@ -3,12 +3,10 @@ import { Camera } from 'expo-camera';
 import { useCallback } from 'react';
 import { Alert, Linking } from 'react-native';
 
-
-
 // Desc: Camera utility functions, get an image from the camera and return it as base64
 export const getImage = async (cameraRef) => {
     if (cameraRef) {
-        const options = { base64: true };
+        const options = { base64: true, skipProcessing: true };
         const imageFile = await cameraRef.current.takePictureAsync(options);
         const image = await manipulateAsync(imageFile.uri, [{ resize: { width: 480, height: 640 } }], { base64: true });
         const imageData = await fetch(imageFile.uri);

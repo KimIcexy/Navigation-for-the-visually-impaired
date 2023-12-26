@@ -28,6 +28,11 @@ def navigate(current_user):
         y = np.random.randint(0, image.shape[0])
         w = np.random.randint(0, image.shape[1] - x)
         h = np.random.randint(0, image.shape[0] - y)
-        boxes.append([x, y, w, h])
+        boxes.append({
+            'top': y,
+            'left': x,
+            'width': w,
+            'height': h
+        })
 
     return jsonify({'boxes': boxes}), 200
