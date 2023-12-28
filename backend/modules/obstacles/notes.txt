@@ -1,0 +1,28 @@
+ĐIỀU HƯỚNG CHO NGƯỜI KHIẾM THỊ TRÁNH VẬT CẢN PHÍA SERVER
+
++ Đầu vào: video (webrtc, socketio...)
+
++ Đầu ra: 
+    Chuỗi json thông tin vật cản [(bbox(left, top, right, bottom), class),...]: Gia phụ dịch class
+    Chuỗi tọa độ đường đi [(x, y), ...]
+    {Khác: Hướng dẫn điều hướng (rẽ trái, đi thẳng, rẽ phải)
+    sẽ BỔ SUNG SAU... (tinh gọn đường đi...)] --> Gia xem phụ phần này thử (thứ 3, thứ 4 báo tiến độ)
+
++ Xử lí phía server:
+    Rút frame cách nhau khoảng 90 frame
+    Tính width, height của ảnh 
+    (hỗ trợ cho chuyển ảnh độ sâu, chỉ xử lí 1 lần, các lần sau tái sử dụng???)
+
+    Khởi tạo 2 biến lưu path, goal = None
+    Kiểm tra nếu 2 biến path, goal == None, chạy luồng (1).
+    Ngược lại chạy luồng (2).
+
+    Luồng (1):
+        Phát hiện vật cản >> Phát hiện sàn nhà >> Chuyển ảnh độ sâu >> Điều hướng
+        Lưu lại path, goal cũ
+
+    Luồng (2):
+        Phát hiện vật cản >> Phát hiện sàn nhà >> Xây dựng walkable map
+        Nếu path và goal cũ vẫn còn nằm trong vùng walkable thì tái sử dụng lại kết quả path cũ
+        Ngược lại thì chạy luồng (1)
+    

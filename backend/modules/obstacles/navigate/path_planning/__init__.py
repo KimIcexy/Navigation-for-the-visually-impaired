@@ -41,17 +41,18 @@ class PathPlanning:
         goal: PixelNode that the path planning want to reach        
     """  
     
-    def __init__(self, depth_image, obstacle_region, floor_region):
+    def __init__(self, depth_image, obstacle_region, floor_region, old_path):
         self.depth_image = depth_image
         self.height = depth_image.shape[0]
         self.width = depth_image.shape[1]
         self.walkable_map = self.create_walkable_map(obstacle_region, floor_region)
         self.planning_map = self.create_planning_map()
-        point = self.find_start_point()
+        
+        point = self.find_start_point(old_path)
+        print('find start point: ', point)
         self.start = self.planning_map[point[1], point[0]]
         self.start.total_cost = 0
         self.start.cost = 0
-        # self.start.walkable = True
         print('Start coords: ', self.start.coords)
         print('walkable: ', self.start.walkable)
         point = self.make_temp_goal()
@@ -60,14 +61,26 @@ class PathPlanning:
             self.goal = None
             return
         self.goal = self.planning_map[point[1], point[0]]
+        print('walkable: ', self.goal.walkable)
     
-    def find_start_point(self):
-        # start point: mid bottom point in the image
-        x = int(self.width / 2)
-        y = int(self.height - 1)
-        return (x, y)
-        # return (702, 971)
-    
+    def find_start_point(self, old_path):
+        if len(old_path)==0:
+            # start point: mid bottom point in the image
+            x = int(self.width / 2)
+            y = int(self.height - 1)
+            return (x, y)
+        else:
+            # reversed_path
+            for i_reversed in range (len(old_path)-1, -1, -1):
+                coords = old_path[i_reversed]
+                node = self.planning_map[coords[1], coords[0]]
+                if node.walkable:
+                    self.update_old_path(old_path, i_reversed)
+                    return node.coords
+            
+    def update_old_path(self, old_path, new_end_idx):
+        old_path = old_path[:new_end_idx+1]
+        
     def hard_code_temp_goal(self):
         return tuple(np.argwhere(self.walkable_map==True)[0])
     
@@ -99,7 +112,7 @@ class PathPlanning:
     def find_path_center(self, path):
         if not path:
             return None
-        center = int(len(path)/4 -1)
+        center = int(len(path)/2 -1)
         return path[center]
     
     def create_planning_map(self):
@@ -190,7 +203,7 @@ class PathPlanning:
                     pre_node = current_node.pre_node
                     path = []
                     while pre_node:
-                        path.insert(0, pre_node)
+                        path.insert(0, pre_node.coords)
                         pre_node = pre_node.pre_node
                     return path
                 
@@ -215,8 +228,7 @@ class PathPlanning:
                 # add current_node to the closed set:
                 closed_set.add(current_node)        
     
-    def show_result(self, obstacle_region, path, no_frame):
-        temp_image = self.depth_image
+    def show_result(self, rgb_image, path, no_frame):
         # # show bounding box
         # for obstacle in obstacle_region:
         #     bbox = obstacle[0]
@@ -227,10 +239,10 @@ class PathPlanning:
         # show path
         if path:
             for pixel in path:
-                coords = pixel.coords
+                # coords = pixel.coords
                 # print(coords)
-                cv2.circle(temp_image, coords, 10, (255,255,255), -1)
-            plt.imshow(temp_image, cmap='gray')
+                cv2.circle(rgb_image, pixel, 10, (255,255,255), -1)
+            plt.imshow(rgb_image, cmap='gray')
             plt.axis('off')  # Turn off axis labels
             result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}.jpg')

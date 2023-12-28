@@ -11,15 +11,19 @@ from navigate.path_planning import PathPlanning
 obj_detection = ObjectDetection()
 floor_detection = FloorDetection()
 # depth_converter = MakeDepthImage()
-start = 1
+start = 0
 stop = 10
-n_frames = 16
+n_frames = 90
 frames_path = 'test_resources/frames'
 
-for frame in range(start, stop):
-    # frame = i * n_frames
+start_point = None
+path = [] # save the last path to continue ...
+for i in range(start, stop):
+    frame = i * n_frames
     print('\nFrame: ', frame)
     frame_path = os.path.join(frames_path, str(frame)+'.jpg')
+    origin_image = cv2.imread(frame_path)
+    origin_image = cv2.cvtColor(origin_image, cv2.COLOR_BGR2RGB)
     # print('frame_path: ', frame_path)
     
     """Test object detection"""
@@ -41,13 +45,16 @@ for frame in range(start, stop):
     depth_image = cv2.imread(depth_image_path, cv2.IMREAD_GRAYSCALE)
     depth_image = cv2.resize(depth_image, (1080, 1920))
         
-    """Test path planning"""
+    # """Test path planning"""
     print('Path planning...')
-    path_planning = PathPlanning(depth_image, obstacle_region[0], floor_region)
+    path_planning = PathPlanning(depth_image, obstacle_region[0], floor_region, path)
     if path_planning.goal == None:
         print('Cannot find path !!!')
     else:
-        path = path_planning.search_path()
-        # print('Path: ', path)
-        path_planning.show_result(obstacle_region, path, frame)
+        # make the old goal to be a start point for the next path planning
+        start_point = path_planning.goal.coords
+        path += path_planning.search_path()
+        # print('Path frame ' + str(frame) + ': ', path)
+        path = path_planning.
+        path_planning.show_result(origin_image, path, frame)
     
