@@ -238,9 +238,9 @@ class PathPlanning:
             plt.savefig(result_path)
             
     def Optimize (InputArr, Accuracy = 8):
-        # Input: List of tuple (example: [(6969, 50),...])
-        # Output: Optimized list of tuple
-        # Accuracy: The higher you set it, the simpler the path will be
+        #Input: List of tuple (example: [(6969, 50),...])
+        #Output: Optimized list of tuple
+        #Accuracy cang de cao thi cang don gian hoa duong di
         a = 0
         Accuracy = Accuracy * Accuracy
         OutputArr = [[InputArr[0][0],InputArr[0][1]]]
