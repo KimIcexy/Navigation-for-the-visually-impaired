@@ -1,5 +1,5 @@
 venv/
 __pycache__/
 NYU_ResNet-UpProj.npy
-test_resources/
+video.mp4
 yolov8x.pt
