@@ -227,7 +227,40 @@ class PathPlanning:
                         
                 # add current_node to the closed set:
                 closed_set.add(current_node)        
-    
+                
+    def optimize_path (self, raw_path, accuracy = 8):
+        #Input: List of tuple (example: [(6969, 50),...])
+        #Output: Optimized list of tuple
+        #Accuracy cang cao thi cang don gian hoa duong di
+        print('raw path: ', raw_path)
+        a = 0
+        accuracy = accuracy * accuracy
+        out_array = [[raw_path[0][0],raw_path[0][1]]]
+        while (a < len(raw_path)):
+            segment_end = min (a + accuracy, len(raw_path))-1
+            vec_x = raw_path [segment_end][0] - raw_path[a][0]
+            vec_y = raw_path [segment_end][1] - raw_path[a][1]
+            #print (Vector_x,' ',Vector_y)
+            if (abs(vec_x) > abs(vec_y)):
+                out_array.append ((out_array[len(out_array)-1][0], out_array[len(out_array)-1][1] + vec_y))
+                out_array.append ((out_array[len(out_array)-1][0] + vec_x, out_array[len(out_array)-1][1]))
+            else:
+                out_array.append ((out_array[len(out_array)-1][0] + vec_x, out_array[len(out_array)-1][1]))
+                out_array.append ((out_array[len(out_array)-1][0], out_array[len(out_array)-1][1] + vec_y))
+            a = a + accuracy
+        #Removing Duplicate
+        prev_value = None
+        cleaned_path = []
+        for a in range (0, len(out_array)):
+            if prev_value is None:
+                cleaned_path.append (out_array[0])
+                prev_value = a
+                continue
+            if (out_array[a] != out_array[prev_value]):
+                cleaned_path.append (out_array[a])
+            prev_value = a
+        return cleaned_path
+
     def show_result(self, rgb_image, path, no_frame):
         # # show bounding box
         # for obstacle in obstacle_region:
@@ -248,35 +281,3 @@ class PathPlanning:
             result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}.jpg')
             print('result path: ', result_path)
             plt.savefig(result_path)
-            
-    def Optimize (InputArr, Accuracy = 8):
-        #Input: List of tuple (example: [(6969, 50),...])
-        #Output: Optimized list of tuple
-        #Accuracy cang de cao thi cang don gian hoa duong di
-        a = 0
-        Accuracy = Accuracy * Accuracy
-        OutputArr = [[InputArr[0][0],InputArr[0][1]]]
-        while (a < len(InputArr)):
-            segmentEnd = min (a + Accuracy, len(InputArr))-1
-            Vector_x = InputArr [segmentEnd][0] - InputArr[a][0]
-            Vector_y = InputArr [segmentEnd][1] - InputArr[a][1]
-            #print (Vector_x,' ',Vector_y)
-            if (abs(Vector_x) > abs(Vector_y)):
-                OutputArr.append ((OutputArr[len(OutputArr)-1][0], OutputArr[len(OutputArr)-1][1] + Vector_y))
-                OutputArr.append ((OutputArr[len(OutputArr)-1][0] + Vector_x, OutputArr[len(OutputArr)-1][1]))
-            else:
-                OutputArr.append ((OutputArr[len(OutputArr)-1][0] + Vector_x, OutputArr[len(OutputArr)-1][1]))
-                OutputArr.append ((OutputArr[len(OutputArr)-1][0], OutputArr[len(OutputArr)-1][1] + Vector_y))
-            a = a + Accuracy
-        #Removing Duplicate
-        prevValue = None
-        CleanedOutputArr = []
-        for a in range (0, len(OutputArr)):
-            if prevValue is None:
-                CleanedOutputArr.append (OutputArr[0])
-                prevValue = a
-                continue
-            if (OutputArr[a] != OutputArr[prevValue]):
-                CleanedOutputArr.append (OutputArr[a])
-            prevValue = a
-        return CleanedOutputArr
