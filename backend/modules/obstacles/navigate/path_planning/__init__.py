@@ -41,17 +41,18 @@ class PathPlanning:
         goal: PixelNode that the path planning want to reach        
     """  
     
-    def __init__(self, depth_image, obstacle_region, floor_region):
+    def __init__(self, depth_image, obstacle_region, floor_region, old_path):
         self.depth_image = depth_image
         self.height = depth_image.shape[0]
         self.width = depth_image.shape[1]
         self.walkable_map = self.create_walkable_map(obstacle_region, floor_region)
         self.planning_map = self.create_planning_map()
-        point = self.find_start_point()
+        
+        point = self.find_start_point(old_path)
+        print('find start point: ', point)
         self.start = self.planning_map[point[1], point[0]]
         self.start.total_cost = 0
         self.start.cost = 0
-        # self.start.walkable = True
         print('Start coords: ', self.start.coords)
         print('walkable: ', self.start.walkable)
         point = self.make_temp_goal()
@@ -60,14 +61,26 @@ class PathPlanning:
             self.goal = None
             return
         self.goal = self.planning_map[point[1], point[0]]
+        print('walkable: ', self.goal.walkable)
     
-    def find_start_point(self):
-        # start point: mid bottom point in the image
-        x = int(self.width / 2)
-        y = int(self.height - 1)
-        return (x, y)
-        # return (702, 971)
-    
+    def find_start_point(self, old_path):
+        if len(old_path)==0:
+            # start point: mid bottom point in the image
+            x = int(self.width / 2)
+            y = int(self.height - 1)
+            return (x, y)
+        else:
+            # reversed_path
+            for i_reversed in range (len(old_path)-1, -1, -1):
+                coords = old_path[i_reversed]
+                node = self.planning_map[coords[1], coords[0]]
+                if node.walkable:
+                    self.update_old_path(old_path, i_reversed)
+                    return node.coords
+            
+    def update_old_path(self, old_path, new_end_idx):
+        old_path = old_path[:new_end_idx+1]
+        
     def hard_code_temp_goal(self):
         return tuple(np.argwhere(self.walkable_map==True)[0])
     
@@ -99,7 +112,7 @@ class PathPlanning:
     def find_path_center(self, path):
         if not path:
             return None
-        center = int(len(path)/4 -1)
+        center = int(len(path)/2 -1)
         return path[center]
     
     def create_planning_map(self):
@@ -190,7 +203,7 @@ class PathPlanning:
                     pre_node = current_node.pre_node
                     path = []
                     while pre_node:
-                        path.insert(0, pre_node)
+                        path.insert(0, pre_node.coords)
                         pre_node = pre_node.pre_node
                     return path
                 
@@ -214,9 +227,41 @@ class PathPlanning:
                         
                 # add current_node to the closed set:
                 closed_set.add(current_node)        
-    
-    def show_result(self, obstacle_region, path, no_frame):
-        temp_image = self.depth_image
+                
+    def optimize_path (self, raw_path, accuracy = 8):
+        #Input: List of tuple (example: [(6969, 50),...])
+        #Output: Optimized list of tuple
+        #Accuracy cang cao thi cang don gian hoa duong di
+        print('raw path: ', raw_path)
+        a = 0
+        accuracy = accuracy * accuracy
+        out_array = [[raw_path[0][0],raw_path[0][1]]]
+        while (a < len(raw_path)):
+            segment_end = min (a + accuracy, len(raw_path))-1
+            vec_x = raw_path [segment_end][0] - raw_path[a][0]
+            vec_y = raw_path [segment_end][1] - raw_path[a][1]
+            #print (Vector_x,' ',Vector_y)
+            if (abs(vec_x) > abs(vec_y)):
+                out_array.append ((out_array[len(out_array)-1][0], out_array[len(out_array)-1][1] + vec_y))
+                out_array.append ((out_array[len(out_array)-1][0] + vec_x, out_array[len(out_array)-1][1]))
+            else:
+                out_array.append ((out_array[len(out_array)-1][0] + vec_x, out_array[len(out_array)-1][1]))
+                out_array.append ((out_array[len(out_array)-1][0], out_array[len(out_array)-1][1] + vec_y))
+            a = a + accuracy
+        #Removing Duplicate
+        prev_value = None
+        cleaned_path = []
+        for a in range (0, len(out_array)):
+            if prev_value is None:
+                cleaned_path.append (out_array[0])
+                prev_value = a
+                continue
+            if (out_array[a] != out_array[prev_value]):
+                cleaned_path.append (out_array[a])
+            prev_value = a
+        return cleaned_path
+
+    def show_result(self, rgb_image, path, no_frame):
         # # show bounding box
         # for obstacle in obstacle_region:
         #     bbox = obstacle[0]
@@ -227,44 +272,12 @@ class PathPlanning:
         # show path
         if path:
             for pixel in path:
-                coords = pixel.coords
+                # coords = pixel.coords
                 # print(coords)
-                cv2.circle(temp_image, coords, 10, (255,255,255), -1)
-            plt.imshow(temp_image, cmap='gray')
+                cv2.circle(rgb_image, pixel, 10, (255,255,255), -1)
+            plt.imshow(rgb_image, cmap='gray')
             plt.axis('off')  # Turn off axis labels
             result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}.jpg')
             print('result path: ', result_path)
             plt.savefig(result_path)
-            
-    def Optimize (InputArr, Accuracy = 8):
-        #Input: List of tuple (example: [(6969, 50),...])
-        #Output: Optimized list of tuple
-        #Accuracy cang de cao thi cang don gian hoa duong di
-        a = 0
-        Accuracy = Accuracy * Accuracy
-        OutputArr = [[InputArr[0][0],InputArr[0][1]]]
-        while (a < len(InputArr)):
-            segmentEnd = min (a + Accuracy, len(InputArr))-1
-            Vector_x = InputArr [segmentEnd][0] - InputArr[a][0]
-            Vector_y = InputArr [segmentEnd][1] - InputArr[a][1]
-            #print (Vector_x,' ',Vector_y)
-            if (abs(Vector_x) > abs(Vector_y)):
-                OutputArr.append ((OutputArr[len(OutputArr)-1][0], OutputArr[len(OutputArr)-1][1] + Vector_y))
-                OutputArr.append ((OutputArr[len(OutputArr)-1][0] + Vector_x, OutputArr[len(OutputArr)-1][1]))
-            else:
-                OutputArr.append ((OutputArr[len(OutputArr)-1][0] + Vector_x, OutputArr[len(OutputArr)-1][1]))
-                OutputArr.append ((OutputArr[len(OutputArr)-1][0], OutputArr[len(OutputArr)-1][1] + Vector_y))
-            a = a + Accuracy
-        #Removing Duplicate
-        prevValue = None
-        CleanedOutputArr = []
-        for a in range (0, len(OutputArr)):
-            if prevValue is None:
-                CleanedOutputArr.append (OutputArr[0])
-                prevValue = a
-                continue
-            if (OutputArr[a] != OutputArr[prevValue]):
-                CleanedOutputArr.append (OutputArr[a])
-            prevValue = a
-        return CleanedOutputArr

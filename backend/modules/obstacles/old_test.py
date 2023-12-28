@@ -21,7 +21,7 @@ def extract_frames(video_path, output_folder):
         ret, frame = cap.read()
         if not ret:
             break
-        filename = f"{frame_number + 1}.jpg"
+        filename = f"{frame_number}.jpg"
         filepath = os.path.join(output_folder, filename)
         cv2.imwrite(filepath, frame)
     cap.release()
