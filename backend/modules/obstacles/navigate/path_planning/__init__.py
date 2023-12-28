@@ -229,10 +229,30 @@ class PathPlanning:
                 closed_set.add(current_node)        
                 
     def optimize_path (self, raw_path, accuracy = 8):
+        def append_path (out_array, vec_x, vec_y):
+            if (abs(vec_x) > abs(vec_y)):
+                if (vec_y != 0):
+                    last_y = out_array[len(out_array)-1][1]
+                    for y in range (last_y + 1, last_y + vec_y, int(vec_y/abs(vec_y))):
+                        out_array.append ((out_array[len(out_array)-1][0], y))
+                if (vec_x != 0):
+                    last_x = out_array[len(out_array)-1][0]
+                    for x in range (last_x + 1, last_x + vec_x, int(vec_x/abs(vec_x))):
+                        out_array.append ((x, out_array[len(out_array)-1][1]))
+            else:
+                if (vec_x != 0):
+                    last_x = out_array[len(out_array)-1][0]
+                    for x in range (last_x + 1, last_x + vec_x, int(vec_x/abs(vec_x))):
+                        out_array.append ((x, out_array[len(out_array)-1][1]))
+                if (vec_y != 0):
+                    last_y = out_array[len(out_array)-1][1]
+                    for y in range (last_y + 1, last_y + vec_y, int(vec_y/abs(vec_y))):
+                        out_array.append ((out_array[len(out_array)-1][0], y))
+            return out_array
+        
         #Input: List of tuple (example: [(6969, 50),...])
         #Output: Optimized list of tuple
         #Accuracy cang cao thi cang don gian hoa duong di
-        print('raw path: ', raw_path)
         a = 0
         accuracy = accuracy * accuracy
         out_array = [[raw_path[0][0],raw_path[0][1]]]
@@ -240,13 +260,7 @@ class PathPlanning:
             segment_end = min (a + accuracy, len(raw_path))-1
             vec_x = raw_path [segment_end][0] - raw_path[a][0]
             vec_y = raw_path [segment_end][1] - raw_path[a][1]
-            #print (Vector_x,' ',Vector_y)
-            if (abs(vec_x) > abs(vec_y)):
-                out_array.append ((out_array[len(out_array)-1][0], out_array[len(out_array)-1][1] + vec_y))
-                out_array.append ((out_array[len(out_array)-1][0] + vec_x, out_array[len(out_array)-1][1]))
-            else:
-                out_array.append ((out_array[len(out_array)-1][0] + vec_x, out_array[len(out_array)-1][1]))
-                out_array.append ((out_array[len(out_array)-1][0], out_array[len(out_array)-1][1] + vec_y))
+            out_array = append_path (out_array, vec_x, vec_y)
             a = a + accuracy
         #Removing Duplicate
         prev_value = None
