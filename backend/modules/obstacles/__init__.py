@@ -1,38 +1,18 @@
-from flask import Blueprint, request, jsonify
-import numpy as np
+from flask_socketio import emit
 
-from utils.auth import token_required
-from utils.image import base64_to_image
+from ...main import socketio
 
-bp = Blueprint('navigate', __name__)
+@socketio.on('connect')
+def test_connect(auth):
+    emit('my response', {'data': 'Connected'})
 
-@bp.route('/navigate/', methods=['POST'])
-@token_required
-def navigate(current_user):
-    print(request)
-    form = request.form
-    data = form['base64']
-    image = base64_to_image(data)
+@socketio.on('disconnect')
+def test_disconnect():
+    print('Client disconnected')
 
-    # DO SOMETHING HERE
 
-    # Generating a random number of random bounding boxes
-    # The number of bounding boxes is from 1 to 10
-    n_boxes = np.random.randint(1, 10)
-
-    # Generating random bounding boxes, with top-left coordinate and size
-    # The bounding box must be inside the image
-    boxes = []
-    for i in range(n_boxes):
-        x = np.random.randint(0, image.shape[1])
-        y = np.random.randint(0, image.shape[0])
-        w = np.random.randint(0, image.shape[1] - x)
-        h = np.random.randint(0, image.shape[0] - y)
-        boxes.append({
-            'top': y,
-            'left': x,
-            'width': w,
-            'height': h
-        })
-
-    return jsonify({'boxes': boxes}), 200
+# When client use socketio.emit('image', data)
+@socketio.on('image')
+def image(data):
+    print("Image received")
+    emit('image', {'message': 'Image received'})
