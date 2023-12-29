@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useState, useEffect } from 'react';
-import { Camera } from 'expo-camera';
-import { mediaDevices, RTCView } from 'react-native-webrtc';
 
 import { getCameraPermission } from '../Utils/camera.js';
 import { getToken } from '../Utils/user.js';
@@ -31,30 +29,9 @@ const Navigating = ({ navigation }) => {
 
     getCameraPermission(navigation);
 
-    const [stream, setStream] = useState(null);
-
-    const start = async () => {
-        if (!stream) {
-            let s = null;
-            try {
-                s = await mediaDevices.getUserMedia({ video: {
-                    facingMode: 'user'
-                }});
-                // Can't seem to set the back camera, so this will do for now.
-                s.getVideoTracks().forEach((track) => {
-                    track._switchCamera()
-                })
-                setStream(s);
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
-    }
-
     return (
         <View style = {styles.container}>
-            {stream && <RTCView style={styles.camera} streamURL={stream.toURL()} />}
+            <Camera style = {styles.camera} type = {Camera.Constants.Type.back} />
         </View>
     )
 }

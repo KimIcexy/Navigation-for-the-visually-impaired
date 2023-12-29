@@ -56,7 +56,7 @@ const Home = ({ navigation }) => {
                         </View>
                     )
                 }
-                {/* <Button text="Testing" onPress={() => navigation.navigate('FaceDetection')} /> */}
+                <Button text="Testing" onPress={() => navigation.navigate('FaceDetection')} />
             </View>
         </View>
     )
