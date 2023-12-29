@@ -55,6 +55,6 @@ for i in range(start, stop):
         start_point = path_planning.goal.coords
         path += path_planning.search_path()
         # print('Path frame ' + str(frame) + ': ', path)
-        path = path_planning.optimize_path(path, 8)
+        path = path_planning.optimize_path(path, 15)
         path_planning.show_result(origin_image, path, frame)
     

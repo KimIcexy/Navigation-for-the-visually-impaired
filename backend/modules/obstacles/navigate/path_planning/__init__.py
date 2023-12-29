@@ -228,7 +228,7 @@ class PathPlanning:
                 # add current_node to the closed set:
                 closed_set.add(current_node)        
                 
-    def optimize_path (self, raw_path, accuracy = 8):
+    def optimize_path (self, raw_path, accuracy = 15):
         def append_path (out_array, vec_x, vec_y):
             if (abs(vec_x) > abs(vec_y)):
                 if (vec_y != 0):
