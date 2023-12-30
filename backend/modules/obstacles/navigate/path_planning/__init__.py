@@ -255,6 +255,7 @@ class PathPlanning:
             else:
                 if (vec_x != 0):
                     last_x = out_array[len(out_array)-1][0]
+                    direction = int(vec_x/abs(vec_x))
                     for x in range (last_x + direction, last_x + vec_x, direction):
                         out_array.append ((x, out_array[len(out_array)-1][1]))
                 if (vec_y != 0):
