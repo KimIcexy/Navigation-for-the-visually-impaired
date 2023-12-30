@@ -55,10 +55,9 @@ for i in range(start, stop):
         # make the old goal to be a start point for the next path planning
         start_point = path_planning.goal.coords
         path += path_planning.search_path()
-        print('Raw frame ' + str(frame) + ': ', path)
-        if frame != 720:
-            print ('Frame '+ str(frame) + ' Optimized')
-            path = path_planning.optimize_path(path, 15)
-        #print('Optimize path: ', path)
+        #print('Raw frame ' + str(frame) + ': ', path)
+        print('Raw frame ' + str(frame) + ', Last location:  ', path[len(path)-1])
+        path = path_planning.optimize_path(path, 15)
+        print('Optimize path last location: ', path[len(path)-1])
         path_planning.show_result(origin_image, path, frame)
     
