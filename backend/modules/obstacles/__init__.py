@@ -1,18 +1,17 @@
-from flask_socketio import emit
+import sys
+from flask import Blueprint, jsonify, request
 
-from ...main import socketio
+from utils.image import base64_to_image
+from utils.auth import token_required
 
-@socketio.on('connect')
-def test_connect(auth):
-    emit('my response', {'data': 'Connected'})
+bp = Blueprint('obstacles', __name__)
 
-@socketio.on('disconnect')
-def test_disconnect():
-    print('Client disconnected')
+@bp.route('/navigate/', methods=['POST'])
+@token_required
+def navigate(current_user):
+    form = request.form
+    data = form['base64']
+    
+    image = base64_to_image(data)
 
-
-# When client use socketio.emit('image', data)
-@socketio.on('image')
-def image(data):
-    print("Image received")
-    emit('image', {'message': 'Image received'})
+    return jsonify({'message': 'OK'}), 200
