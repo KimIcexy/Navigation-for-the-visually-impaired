@@ -261,7 +261,7 @@ class PathPlanning:
                 if (vec_y != 0):
                     last_y = out_array[len(out_array)-1][1]
                     direction = int(vec_y/abs(vec_y))
-                    for y in range (last_y + direction, last_y + vec_y, int(vec_y/abs(vec_y))):
+                    for y in range (last_y + direction, last_y + vec_y, direction):
                         out_array.append ((out_array[len(out_array)-1][0], y))
             return out_array
         
@@ -272,7 +272,7 @@ class PathPlanning:
         accuracy = accuracy * accuracy
         out_array = [[raw_path[0][0],raw_path[0][1]]]
         while (a < len(raw_path)):
-            segment_end = min (a + accuracy, len(raw_path))-1
+            segment_end = min (a + accuracy, len(raw_path)-1)
             vec_x = raw_path [segment_end][0] - raw_path[a][0]
             vec_y = raw_path [segment_end][1] - raw_path[a][1]
             out_array = append_path (out_array, vec_x, vec_y)
