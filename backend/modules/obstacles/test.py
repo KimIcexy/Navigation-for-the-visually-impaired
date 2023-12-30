@@ -12,7 +12,7 @@ obj_detection = ObjectDetection()
 floor_detection = FloorDetection()
 # depth_converter = MakeDepthImage()
 start = 0
-stop = 10
+stop = 21
 n_frames = 90
 frames_path = 'test_resources/frames'
 
@@ -45,12 +45,11 @@ for i in range(start, stop):
     depth_image = cv2.imread(depth_image_path, cv2.IMREAD_GRAYSCALE)
     depth_image = cv2.resize(depth_image, (1080, 1920))
         
-    # """Test path planning"""
+    """Test path planning"""
     print('Path planning...')
     path_planning = PathPlanning(depth_image, obstacle_region[0], floor_region, path)
     if path_planning.goal == None:
         print('Cannot find path !!!')
-        # path = []
     else:
         # make the old goal to be a start point for the next path planning
         start_point = path_planning.goal.coords

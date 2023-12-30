@@ -12,6 +12,7 @@ class FloorDetection:
     
     def make_results_list (self, results):
         results_list = []
+        # remove the second floor detection
         for result in results:
             top = result['y'] - 0.5 * result['height']
             left = result['x'] - 0.5 * result['width']

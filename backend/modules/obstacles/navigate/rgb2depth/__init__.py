@@ -4,6 +4,7 @@ import numpy as np
 import tensorflow.compat.v1 as tf
 from matplotlib import pyplot as plt
 from PIL import Image
+# from matplotlib.backends.backend_agg import FigureCanvasAgg
 
 # import models
 from .models.fcrn import ResNet50UpProj
@@ -52,6 +53,17 @@ class MakeDepthImage:
             plt.close()
             depth_image = cv2.imread(result_path, cv2.IMREAD_GRAYSCALE)
             depth_image = cv2.resize(depth_image, (self.width, self.height))
+            # fig, ax = plt.subplots()
+            # ii = ax.imshow(pred[0, :, :, 0], cmap='gray', interpolation='nearest')
+            # ax.axis('off')
+            # canvas = FigureCanvasAgg(fig)
+            # canvas.draw()
+            # width, height = fig.get_size_inches() * fig.get_dpi()
+            # depth_image_np = np.frombuffer(canvas.tostring_rgb(), dtype='uint8').reshape(int(height), int(width), 3)
+            # plt.close()
+
+            # Resize the depth image if necessary
+            # depth_image = cv2.resize(depth_image_np, (self.width, self.height), interpolation=cv2.INTER_AREA)
             return depth_image
     
     def run(self, image_path, no_frame):
