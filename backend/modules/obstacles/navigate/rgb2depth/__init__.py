@@ -36,28 +36,6 @@ class MakeDepthImage:
         image = np.expand_dims(np.asarray(image), axis = 0)
         return image
         
-        # Read image
-        # image = Image.open(image_path)
-        # # width = image.size[0]
-        # # height = image.size[1]
-        # image = np.array(image).astype('uint8')  # Convert to uint8 data type
-
-        # # Split the RGB channels
-        # b, g, r = cv2.split(image)
-
-        # # Apply histogram equalization to each channel separately
-        # b_eq = cv2.equalizeHist(b)
-        # g_eq = cv2.equalizeHist(g)
-        # r_eq = cv2.equalizeHist(r)
-
-        # # Merge the equalized channels back into an RGB image
-        # equalized_image = cv2.merge((b_eq, g_eq, r_eq))
-        # # equalized_image = equalized_image.resize((width,height), Image.Resampling.LANCZOS)
-        # equalized_image = np.array(equalized_image).astype('float32')
-        # equalized_image = np.expand_dims(np.asarray(equalized_image), axis = 0)
-        # print('shape: ', equalized_image.shape)
-        # return equalized_image
-    
     def predict(self, image, no_frame):
         with self.sess.as_default():
             # Evalute the network for the given image

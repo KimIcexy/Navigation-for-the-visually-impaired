@@ -50,11 +50,13 @@ for i in range(start, stop):
     path_planning = PathPlanning(depth_image, obstacle_region[0], floor_region, path)
     if path_planning.goal == None:
         print('Cannot find path !!!')
+        # path = []
     else:
         # make the old goal to be a start point for the next path planning
         start_point = path_planning.goal.coords
         path += path_planning.search_path()
-        # print('Path frame ' + str(frame) + ': ', path)
-        path = path_planning.optimize_path(path, 15)
+        # print('Raw frame ' + str(frame) + ': ', path)
+        # path = path_planning.optimize_path(path, 15)
+        # print('Optimize path: ', path)
         path_planning.show_result(origin_image, path, frame)
     

@@ -47,9 +47,12 @@ class PathPlanning:
         self.width = depth_image.shape[1]
         self.walkable_map = self.create_walkable_map(obstacle_region, floor_region)
         self.planning_map = self.create_planning_map()
-        
         point = self.find_start_point(old_path)
         print('find start point: ', point)
+        if point == None:
+            self.start = None
+            self.goal = None
+            return
         self.start = self.planning_map[point[1], point[0]]
         self.start.total_cost = 0
         self.start.cost = 0
@@ -64,22 +67,30 @@ class PathPlanning:
         print('walkable: ', self.goal.walkable)
     
     def find_start_point(self, old_path):
-        if len(old_path)==0:
+        path_len = len(old_path)
+        # print('len old path: ', path_len)
+        if path_len == 0:
             # start point: mid bottom point in the image
             x = int(self.width / 2)
             y = int(self.height - 1)
             return (x, y)
         else:
             # reversed_path
-            for i_reversed in range (len(old_path)-1, -1, -1):
+            for i_reversed in range (path_len -1, -1, -1):
                 coords = old_path[i_reversed]
+                # print('coords reversed: ', coords)
                 node = self.planning_map[coords[1], coords[0]]
                 if node.walkable:
-                    self.update_old_path(old_path, i_reversed)
+                    if i_reversed != path_len-1: # old goal is walkable
+                        # print('i_reversed: ', i_reversed)
+                        self.update_old_path(old_path, i_reversed)
+                        # print('update len: ', len(old_path))
                     return node.coords
+            return None
             
     def update_old_path(self, old_path, new_end_idx):
-        old_path = old_path[:new_end_idx+1]
+        # print(old_path[new_end_idx+1:])
+        old_path[:] = old_path[:new_end_idx+1]
         
     def hard_code_temp_goal(self):
         return tuple(np.argwhere(self.walkable_map==True)[0])
