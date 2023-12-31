@@ -239,7 +239,7 @@ class PathPlanning:
                 # add current_node to the closed set:
                 closed_set.add(current_node)        
                 
-    def optimize_path (self, raw_path, accuracy = 15):
+    def optimize_path (self, raw_path, segment_len = 15, max_distance = 20):
         def append_path (out_array, vec_x, vec_y):
             if (abs(vec_x) > abs(vec_y)):
                 if (vec_y != 0):
@@ -267,18 +267,43 @@ class PathPlanning:
         
         #Input: List of tuple (example: [(6969, 50),...])
         #Output: Optimized list of tuple
-        #Accuracy cang cao thi cang don gian hoa duong di
+        #segment_len cang cao thi cang don gian hoa duong di
         a = 0
-        accuracy = accuracy * accuracy
+        segment_len = segment_len * segment_len
         out_array = [[raw_path[0][0],raw_path[0][1]]]
+        #Cumulative of vector that has not been used in path
+        cum_vec_x = 0
+        cum_vec_y = 0
         while (a < len(raw_path)):
-            segment_end = min (a + accuracy, len(raw_path)-1)
+            segment_end = min (a + segment_len, len(raw_path)-1)
             vec_x = raw_path [segment_end][0] - raw_path[a][0]
             vec_y = raw_path [segment_end][1] - raw_path[a][1]
-            out_array = append_path (out_array, vec_x, vec_y)
-            a = a + accuracy
+            if (cum_vec_x == 0) and (cum_vec_y == 0):
+                if abs(vec_x) <= abs (vec_y):
+                    out_array = append_path (out_array, 0, vec_y)
+                    cum_vec_x = vec_x
+                else:
+                    out_array = append_path (out_array, vec_x, 0)
+                    cum_vec_y = vec_y
+                
+            elif (cum_vec_x == 0) and (cum_vec_y!=0):
+                out_array = append_path (out_array, vec_x, 0)
+                cum_vec_y = cum_vec_y + vec_y
+                if abs(cum_vec_y) >= max_distance:
+                    out_array = append_path (out_array, 0, cum_vec_y)
+                    cum_vec_y = 0                    
+            elif (cum_vec_y == 0) and (cum_vec_x!=0):
+                out_array = append_path (out_array, 0, vec_y)
+                cum_vec_x = cum_vec_x + vec_x
+                if abs(cum_vec_x) >= max_distance:
+                    out_array = append_path (out_array, cum_vec_x, 0)
+                    cum_vec_x = 0
+            #out_array = append_path (out_array, vec_x, vec_y)
+            a = a + segment_len
+        out_array = append_path (out_array, cum_vec_x, cum_vec_y)
+        cleaned_path = out_array
         #Removing Duplicate
-        prev_value = None
+        """prev_value = None
         cleaned_path = []
         for a in range (0, len(out_array)):
             if prev_value is None:
@@ -287,7 +312,7 @@ class PathPlanning:
                 continue
             if (out_array[a] != out_array[prev_value]):
                 cleaned_path.append (out_array[a])
-            prev_value = a
+            prev_value = a"""
         return cleaned_path
 
     def show_result(self, origin_image, path, no_frame, optimized=True):
