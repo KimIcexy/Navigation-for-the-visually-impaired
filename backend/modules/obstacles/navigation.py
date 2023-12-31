@@ -46,7 +46,21 @@ class Navigation:
         else:
             # make the old goal (if available) to be a start point for the next path planning
             self.path += path_planning.search_path()
-            # self.path = path_planning.optimize_path(path, 15)
+            self.path = path_planning.optimize_path(self.path, 15)
+            # self.show_results(self.path, image)
             return path_planning.get_results(image, self.path)
 
+    def show_results(self, path, image):
+        rgb_image = image.copy()
+        # show path
+        if path:
+            print('path: ', path[:15], '...', path[-15:])
+            for pixel in path:
+                # coords = pixel.coords
+                # print(coords)
+                cv2.circle(rgb_image, pixel, 10, (255,255,255), -1)
+        plt.imshow(rgb_image)
+        plt.axis('off')  # Turn off axis labels
+        plt.savefig('RESULT.jpg')
+        
 navigation = Navigation()

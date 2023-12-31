@@ -1,5 +1,6 @@
 from roboflow import Roboflow
 import os
+import cv2
 
 class FloorDetection:
     def __init__(self):
@@ -20,19 +21,30 @@ class FloorDetection:
             right = result['x'] + 0.5 * result['width']
             results_list.append([int(top), int(left), int(bottom), int(right)])
         # print('Result list: ', results_list)
+        
+        
+        # Just get the only one floor region which has max bottom coordinate
+        if len(results) > 1:
+            final_result = results_list[0]
+            for result in results_list[1:]:
+                if result[2] > final_result[2]:
+                    final_result = result               
+            results_list = [final_result]
         return results_list
 
-    def make_annotations(self, results, no_frame):
+    def make_annotations(self, results, image, no_frame):
+        temp_image = image.copy()
         result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         result_path = os.path.join(result_path, 'results', 'floor', f'{no_frame}.jpg')
-        print('floor path: ', result_path)
-        results.save(result_path)
+        # print('floor path: ', result_path)
+        cv2.rectangle(temp_image, (results[0][1], results[0][0]), (results[0][3], results[0][2]), (0, 255, 0), 2)
+        cv2.imwrite(result_path, temp_image)
         
-    def test(self, image_path, no_frame):
-        results = self.predict(image_path)
+    def test(self, image, no_frame):
+        results = self.make_results_list(self.predict(image))
         # print('floor region: ', results)
-        self.make_annotations(results, no_frame)
-        return self.make_results_list(results)
+        self.make_annotations(results, image, no_frame)
+        return results
     
     def run(self, image):
         return self.make_results_list(self.predict(image))

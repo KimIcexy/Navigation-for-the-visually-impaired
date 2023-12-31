@@ -240,7 +240,38 @@ class PathPlanning:
                         
                 # add current_node to the closed set:
                 closed_set.add(current_node)        
-                
+
+    def path_to_direction (self, optimized_path):
+        direction = ["Right", "Left"]
+        output_direction = []
+        output_distance = []
+        last_checkpoint = 0
+        vec_before = (0,-1)
+        for a in range (0, len(optimized_path)-1):
+                #print (optimized_path[a])
+                vec_after = ((optimized_path[a+1][0] - optimized_path[a][0]), (optimized_path[a+1][1] - optimized_path[a][1]))
+                if (vec_before == vec_after):
+                        continue
+                #vec_direction = ((vec_after[0] - vec_before[0])>0, (vec_after[1] - vec_before[1])>0)
+                #output.append (direction[vec_direction[0]][vec_direction[1]])
+                if (vec_before[0] == 0):
+                        if (vec_before[1] == 1):
+                                output_direction.append (direction[vec_after[0] == 1])
+                        else: #== -1
+                                output_direction.append (direction[vec_after[0] == -1])
+                else:
+                        if (vec_before[0] == 1):
+                                output_direction.append (direction[vec_after[1] == -1])
+                        else: #== -1
+                                output_direction.append (direction[vec_after[1] == 1])
+                output_distance.append (a - last_checkpoint)
+                last_checkpoint = a
+                vec_before = vec_after
+        output_distance.append (len(optimized_path)-1 - last_checkpoint)
+        #print (output_direction)
+        #print (output_distance)
+        return output_direction, output_distance
+    
     def optimize_path (self, raw_path, segment_len = 15, max_distance = 20):
         def append_path (out_array, vec_x, vec_y):
             if (abs(vec_x) > abs(vec_y)):
@@ -303,20 +334,8 @@ class PathPlanning:
             #out_array = append_path (out_array, vec_x, vec_y)
             a = a + segment_len
         out_array = append_path (out_array, cum_vec_x, cum_vec_y)
-        cleaned_path = out_array
-        #Removing Duplicate
-        """prev_value = None
-        cleaned_path = []
-        for a in range (0, len(out_array)):
-            if prev_value is None:
-                cleaned_path.append (out_array[0])
-                prev_value = a
-                continue
-            if (out_array[a] != out_array[prev_value]):
-                cleaned_path.append (out_array[a])
-            prev_value = a"""
-        return cleaned_path
-
+        return out_array
+    
     def show_result(self, origin_image, path, no_frame, optimized=True):
         rgb_image = origin_image.copy()
         # # show bounding box
@@ -331,7 +350,7 @@ class PathPlanning:
             for pixel in path:
                 # coords = pixel.coords
                 # print(coords)
-                cv2.circle(rgb_image, pixel, 10, (255,255,255), -1)
+                cv2.circle(rgb_image, pixel, 10, (0,255,0), -1)
             plt.imshow(rgb_image, cmap='gray')
             plt.axis('off')  # Turn off axis labels
             result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
