@@ -7,5 +7,5 @@ __pycache__/
 # Log files
 *.log
 NYU_ResNet-UpProj.npy
-video.mp4
+test_resources/
 yolov8x.pt
