@@ -246,23 +246,23 @@ class PathPlanning:
                 if (vec_y != 0):
                     last_y = out_array[len(out_array)-1][1]
                     direction = int(vec_y/abs(vec_y))
-                    for y in range (last_y + direction, last_y + vec_y, direction):
+                    for y in range (last_y + direction, last_y + vec_y + direction, direction):
                         out_array.append ((out_array[len(out_array)-1][0], y))
                 if (vec_x != 0):
                     last_x = out_array[len(out_array)-1][0]
                     direction = int(vec_x/abs(vec_x))
-                    for x in range (last_x + direction, last_x + vec_x, direction):
+                    for x in range (last_x + direction, last_x + vec_x + direction, direction):
                         out_array.append ((x, out_array[len(out_array)-1][1]))
             else:
                 if (vec_x != 0):
                     last_x = out_array[len(out_array)-1][0]
                     direction = int(vec_x/abs(vec_x))
-                    for x in range (last_x + direction, last_x + vec_x, direction):
+                    for x in range (last_x + direction, last_x + vec_x + direction, direction):
                         out_array.append ((x, out_array[len(out_array)-1][1]))
                 if (vec_y != 0):
                     last_y = out_array[len(out_array)-1][1]
                     direction = int(vec_y/abs(vec_y))
-                    for y in range (last_y + direction, last_y + vec_y, direction):
+                    for y in range (last_y + direction, last_y + vec_y + direction, direction):
                         out_array.append ((out_array[len(out_array)-1][0], y))
             return out_array
         
