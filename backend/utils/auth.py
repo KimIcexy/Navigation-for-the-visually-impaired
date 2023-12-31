@@ -2,9 +2,9 @@ from flask import jsonify, request
 from functools import wraps
 import jwt
 
-from database.db import db
 from modules.users.models.user_model import User
 from utils.config import SECRET_KEY
+from database import db
 
 def token_required(func):
     '''

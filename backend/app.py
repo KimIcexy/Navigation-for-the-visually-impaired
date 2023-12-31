@@ -3,8 +3,9 @@ from flask_cors import CORS
 from logging.config import dictConfig # For exporting logging file
 
 from utils.config import *
-from database.db import db
+from database import db
 from modules import bp
+from modules.obstacles.navigation import navigation
 
 def define_logging():
     dictConfig({
@@ -40,9 +41,10 @@ def create_app():
 
     # Route/Blueprint here
     app.register_blueprint(bp)
-    return app  
+    return app
 
 if __name__ == '__main__':
     app = create_app()
     db.init_db()
+    navigation.init()
     app.run(debug=True)

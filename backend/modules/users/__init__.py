@@ -3,10 +3,10 @@ from flask import Blueprint, jsonify, request
 import jwt
 
 from modules.users.models.user_model import User
-from database.db import db
 from utils.config import SECRET_KEY
 from modules.users.module.image import bp as image_bp
 from utils.image import base64_to_image, one_face_valid
+from database import db
 
 bp = Blueprint('user', __name__)
 bp.register_blueprint(image_bp)

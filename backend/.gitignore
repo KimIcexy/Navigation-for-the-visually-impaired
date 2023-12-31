@@ -6,3 +6,6 @@ __pycache__/
 
 # Log files
 *.log
+NYU_ResNet-UpProj.npy
+video.mp4
+yolov8x.pt

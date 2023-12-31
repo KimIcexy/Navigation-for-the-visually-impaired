@@ -15,13 +15,15 @@ class Database:
         Base: the declarative base for the database. For creating models.
     '''
     def __init__(self):
-        self.url = config.LOCAL_POSTGRES_URL
+        print('Initializing database...')
+        self.url = config.POSTGRES_URL
         self.engine = create_engine(self.url)
         self._session = None
         self.Base = declarative_base()
 
     def init_db(self):
         '''Initialize the database.'''
+        print('Initializing database tables...')
         self.Base.metadata.create_all(self.engine)
 
     def connect(self):

@@ -4,7 +4,7 @@ from io import BytesIO
 from PIL import Image
 from deepface import DeepFace
 
-from database.db import db
+from database import db
 from modules.users.models.user_model import User
 from utils.auth import token_required
 from utils.image import base64_to_image, image_to_base64, one_face_valid

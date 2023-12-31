@@ -5,9 +5,10 @@ import bcrypt  # For hashing passwords
 import uuid
 from datetime import datetime
 from deepface import DeepFace # For face verification. Will make an util for this later, rather than... well, importing it here.
+from flask import g
 
-from database.db import db
 from utils.image import euclide_l2
+from database import db
 
 class User(db.Base):
     __tablename__ = 'users'
