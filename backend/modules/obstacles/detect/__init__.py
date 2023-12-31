@@ -46,7 +46,7 @@ class ObjectDetection:
         img = annotator.result()
         cv2.imwrite (result_path, img)
 
-    def run(self, image_path, no_frame):
+    def test(self, image_path, no_frame):
         results = []
         results = self.model(image_path)
         results_list = self.make_results_list(results)
@@ -56,3 +56,6 @@ class ObjectDetection:
         print('obstacle path: ', result_path)
         self.make_annotation(image_path, results, result_path)
         return results_list
+    
+    def run(self, image):
+        return self.make_results_list(self.model(image))

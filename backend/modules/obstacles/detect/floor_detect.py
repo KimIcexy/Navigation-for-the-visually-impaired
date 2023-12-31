@@ -28,9 +28,12 @@ class FloorDetection:
         print('floor path: ', result_path)
         results.save(result_path)
         
-    def run(self, image_path, no_frame):
+    def test(self, image_path, no_frame):
         results = self.predict(image_path)
         # print('floor region: ', results)
         self.make_annotations(results, no_frame)
         return self.make_results_list(results)
+    
+    def run(self, image):
+        return self.make_results_list(self.predict(image))
         

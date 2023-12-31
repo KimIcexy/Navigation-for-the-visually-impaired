@@ -45,6 +45,7 @@ class PathPlanning:
         self.depth_image = depth_image
         self.height = depth_image.shape[0]
         self.width = depth_image.shape[1]
+        self.obstacle_region = obstacle_region
         self.walkable_map = self.create_walkable_map(obstacle_region, floor_region)
         self.planning_map = self.create_planning_map()
         point = self.find_start_point(old_path)
@@ -342,29 +343,17 @@ class PathPlanning:
             print('result path: ', result_path)
             plt.savefig(result_path)
 
-    def get_result(self, origin_image, path, no_frame, optimized=True):
+    def get_results(self, origin_image, path):
         rgb_image = origin_image.copy()
-        # # show bounding box
-        # for obstacle in obstacle_region:
-        #     bbox = obstacle[0]
-        #     # print(bbox)
-        #     # top, left, bottom, right = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
-        #     # cv2.rectangle(temp_image, (left, top), (right, bottom), (0, 255, 0), 2)
+        results = {}
         
-        # show path
-        if path:
-            for pixel in path:
-                # coords = pixel.coords
-                # print(coords)
-                cv2.circle(rgb_image, pixel, 10, (255,255,255), -1)
-            plt.imshow(rgb_image, cmap='gray')
-            plt.axis('off')  # Turn off axis labels
-            result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-            if optimized:
-                result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}.jpg')
-            else:
-                result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}_raw.jpg')
-
-            print('result path: ', result_path)
-            plt.savefig(result_path)
+        # obstacle results have type: [[top, left, bottom, right], class_name]
+        obstacle_results = []
+        for obstacle in self.obstacle_region:
+            bbox = obstacle[0]
+            top, left, bottom, right = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
+            class_name = obstacle[1]
+            obstacle_results.append([bbox, class_name])
+        results['obstacles'] = obstacle_results
+        results['path'] = path
+        return results
