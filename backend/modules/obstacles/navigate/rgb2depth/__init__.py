@@ -65,7 +65,8 @@ class MakeDepthImage:
             plt.close()
 
             # Resize the depth image if necessary
-            depth_image = cv2.resize(depth_image_np, (self.width, self.height), interpolation=cv2.INTER_AREA)
+            depth_image = cv2.cvtColor(depth_image_np, cv2.COLOR_RGB2GRAY)
+            depth_image = cv2.resize(depth_image, (self.width, self.height), interpolation=cv2.INTER_AREA)
             return depth_image
     
     def run(self, image_path):

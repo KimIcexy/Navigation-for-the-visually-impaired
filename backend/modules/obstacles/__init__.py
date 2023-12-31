@@ -20,13 +20,16 @@ class Navigation:
     def run(self, image):
         print('Obstacle detection...')
         obstacle_region = self.obj_detection.run(image)
+        # print(obstacle_region)
         
         print('Floor detection...')
         floor_region = self.floor_detection.run(image)
+        # print(floor_region)
         
         print('RGB >> depth...')
         depth_image = self.depth_converter.run(image)
-
+        # print(depth_image.shape)
+        
         print('Path planning...')
         path_planning = PathPlanning(depth_image, obstacle_region[0], floor_region, self.path)
         if path_planning.goal == None:
@@ -34,7 +37,6 @@ class Navigation:
             return None
         else:
             # make the old goal (if available) to be a start point for the next path planning
-            start_point = path_planning.goal.coords
             self.path += path_planning.search_path()
             # self.path = path_planning.optimize_path(path, 15)
             return path_planning.get_results(image, self.path)

@@ -200,8 +200,6 @@ class PathPlanning:
         # use A* search algorithm from start to goal
         open_set = [self.start]
         closed_set = set()
-        # print('start node: ', self.start.coords)
-        # print('end node: ', self.goal.coords)
         
         while open_set:
             for node in open_set:
@@ -224,10 +222,13 @@ class PathPlanning:
                 
                 # assign neighbors for current_node:
                 self.get_neighbors(current_node)
-                
+
                 # traverse all neighbors of current_node:
                 # print('current_node: ', current_node.coords)
                 for neighbor in current_node.neighbors:
+                    # print('current total cost: ', current_node.total_cost)
+                    # print('neighbor total cost: ', neighbor.total_cost)
+                    # print('neighbor cost: ', neighbor.cost)
                     if neighbor not in closed_set and \
                         current_node.total_cost + neighbor.cost < neighbor.total_cost:
                             # update the shorter total_cost:
@@ -346,14 +347,16 @@ class PathPlanning:
     def get_results(self, origin_image, path):
         rgb_image = origin_image.copy()
         results = {}
-        
+
         # obstacle results have type: [[top, left, bottom, right], class_name]
         obstacle_results = []
         for obstacle in self.obstacle_region:
             bbox = obstacle[0]
             top, left, bottom, right = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
             class_name = obstacle[1]
-            obstacle_results.append([bbox, class_name])
+            obstacle_results.append([[top, left, bottom, right], class_name])
         results['obstacles'] = obstacle_results
         results['path'] = path
-        return results
+
+        return [results]
+
