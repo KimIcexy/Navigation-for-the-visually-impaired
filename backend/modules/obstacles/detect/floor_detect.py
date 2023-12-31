@@ -1,6 +1,7 @@
 from roboflow import Roboflow
 import os
 import cv2
+from matplotlib import pyplot as plt
 
 class FloorDetection:
     def __init__(self):
@@ -32,18 +33,21 @@ class FloorDetection:
             results_list = [final_result]
         return results_list
 
-    def make_annotations(self, results, image, no_frame):
+    def make_annotations(self, result, image, no_frame):
         temp_image = image.copy()
         result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         result_path = os.path.join(result_path, 'results', 'floor', f'{no_frame}.jpg')
         # print('floor path: ', result_path)
-        cv2.rectangle(temp_image, (results[0][1], results[0][0]), (results[0][3], results[0][2]), (0, 255, 0), 2)
-        cv2.imwrite(result_path, temp_image)
+        cv2.rectangle(temp_image, (result[1], result[0]), (result[3], result[2]), (0, 255, 0), 5)
+        plt.imshow(temp_image, cmap='gray')
+        plt.axis('off')
+        plt.savefig(result_path)
         
     def test(self, image, no_frame):
         results = self.make_results_list(self.predict(image))
-        # print('floor region: ', results)
-        self.make_annotations(results, image, no_frame)
+        # print('floor region: ', results[0])
+        if len(results)!=0:
+            self.make_annotations(results[0], image, no_frame)
         return results
     
     def run(self, image):

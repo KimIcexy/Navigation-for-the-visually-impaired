@@ -55,6 +55,7 @@ def base64_to_image(image_base64):
     image = base64.b64decode(image_base64)
     image = np.asarray(bytearray(image), dtype="uint8")
     image = cv2.imdecode(image, cv2.IMREAD_COLOR)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     return image
 
 def euclide_l2(face_1, face_2, threshold=0.65):

@@ -33,7 +33,7 @@ for i in range(start, stop):
 
     """Test navigation"""
     print('Floor detection...')
-    floor_region = floor_detection.test(frame_path, frame)
+    floor_region = floor_detection.test(origin_image, frame)
     
     """Test depth converter"""
     print('RGB >> depth...')
