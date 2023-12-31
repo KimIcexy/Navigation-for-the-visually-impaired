@@ -212,7 +212,7 @@ class PathPlanning:
                 if current_node == self.goal:
                     print('reach goal')
                     pre_node = current_node.pre_node
-                    path = []
+                    path = [current_node.coords]
                     while pre_node:
                         path.insert(0, pre_node.coords)
                         pre_node = pre_node.pre_node
@@ -290,7 +290,8 @@ class PathPlanning:
             prev_value = a
         return cleaned_path
 
-    def show_result(self, rgb_image, path, no_frame):
+    def show_result(self, origin_image, path, no_frame, optimized=True):
+        rgb_image = origin_image.copy()
         # # show bounding box
         # for obstacle in obstacle_region:
         #     bbox = obstacle[0]
@@ -307,6 +308,38 @@ class PathPlanning:
             plt.imshow(rgb_image, cmap='gray')
             plt.axis('off')  # Turn off axis labels
             result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}.jpg')
+
+            if optimized:
+                result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}.jpg')
+            else:
+                result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}_raw.jpg')
+
+            print('result path: ', result_path)
+            plt.savefig(result_path)
+
+    def get_result(self, origin_image, path, no_frame, optimized=True):
+        rgb_image = origin_image.copy()
+        # # show bounding box
+        # for obstacle in obstacle_region:
+        #     bbox = obstacle[0]
+        #     # print(bbox)
+        #     # top, left, bottom, right = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
+        #     # cv2.rectangle(temp_image, (left, top), (right, bottom), (0, 255, 0), 2)
+        
+        # show path
+        if path:
+            for pixel in path:
+                # coords = pixel.coords
+                # print(coords)
+                cv2.circle(rgb_image, pixel, 10, (255,255,255), -1)
+            plt.imshow(rgb_image, cmap='gray')
+            plt.axis('off')  # Turn off axis labels
+            result_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+            if optimized:
+                result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}.jpg')
+            else:
+                result_path = os.path.join(os.path.dirname(result_path), 'results', 'path', f'{no_frame}_raw.jpg')
+
             print('result path: ', result_path)
             plt.savefig(result_path)

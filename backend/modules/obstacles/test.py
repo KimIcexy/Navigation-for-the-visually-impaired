@@ -12,7 +12,7 @@ obj_detection = ObjectDetection()
 floor_detection = FloorDetection()
 # depth_converter = MakeDepthImage()
 start = 0
-stop = 21
+stop = 10
 n_frames = 90
 frames_path = 'test_resources/frames'
 
@@ -54,10 +54,10 @@ for i in range(start, stop):
         # make the old goal to be a start point for the next path planning
         start_point = path_planning.goal.coords
         path += path_planning.search_path()
-        print('Raw frame ' + str(frame) + ': ', path)
-        if frame != 720:
-            print ('Frame '+ str(frame) + ' Optimized')
-            path = path_planning.optimize_path(path, 15)
-        #print('Optimize path: ', path)
-        path_planning.show_result(origin_image, path, frame)
+        # 15 pixel at the beginning and end
+        # print('Raw frame ' + str(frame) + ': ', path[:15], '...', path[-15:])
+        path_planning.show_result(origin_image, path, frame, optimized=False)
+        # path = path_planning.optimize_path(path, 15)
+        # print('\nOptimize path: ', path[:15], '...', path[-15:])
+        # path_planning.show_result(origin_image, path, frame)
     
