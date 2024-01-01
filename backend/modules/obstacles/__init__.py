@@ -4,7 +4,7 @@ from flask import Blueprint, jsonify, request
 from utils.image import base64_to_image
 from utils.auth import token_required
 from modules.obstacles.navigation import navigation
-from backend.utils.paths import paths
+from utils.paths import paths
 
 bp = Blueprint('obstacles', __name__)
 
@@ -17,14 +17,15 @@ def navigate(current_user):
     image = base64_to_image(data)
     try:
         # get paths[current_user.username] or create the empty result (if not exist)
-        path = paths.setdefault(current_user.username, [])
+        # path = paths.setdefault(current_user.username, [])
         
         # navigation based on the input image and update the path
-        results = navigation.run(image, path)
+        # results = navigation.run(image, path)
+        results = navigation.run(image)
         
         print('results: ', results)
-        print('user path len: ', len(path))
-        jsonify({'results': results}), 200
+        # print('user path len: ', len(path))
+        return jsonify(results[0]), 200
     except Exception as e:
         print('Unexpected error:', e)
-        jsonify({'message': 'Error'}), 400
+        return jsonify({'message': 'Error'}), 400

@@ -21,7 +21,7 @@ class Navigation:
         self.floor_detection = FloorDetection()
         self.depth_converter = MakeDepthImage(self.size[0], self.size[1])
         
-    def run(self, image, path):
+    def run(self, image, path=[]):
         print('Obstacle detection...')
         obstacle_region = self.obj_detection.run(image)
         print(obstacle_region)

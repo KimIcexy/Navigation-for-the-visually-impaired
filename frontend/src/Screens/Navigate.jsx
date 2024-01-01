@@ -8,6 +8,7 @@ import { getToken } from '../Utils/user.js';
 import { getImage } from '../Utils/camera.js';
 import NavigateAPI from '../Services/Navigate_API.js'
 import { createForm } from '../Utils/formData.js';
+import { BoundingBoxStyle } from '../Constant/Style.jsx';
 
 const styles = StyleSheet.create({
     container: {
@@ -28,6 +29,9 @@ const Navigating = ({ navigation }) => {
     const [state, setState] = useState(false);
     const cameraRef = useRef(null);
 
+    const [obstacles, setObstacles] = useState([]);
+    const [path, setPath] = useState([]);
+
     const sendAPI = async () => {
         const imageBase64 = await getImage(cameraRef);
         const formData = createForm(imageBase64);
@@ -40,7 +44,7 @@ const Navigating = ({ navigation }) => {
         catch (err) {
             const button = {
                 text: 'OK',
-                onPress: () => navigation.navigate('Home')
+                // onPress: () => navigation.navigate('Home')
             }
             // Check if err is a string
             const errorMessage = typeof err == 'string' ? err : '';
@@ -58,6 +62,9 @@ const Navigating = ({ navigation }) => {
         if (res == false) {
             return;
         }
+        const { data } = res;
+        setObstacles(data?.obstacles);
+        setPath(data?.path);
     }
 
     useEffect(() => {
@@ -74,6 +81,49 @@ const Navigating = ({ navigation }) => {
         getTokenAPI();
     }, []);
 
+    const drawObstacles = () => {
+        if (obstacles.length == 0) {
+            return ;
+        }
+        return obstacles.map((obstacle, index) => {
+            const coor = obstacle[0];
+            const x = coor[0];
+            const y = coor[1];
+            const x1 = coor[2];
+            const y1 = coor[3];
+            return (
+                <View 
+                    key={index}
+                    style={BoundingBoxStyle(x, y, x1-x, y1-y)}
+                />
+            )
+        })
+    }
+
+    const drawPath = () => {
+        if (path.length == 0) {
+            return ;
+        }
+        return path.map((point, index) => {
+            const x = point[0];
+            const y = point[1];
+            return (
+                <View 
+                    key={index}
+                    style={{
+                        position: 'absolute',
+                        left: x,
+                        top: y,
+                        width: 10,
+                        height: 10,
+                        backgroundColor: 'green',
+                        opacity: 0.5
+                    }}
+                />
+            )
+        })
+    }
+
     return (
         <View style = {styles.container}>
             <Camera 
@@ -81,6 +131,8 @@ const Navigating = ({ navigation }) => {
                 type={Camera.Constants.Type.back} 
                 ref={cameraRef}
             />
+            {drawObstacles()}
+            {drawPath()}
         </View>
     )
 }
