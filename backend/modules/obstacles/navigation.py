@@ -12,8 +12,6 @@ class Navigation:
     # reuse previous results...
     def __init__(self, height_image=640, width_image=480):
         self.size = (height_image, width_image)
-        self.user_token = None
-        self.path = []
         self.obj_detection = None
         self.floor_detection = None
         self.depth_converter = None
@@ -22,10 +20,8 @@ class Navigation:
         self.obj_detection = ObjectDetection()
         self.floor_detection = FloorDetection()
         self.depth_converter = MakeDepthImage(self.size[0], self.size[1])
-        self.user_token = None # use later
-        self.path = []
         
-    def run(self, image):
+    def run(self, image, path):
         print('Obstacle detection...')
         obstacle_region = self.obj_detection.run(image)
         print(obstacle_region)
@@ -39,16 +35,16 @@ class Navigation:
         print(depth_image.shape)
         
         print('Path planning...')
-        path_planning = PathPlanning(depth_image, obstacle_region[0], floor_region, self.path)
+        path_planning = PathPlanning(depth_image, obstacle_region[0], floor_region, path)
         if path_planning.goal == None:
             print('Cannot find path !!!')
             return None
         else:
             # make the old goal (if available) to be a start point for the next path planning
-            self.path += path_planning.search_path()
-            self.path = path_planning.optimize_path(self.path, 15)
-            # self.show_results(self.path, image)
-            return path_planning.get_results(image, self.path)
+            path += path_planning.search_path()
+            path = path_planning.optimize_path(path, 15)
+            # self.show_results(path, image)
+            return path_planning.get_results(image, path)
 
     def show_results(self, path, image):
         rgb_image = image.copy()
