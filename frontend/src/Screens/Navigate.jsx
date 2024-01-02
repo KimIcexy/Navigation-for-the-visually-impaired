@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, StyleSheet, Alert, Text } from 'react-native';
 import { useState, useEffect, useRef } from 'react';
 import { Camera } from 'expo-camera';
 
@@ -88,20 +88,19 @@ const Navigating = ({ navigation }) => {
         }
         return obstacles.map((obstacle, index) => {
             const coor = obstacle[0];
+            const name = obstacle[1];
             // Scaling here
             const x = coor[0] * (PHONE_WIDTH / 480);
             const y = coor[1] * (PHONE_HEIGHT / 640);
             const x1 = coor[2] * (PHONE_WIDTH / 480);
             const y1 = coor[3] * (PHONE_HEIGHT / 640);
-            // const x = coor[0];
-            // const y = coor[1];
-            // const x1 = coor[2];
-            // const y1 = coor[3];
             return (
                 <View 
                     key={index}
                     style={BoundingBoxStyle(x, y, x1-x, y1-y)}
-                />
+                >
+                    <Text style={{color: 'white', fontSize: 15}}>{name}</Text>
+                </View>
             )
         })
     }

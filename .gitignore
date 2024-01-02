@@ -4,5 +4,6 @@ yolov8x.pt
 DEPTH_IMAGE.jpg
 app.log
 frontend/.env
-.vscode/
+.vscode
 RESULT.jpg
+.idea
