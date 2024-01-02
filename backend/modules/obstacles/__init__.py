@@ -5,6 +5,7 @@ from utils.image import base64_to_image
 from utils.auth import token_required
 from modules.obstacles.navigation import navigation
 from utils.paths import paths
+from utils.paths import paths
 
 bp = Blueprint('obstacles', __name__)
 
@@ -21,7 +22,8 @@ def navigate(current_user):
         print('user name: ', current_user.username)
         print('old user path len: ', len(path))
         # navigation based on the input image and update the path
-        results = navigation.run(image, path)
+        # results = navigation.run(image, path)
+        results = navigation.run(image)
         
         print('results: ', results)
         print('new user path len: ', len(path))
