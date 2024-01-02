@@ -9,3 +9,4 @@ __pycache__/
 NYU_ResNet-UpProj.npy
 test_resources/
 yolov8x.pt
+results/

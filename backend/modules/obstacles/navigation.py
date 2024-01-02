@@ -21,30 +21,33 @@ class Navigation:
         self.floor_detection = FloorDetection()
         self.depth_converter = MakeDepthImage(self.size[0], self.size[1])
         
-    def run(self, image, path):
+    def run(self, image, path):        
         print('Obstacle detection...')
         obstacle_region = self.obj_detection.run(image)
-        print(obstacle_region)
+        # print(obstacle_region)
         
         print('Floor detection...')
         floor_region = self.floor_detection.run(image)
-        print(floor_region)
+        # print(floor_region)
         
         print('RGB >> depth...')
         depth_image = self.depth_converter.run(image)
-        print(depth_image.shape)
+        # print(depth_image.shape)
         
         print('Path planning...')
         path_planning = PathPlanning(depth_image, obstacle_region[0], floor_region, path)
+        
         if path_planning.goal == None:
             print('Cannot find path !!!')
-            return None
         else:
             # make the old goal (if available) to be a start point for the next path planning
             path += path_planning.search_path()
             path = path_planning.optimize_path(path, 15)
-            # self.show_results(path, image)
-            return path_planning.get_results(image, path)
+            # directions = path_planning.path_to_direction(path)
+            self.show_results(path, image)
+            
+        return path_planning.get_results(path)
+            # return path_planning.get_results(path, directions)
 
     def show_results(self, path, image):
         rgb_image = image.copy()
@@ -54,7 +57,7 @@ class Navigation:
             for pixel in path:
                 # coords = pixel.coords
                 # print(coords)
-                cv2.circle(rgb_image, pixel, 10, (255,255,255), -1)
+                cv2.circle(rgb_image, pixel, 10, (0,255,0), -1)
         plt.imshow(rgb_image)
         plt.axis('off')  # Turn off axis labels
         plt.savefig('RESULT.jpg')

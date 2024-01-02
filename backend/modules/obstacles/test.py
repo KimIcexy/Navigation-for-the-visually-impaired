@@ -11,7 +11,7 @@ from navigate.rgb2depth import MakeDepthImage
 obj_detection = ObjectDetection()
 floor_detection = FloorDetection()
 depth_converter = MakeDepthImage()
-start = 10
+start = 0
 stop = 20
 n_frames = 90
 frames_path = 'test_resources/frames'
@@ -57,7 +57,7 @@ for i in range(start, stop):
         #print('Raw frame ' + str(frame) + ': ', path)
         #print('Raw frame ' + str(frame) + ', Last location:  ', path[len(path)-1])
         path = path_planning.optimize_path(path, 15)
-        path_planning.path_to_direction(path)
+        path_planning.test_path_to_direction(path, frame)
         #print('Optimize path last location: ', path[len(path)-1])
         path_planning.show_result(origin_image, path, frame)
     
