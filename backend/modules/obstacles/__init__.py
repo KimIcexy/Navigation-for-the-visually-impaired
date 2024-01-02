@@ -26,7 +26,7 @@ def navigate(current_user):
         
         print('results: ', results)
         print('new user path len: ', len(path))
-        return jsonify({'results': results}), 200
+        return jsonify(results[0]), 200
     except Exception as e:
         print('Unexpected error:', e)
         return jsonify({'message': 'Error'}), 400
