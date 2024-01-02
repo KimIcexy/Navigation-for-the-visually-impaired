@@ -52,7 +52,7 @@ class Navigation:
         rgb_image = image.copy()
         # show path
         if path:
-            print('path: ', path[:15], '...', path[-15:])
+            # print('path: ', path[:15], '...', path[-15:])
             for pixel in path:
                 # coords = pixel.coords
                 # print(coords)

@@ -223,7 +223,7 @@ class PathPlanning:
 
     def path_to_direction (self, optimized_path):
         direction = ["Right", "Left"]
-        output_direction = []
+        output_direction = ["Straight"]
         output_distance = []
         last_checkpoint = 0
         vec_before = (0,-1)
@@ -232,8 +232,6 @@ class PathPlanning:
                 vec_after = ((optimized_path[a+1][0] - optimized_path[a][0]), (optimized_path[a+1][1] - optimized_path[a][1]))
                 if (vec_before == vec_after):
                         continue
-                #vec_direction = ((vec_after[0] - vec_before[0])>0, (vec_after[1] - vec_before[1])>0)
-                #output.append (direction[vec_direction[0]][vec_direction[1]])
                 if (vec_before[0] == 0):
                         if (vec_before[1] == 1):
                                 output_direction.append (direction[vec_after[0] == 1])
@@ -244,52 +242,57 @@ class PathPlanning:
                                 output_direction.append (direction[vec_after[1] == -1])
                         else: #== -1
                                 output_direction.append (direction[vec_after[1] == 1])
+                output_direction.append ("Straight")
                 output_distance.append (a - last_checkpoint)
                 last_checkpoint = a
                 vec_before = vec_after
         output_distance.append (len(optimized_path)-1 - last_checkpoint)
-        print ('directions: ', output_direction)
-        print ('distances: ', output_distance)
+        try:
+            if output_distance [0] <= 5:
+                output_distance.pop(0)
+                output_direction.pop(0)
+        except:
+            pass
         return output_direction, output_distance
     
     def test_path_to_direction(self, optimized_path, no_frame):
         output_file_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         output_file_path = os.path.join(os.path.dirname(output_file_path), 'results', 'direction', f'{no_frame}.txt')
         direction = ["Right", "Left"]
-        output_direction = []
+        output_direction = ["Straight"]
         output_distance = []
         last_checkpoint = 0
-        vec_before = (0, -1)
+        vec_before = (0,-1)
 
         with open(output_file_path, 'w') as output_file:
-            for a in range(0, len(optimized_path) - 1):
-                vec_after = (
-                    (optimized_path[a+1][0] - optimized_path[a][0]),
-                    (optimized_path[a+1][1] - optimized_path[a][1])
-                )
-                if vec_before == vec_after:
-                    continue
-
-                if vec_before[0] == 0:
-                    if vec_before[1] == 1:
-                        output_direction.append(direction[vec_after[0] == 1])
-                    else:  # == -1
-                        output_direction.append(direction[vec_after[0] == -1])
+            for a in range (0, len(optimized_path)-1):
+                #print (optimized_path[a])
+                vec_after = ((optimized_path[a+1][0] - optimized_path[a][0]), (optimized_path[a+1][1] - optimized_path[a][1]))
+                if (vec_before == vec_after):
+                        continue
+                if (vec_before[0] == 0):
+                        if (vec_before[1] == 1):
+                                output_direction.append (direction[vec_after[0] == 1])
+                        else: #== -1
+                                output_direction.append (direction[vec_after[0] == -1])
                 else:
-                    if vec_before[0] == 1:
-                        output_direction.append(direction[vec_after[1] == -1])
-                    else:  # == -1
-                        output_direction.append(direction[vec_after[1] == 1])
-
-                output_distance.append(a - last_checkpoint)
+                        if (vec_before[0] == 1):
+                                output_direction.append (direction[vec_after[1] == -1])
+                        else: #== -1
+                                output_direction.append (direction[vec_after[1] == 1])
+                output_direction.append ("Straight")
+                output_distance.append (a - last_checkpoint)
                 last_checkpoint = a
                 vec_before = vec_after
-
-            output_distance.append(len(optimized_path) - 1 - last_checkpoint)
-
+            output_distance.append (len(optimized_path)-1 - last_checkpoint)
+            try:
+                if output_distance [0] <= 5:
+                    output_distance.pop(0)
+                    output_direction.pop(0)
+            except:
+                pass
             print(output_direction, file=output_file)
             print(output_distance, file=output_file)
-
         return output_direction, output_distance
   
     def optimize_path (self, raw_path, segment_len = 15, max_distance = 20):
