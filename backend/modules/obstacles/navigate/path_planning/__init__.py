@@ -127,75 +127,55 @@ class PathPlanning:
         center = int(len(path)/2 -1)
         return path[center]
     
-    def create_planning_map(self):
-        height, width = self.depth_image.shape[:2]
-        planning_map = np.array([[None for _ in range(width)] for _ in range(height)])
-        for y in range(height):
-            for x in range(width):
-                planning_map[y, x] = PixelNode(coords=(x, y),
-                                    depth=self.depth_image[y, x],
-                                    walkable=self.walkable_map[y, x],
-                                    cost=255 - self.depth_image[y, x], # cost is opposite with depth value
-                                    )
-        return planning_map
-    
     def create_walkable_map(self, obstacle_region, floor_region):
         bbox_margin = 10
         walkable_map = np.zeros((self.height, self.width), dtype=bool)
+        
         for bbox in floor_region:
-            # print(bbox)
-            top = max(0, bbox[0] - bbox_margin)
-            left = max(0, bbox[1] - bbox_margin)
-            bottom = min(bbox[2] + bbox_margin, self.height-1)
-            right = min(bbox[3] + bbox_margin, self.width-1)
-            walkable_map[top:bottom+1, left:right+1] = True
-        # print('start walkable before: ', walkable_map[1919, 540])
+            top, left, bottom, right = bbox
+            top, left, bottom, right = max(0, top - bbox_margin), \
+                                    max(0, left - bbox_margin), \
+                                    min(bottom + bbox_margin, self.height - 1), \
+                                    min(right + bbox_margin, self.width - 1)
+            walkable_map[top:bottom + 1, left:right + 1] = True
         
         for obstacle in obstacle_region:
             bbox = obstacle[0]
-            left = int(max(0, bbox[0] - bbox_margin))
-            top = int(max(0, bbox[1] - bbox_margin))
-            right = int(min(bbox[2] + bbox_margin, self.width-1))
-            bottom = int(min(bbox[3] + bbox_margin, self.height-1))
-            walkable_map[top:bottom+1, left:right+1] = False
+            left, top, right, bottom = bbox
+            left, top, right, bottom = int(max(0, left - bbox_margin)), \
+                                    int(max(0, top - bbox_margin)), \
+                                    int(min(right + bbox_margin, self.width - 1)), \
+                                    int(min(bottom + bbox_margin, self.height - 1))
+            walkable_map[top:bottom + 1, left:right + 1] = False
         
-        # count = 0
-        # for i in range(walkable_map.shape[0]):
-        #     for j in range(walkable_map.shape[1]):
-        #         if (walkable_map[i, j]==True):
-        #             count += 1
-        # print('n walkable: ', count)
-        return walkable_map        
+        return walkable_map
+
+    def create_planning_map(self):
+        planning_map = np.array([
+            [PixelNode(coords=(x, y),
+                       depth=self.depth_image[y, x],
+                       walkable=self.walkable_map[y, x],
+                       cost=255 - self.depth_image[y, x])
+             for x in range(self.width)]
+            for y in range(self.height)
+        ])
+        return planning_map
     
     def heuristic(self, pixel):
         goal_coords = self.goal.coords
         pixel_coords = pixel.coords
         return np.sqrt((goal_coords[0] - pixel_coords[0]) ** 2 + (goal_coords[1] - pixel_coords[1]) ** 2)
-
-    def get_neighbors(self, current_node, neighbor_type='4'):
-        # has not assign neighbors before
-        if (current_node.neighbors is None):
+    
+    def get_neighbors(self, current_node):
+        if current_node.neighbors is None:
             x, y = current_node.coords
-            if (neighbor_type=='8'):
-                neighbors = self.planning_map[max(y-1, 0):min(y+2, self.height-1), \
-                                            max(x-1, 0):min(x+2, self.width-1)]
-                neighbors = neighbors.flatten()
-                for i in range(neighbors.shape[0]):
-                    if neighbors[i].coords == current_node.coords or \
-                    not neighbors[i].walkable:
-                        current_node.neighbors = np.delete(neighbors, i)
-                    
-            # neighbor_type='4':
             neighbors_row = self.planning_map[y, max(x-1, 0):min(x+2, self.width-1)].flatten()
             neighbors_col = self.planning_map[max(y-1, 0):min(y+1, self.height-1), x].flatten()
 
             new_neighbors = np.concatenate((neighbors_col, neighbors_row))
-            new_neighbors_list = []
-            for neighbor in new_neighbors:
-                if neighbor.coords != current_node.coords and neighbor.walkable:
-                    new_neighbors_list.append(neighbor)
-            current_node.neighbors = np.array(new_neighbors_list)
-        
+            new_neighbors_list = [neighbor for neighbor in new_neighbors if neighbor.coords != current_node.coords and neighbor.walkable]
+            current_node.neighbors = np.array(new_neighbors_list)        
+                
     def search_path(self):
         # use A* search algorithm from start to goal
         open_set = [self.start]
@@ -268,8 +248,8 @@ class PathPlanning:
                 last_checkpoint = a
                 vec_before = vec_after
         output_distance.append (len(optimized_path)-1 - last_checkpoint)
-        print (output_direction)
-        print (output_distance)
+        print ('directions: ', output_direction)
+        print ('distances: ', output_distance)
         return output_direction, output_distance
     
     def test_path_to_direction(self, optimized_path, no_frame):

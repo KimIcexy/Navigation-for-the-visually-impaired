@@ -10,7 +10,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg
 from .models.fcrn import ResNet50UpProj
 
 class MakeDepthImage:
-    def __init__(self, height=1920, width=1080):
+    def __init__(self, height=640, width=480):
         tf.disable_eager_execution()
         self.sess = tf.Session()
         

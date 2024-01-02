@@ -43,7 +43,7 @@ class Navigation:
             # make the old goal (if available) to be a start point for the next path planning
             path += path_planning.search_path()
             path = path_planning.optimize_path(path, 15)
-            # directions = path_planning.path_to_direction(path)
+            directions, distances = path_planning.path_to_direction(path)
             self.show_results(path, image)
             
         return path_planning.get_results(path)
@@ -61,5 +61,6 @@ class Navigation:
         plt.imshow(rgb_image)
         plt.axis('off')  # Turn off axis labels
         plt.savefig('RESULT.jpg')
+        
         
 navigation = Navigation()

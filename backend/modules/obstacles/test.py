@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 from detect import ObjectDetection
 from detect.floor_detect import FloorDetection
 from navigate.path_planning import PathPlanning
-from navigate.rgb2depth import MakeDepthImage
+# from navigate.rgb2depth import MakeDepthImage
 
 
 obj_detection = ObjectDetection()
 floor_detection = FloorDetection()
-depth_converter = MakeDepthImage()
+# depth_converter = MakeDepthImage()
 start = 0
-stop = 20
+stop = 10
 n_frames = 90
 frames_path = 'test_resources/frames'
 
@@ -38,12 +38,12 @@ for i in range(start, stop):
     """Test depth converter"""
     print('RGB >> depth...')
     # nhớ mở comment ở trên depth_image class và import depth image ...
-    depth_image = depth_converter.test(origin_image, frame)
+    # depth_image = depth_converter.test(origin_image, frame)
     
     """for faster test, read from result image"""
-    # depth_image_path = os.path.join('results/depth', str(frame) + '.jpg')
-    # depth_image = cv2.imread(depth_image_path, cv2.IMREAD_GRAYSCALE)
-    # depth_image = cv2.resize(depth_image, (1080, 1920))
+    depth_image_path = os.path.join('results/depth', str(frame) + '.jpg')
+    depth_image = cv2.imread(depth_image_path, cv2.IMREAD_GRAYSCALE)
+    depth_image = cv2.resize(depth_image, (1080, 1920))
         
     # """Test path planning"""
     print('Path planning...')
