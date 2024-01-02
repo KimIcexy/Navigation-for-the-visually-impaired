@@ -1,9 +1,0 @@
-test/
-backend/modules/obstacles/navigate/path_planning/__init__ BAK.py
-yolov8x.pt
-DEPTH_IMAGE.jpg
-app.log
-frontend/.env
-.vscode
-RESULT.jpg
-.idea
