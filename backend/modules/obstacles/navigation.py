@@ -46,8 +46,7 @@ class Navigation:
             directions, distances = path_planning.path_to_direction(path)
             # self.show_results(path, image)
             
-        return path_planning.get_results(path)
-            # return path_planning.get_results(path, directions)
+        return path_planning.get_results(path, directions)
 
     def show_results(self, path, image):
         rgb_image = image.copy()

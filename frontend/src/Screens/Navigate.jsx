@@ -9,6 +9,7 @@ import { getImage } from '../Utils/camera.js';
 import NavigateAPI from '../Services/Navigate_API.js'
 import { createForm } from '../Utils/formData.js';
 import { BoundingBoxStyle } from '../Constant/Style.jsx';
+import { PHONE_HEIGHT, PHONE_WIDTH } from '../Constant/Phone.jsx';
 
 const styles = StyleSheet.create({
     container: {
@@ -87,10 +88,15 @@ const Navigating = ({ navigation }) => {
         }
         return obstacles.map((obstacle, index) => {
             const coor = obstacle[0];
-            const x = coor[0];
-            const y = coor[1];
-            const x1 = coor[2];
-            const y1 = coor[3];
+            // Scaling here
+            const x = coor[0] * (PHONE_WIDTH / 480);
+            const y = coor[1] * (PHONE_HEIGHT / 640);
+            const x1 = coor[2] * (PHONE_WIDTH / 480);
+            const y1 = coor[3] * (PHONE_HEIGHT / 640);
+            // const x = coor[0];
+            // const y = coor[1];
+            // const x1 = coor[2];
+            // const y1 = coor[3];
             return (
                 <View 
                     key={index}
@@ -105,8 +111,8 @@ const Navigating = ({ navigation }) => {
             return ;
         }
         return path.map((point, index) => {
-            const x = point[0];
-            const y = point[1];
+            const x = point[0] * (PHONE_WIDTH / 480);
+            const y = point[1] * (PHONE_HEIGHT / 640);
             return (
                 <View 
                     key={index}
@@ -131,8 +137,8 @@ const Navigating = ({ navigation }) => {
                 type={Camera.Constants.Type.back} 
                 ref={cameraRef}
             />
-            {drawObstacles()}
             {drawPath()}
+            {drawObstacles()}
         </View>
     )
 }
