@@ -22,8 +22,7 @@ def navigate(current_user):
         print('user name: ', current_user.username)
         print('old user path len: ', len(path))
         # navigation based on the input image and update the path
-        # results = navigation.run(image, path)
-        results = navigation.run(image)
+        results = navigation.run(image, path)
         
         print('results: ', results)
         print('new user path len: ', len(path))

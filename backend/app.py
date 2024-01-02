@@ -47,4 +47,5 @@ if __name__ == '__main__':
     app = create_app()
     db.init_db()
     navigation.init()
+    print('Initialize completely...')
     app.run(debug=True)
