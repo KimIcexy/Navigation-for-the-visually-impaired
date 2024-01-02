@@ -10,6 +10,7 @@ import NavigateAPI from '../Services/Navigate_API.js'
 import { createForm } from '../Utils/formData.js';
 import { BoundingBoxStyle } from '../Constant/Style.jsx';
 import { PHONE_HEIGHT, PHONE_WIDTH } from '../Constant/Phone.jsx';
+import * as Speech from 'expo-speech';
 
 const styles = StyleSheet.create({
     container: {
@@ -55,6 +56,10 @@ const Navigating = ({ navigation }) => {
         }
     }
 
+    const speechOptions = {
+        language: 'vi-VN',
+    }
+
     // Continously send image to server
     const sendImageContinously = async () => {
         setState(true);
@@ -66,6 +71,11 @@ const Navigating = ({ navigation }) => {
         const { data } = res;
         setObstacles(data?.obstacles);
         setPath(data?.path);
+        // Speak all the diẻctions
+        for (i = 0; i < data?.directions.length; i++) {
+            Speech.speak(data?.directions[i], speechOptions);
+        }
+        
     }
 
     useEffect(() => {
