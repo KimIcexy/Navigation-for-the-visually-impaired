@@ -44,7 +44,7 @@ class Navigation:
             path += path_planning.search_path()
             path = path_planning.optimize_path(path, 15)
             directions, distances = path_planning.path_to_direction(path)
-            self.show_results(path, image)
+            # self.show_results(path, image)
             
         return path_planning.get_results(path)
             # return path_planning.get_results(path, directions)
