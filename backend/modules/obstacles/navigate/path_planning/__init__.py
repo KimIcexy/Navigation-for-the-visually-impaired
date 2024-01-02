@@ -383,7 +383,7 @@ class PathPlanning:
             print('result path: ', result_path)
             plt.savefig(result_path)
 
-    def get_results(self, path):
+    def get_results(self, path, directions):
         results = {}
 
         # obstacle results have type: [[top, left, bottom, right], class_name]
@@ -395,7 +395,7 @@ class PathPlanning:
             obstacle_results.append([[top, left, bottom, right], class_name])
         results['obstacles'] = obstacle_results
         results['path'] = path
-        # results['directions'] = directions
+        results['directions'] = directions
 
         return [results]
 
