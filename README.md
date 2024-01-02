@@ -48,16 +48,52 @@ pip install -r requirements.txt
 python app.py
 ```
 
+**5. Start ngrok**
+
+```bash
+ngrok http --region jp ${PORT}
+```
+
 ## Step 2: Set up frontend
 
 **1. Install the packages**
 
 ```bash
-npm i
+npm install
+```
+
+or
+
+```bash
+yarn install
 ```
 
 **2. Connect to an Android device (real or virtual)**
 
 ```bash
-npx react-native run-android
+npx run start
 ```
+
+or
+
+```bash
+yarn run start
+```
+
+**3. Run on Android device**
+
+```bash
+npx run android
+```
+
+or
+
+```bash
+yarn run android
+```
+
+## About us:
+
+-   Huynh Thiet Gia: 20120070
+-   Nguyen Duy Quang: 20120360
+-   Dang Vo Hoang Kim Tuyen: 20120399
