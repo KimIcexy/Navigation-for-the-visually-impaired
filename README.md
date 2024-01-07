@@ -94,6 +94,6 @@ yarn run android
 
 ## About us:
 
--   Huynh Thiet Gia: 20120070
--   Nguyen Duy Quang: 20120360
--   Dang Vo Hoang Kim Tuyen: 20120399
+-   Huynh Thiet Gia: 20120070@student.hcmus.edu.vn
+-   Nguyen Duy Quang: 20120360@student.hcmus.edu.vn
+-   Dang Vo Hoang Kim Tuyen: 20120399@student.hcmus.edu.vn
